@@ -1,0 +1,128 @@
+{
+  "name": "Trasporto pubblico",
+  "layers": [
+    {
+      "name": "Fermate AMT",
+      "layer": "SITGEO:V_MOB_FERMATE_AMT",
+      "layer_url_wfs": "./GeoJson/amt-bus-stop.geojson",
+      "style": {
+        "color": "#85499a",
+        "opacity": 1
+      },
+      "tags": [
+        "città",
+        "mezzi pubblici",
+        "amt",
+        "autobus"
+      ],
+      "relevant_properties": [
+        {
+          "property_name": "LINEA",
+          "display_name": "Linee",
+          "type": "string"
+        },
+        {
+          "property_name": "DETTAGLI",
+          "display_name": "Dettagli",
+          "type": "string"
+        },
+        {
+          "property_name": "NOME_FERMATA",
+          "display_name": "Nome fermata",
+          "type": "number"
+        },
+        {
+          "property_name": "CODICE_FERMATA",
+          "display_name": "Codice",
+          "type": "string"
+        }
+      ],
+      "components": [
+        "app-opacity-slider"
+      ]
+    },
+    {
+      "name": "Stazioni metropolitana",
+      "layer": "SITGEO:V_MOB_METROPOLITANA_STAZIONI",
+      "layer_url_wfs": "./GeoJson/metro-stations.geojson",
+      "style": {
+        "color": "#58a293",
+        "opacity": 1
+      },
+      "tags": [
+        "città",
+        "mezzi pubblici",
+        "amt",
+        "metropolitana"
+      ],
+      "relevant_properties": [
+        {
+          "property_name": "NOME_STAZ",
+          "display_name": "Nome stazione",
+          "type": "string"
+        },
+        {
+          "property_name": "STATO",
+          "display_name": "Stato",
+          "type": "string"
+        }
+      ],
+      "components": [
+        "app-opacity-slider",
+        "app-navigation-btn"
+      ]
+    },
+    {
+      "name": "Tracciato metropolitana",
+      "layer": "SITGEO:V_MOB_METROPOLITANA",
+      "layer_url_wfs": "./GeoJson/metro-path.geojson",
+      "style": {
+        "color": "#1b2eb7",
+        "opacity": 1
+      },
+      "tags": [
+        "città",
+        "mezzi pubblici",
+        "amt",
+        "metropolitana"
+      ],
+      "relevant_properties": [],
+      "components": [
+        "app-opacity-slider"
+      ]
+    },
+    {
+      "name": "Funicolari",
+      "layer": "L8020",
+      "layer_url_wfs": "https://geoservizi.regione.liguria.it/geoserver/M2201/wfs",
+      "style": {
+        "color": "#493e68",
+        "opacity": 1
+      },
+      "tags": [
+        "città",
+        "funicolare"
+      ],
+      "relevant_properties": [
+        {
+          "property_name": "DEF_SEDE",
+          "display_name": "Sede",
+          "type": "number"
+        },
+        {
+          "property_name": "DEF_LIVELLO",
+          "display_name": "Livello",
+          "type": "string"
+        },
+        {
+          "property_name": "DEF_STATO",
+          "display_name": "Stato",
+          "type": "string"
+        }
+      ],
+      "components": [
+        "app-opacity-slider"
+      ]
+    }
+  ]
+}

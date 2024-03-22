@@ -1,0 +1,33 @@
+:host {
+    position: fixed;
+    top: 0;
+    right: -360px;
+    width: 360px;
+    height: 100vh;
+    background-color: white;
+    animation: slideOut .3s ease-in-out forwards;
+}
+
+:host(.visible) {
+    animation: slideIn .3s ease-in-out forwards;
+}
+
+@keyframes slideIn {
+    from {
+        right: -360px;
+    }
+
+    to {
+        right: 0;
+    }
+}
+
+@keyframes slideOut {
+    from {
+        right: 0;
+    }
+
+    to {
+        right: -360px;
+    }
+}

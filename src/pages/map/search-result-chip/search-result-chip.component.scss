@@ -1,0 +1,23 @@
+button[is="app-search-result-chip"] {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+}
+
+button[is="app-search-result-chip"] .info {
+    display: flex;
+    align-items: center;
+}
+
+button[is="app-search-result-chip"] .info .legend {
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    border-radius: 100%;
+}
+
+button[is="app-search-result-chip"] .info label {
+    cursor: pointer;
+}

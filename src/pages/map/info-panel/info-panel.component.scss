@@ -1,0 +1,24 @@
+:host {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.info {
+    overflow-y: hidden;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.info-content {
+    display: none;
+    overflow-y: auto;
+    flex: 1;
+    box-sizing: border-box;
+    padding: 24px;
+}
+
+.visible {
+    display: block;
+}

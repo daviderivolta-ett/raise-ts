@@ -1,0 +1,42 @@
+:host {
+    position: fixed;
+    top: 0;
+    right: -360px;
+    width: 360px;
+    height: 100vh;
+    background-color: wheat;
+    animation: slideOut .3s ease-in-out forwards;
+}
+
+:host(.visible) {
+    animation: slideIn .3s ease-in-out forwards;
+}
+
+.material-symbols-outlined {
+    font-family: 'Material Symbols Outlined';
+    font-variation-settings:
+        'FILL' 0,
+        'wght' 400,
+        'GRAD' 0,
+        'opsz' 24;
+}
+
+@keyframes slideIn {
+    from {
+        right: -360px;
+    }
+
+    to {
+        right: 0;
+    }
+}
+
+@keyframes slideOut {
+    from {
+        right: 0;
+    }
+
+    to {
+        right: -360px;
+    }
+}

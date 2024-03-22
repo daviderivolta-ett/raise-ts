@@ -1,0 +1,24 @@
+button[is="app-carousel-chip"] {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    text-wrap: nowrap;
+}
+
+button[is="app-carousel-chip"] .info {
+    display: flex;
+    align-items: center;
+}
+
+button[is="app-carousel-chip"] .info .legend {
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    border-radius: 100%;
+}
+
+button[is="app-carousel-chip"] .info label {
+    cursor: pointer;
+}

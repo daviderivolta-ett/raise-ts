@@ -1,0 +1,15 @@
+:host {
+    background-color: white;
+    display: flex;
+    overflow-x: auto;
+    max-width: calc(100% - 360px);
+}
+
+.material-symbols-outlined {
+    font-family: 'Material Symbols Outlined';
+    font-variation-settings:
+        'FILL' 0,
+        'wght' 400,
+        'GRAD' 0,
+        'opsz' 24;
+}

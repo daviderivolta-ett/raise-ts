@@ -1,0 +1,90 @@
+.page {
+    height: 100vh;
+}
+
+.header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding: 24px;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+}
+
+.search {
+    display: flex;
+    width: 360px;
+}
+
+button[is="app-searchbar"] {
+    width: 100%;
+}
+
+app-search-result {
+    position: fixed;
+    top: 80px;
+    left: 24px;
+    width: 356px;
+}
+
+.fa-button {
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 40px;
+    height: 40px;
+    padding: 16px;
+}
+
+.map-controls {
+    animation: slideOut .3s ease-in-out forwards;
+}
+
+.map-controls.open {
+    animation: slideIn .3s ease-in-out forwards;
+}
+
+button[is="app-map-mode-btn"] {
+    position: fixed;
+    bottom: 72px;
+    right: 24px;
+}
+
+button[is="app-center-position-btn"] {
+    cursor: pointer;
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+}
+
+.material-symbols-outlined {
+    font-family: 'Material Symbols Outlined';
+    font-variation-settings:
+        'FILL' 0,
+        'wght' 400,
+        'GRAD' 0,
+        'opsz' 24;
+}
+
+@keyframes slideIn {
+    from {
+        right: 24px;
+    }
+
+    to {
+        right: calc(24px + 360px);
+    }
+}
+
+@keyframes slideOut {
+    from {
+        right: calc(24px + 360px);
+    }
+
+    to {
+        right: 24px;
+    }
+}
