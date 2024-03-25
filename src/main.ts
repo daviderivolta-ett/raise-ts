@@ -22,10 +22,15 @@ import './components/snackbar/snackbar.component';
 import './pages/map/tabs/tabs.component';
 import './pages/map/info-panel/info-panel.component';
 import './pages/map/custom-path-panel/custom-path-panel.component';
+import './pages/map/dialog/dialog.component';
+import './pages/map/custom-path-form/custom-path-form.component';
 
 // Classes
 import { Router } from './components/router.component';
+import { StorageService } from './services/storage.service';
+import { Path } from './models/Path.model';
 
+// Routing
 const router: Router = document.querySelector('app-router') as Router;
 const indexRoute: Route = new Route('map', RouteType.Page, () => '<page-map></page-map>');
 const mapRoute: Route = new Route('index', RouteType.Default, () => '<page-tags></page-tags>');
@@ -33,3 +38,9 @@ const notFoundRoute: Route = new Route('404', RouteType.NotFound, () => '<div>40
 
 const routes: Route[] = [indexRoute, mapRoute, notFoundRoute];
 router.addRoutes(routes);
+
+// Local Storage
+StorageService.instance.getCustomPaths();
+if (!StorageService.instance.paths.some((path: Path) => path.name === 'default')) StorageService.instance.saveNewPath('default');
+const selectedPath: Path | undefined = StorageService.instance.paths.find((path: Path) => path.lastSelected === true);
+if (selectedPath) StorageService.instance.selectedCustomPath = selectedPath;

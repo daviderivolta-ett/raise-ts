@@ -2,8 +2,8 @@ import { Path } from '../../../models/Path.model';
 import { PoiProperty, PoiType, PointOfInterest } from '../../../models/PointOfInterest.model';
 import { EventObservable } from '../../../observables/event.observable';
 import { MapService } from '../../../services/map.service';
-import { PathService } from '../../../services/path.service';
 import { PoiService } from '../../../services/poi.service';
+import { StorageService } from '../../../services/storage.service';
 
 import style from './info-panel.component.scss?raw';
 
@@ -104,9 +104,9 @@ export class InfoPanelComponent extends HTMLElement {
         const button: HTMLButtonElement = document.createElement('button');
         button.innerHTML = 'Aggiungi';
         button.addEventListener('click', () => {
-            const selectedCustomPath: Path = PathService.instance.selectedCustomPath;
+            const selectedCustomPath: Path = StorageService.instance.selectedCustomPath;
             selectedCustomPath.pois.unshift(this.poi!);
-            PathService.instance.selectedCustomPath = selectedCustomPath;
+            StorageService.instance.selectedCustomPath = selectedCustomPath;
         });
         return button;
     }

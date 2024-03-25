@@ -1,7 +1,7 @@
 import { Path } from '../../../models/Path.model';
 import { PointOfInterest } from '../../../models/PointOfInterest.model';
-import { PathService } from '../../../services/path.service';
 import { PoiService } from '../../../services/poi.service';
+import { StorageService } from '../../../services/storage.service';
 
 import stye from './custom-path-card.component.scss?raw';
 
@@ -63,7 +63,7 @@ export class CustomPathCardComponent extends HTMLElement {
         if (!this.poi) return;
 
         const order: HTMLSpanElement | null = this.shadowRoot.querySelector('.order');
-        if (order) order.innerHTML = (PathService.instance.selectedCustomPath.pois.indexOf(this.poi) + 1).toString();
+        if (order) order.innerHTML = (StorageService.instance.selectedCustomPath.pois.indexOf(this.poi) + 1).toString();
 
         const title: HTMLHeadingElement | null = this.shadowRoot.querySelector('.name');
         if (title) title.innerHTML = this.poi.name;
@@ -98,16 +98,16 @@ export class CustomPathCardComponent extends HTMLElement {
     private changeOrder(movement: Movement): void {
         if (!this.poi) return;
 
-        let path: Path = PathService.instance.selectedCustomPath;
+        let path: Path = StorageService.instance.selectedCustomPath;
         let pois: PointOfInterest[] = [...path.pois];
 
-        let currentIndex: number = PathService.instance.selectedCustomPath.pois.indexOf(this.poi);
+        let currentIndex: number = StorageService.instance.selectedCustomPath.pois.indexOf(this.poi);
         pois.splice(currentIndex, 1);
 
         movement === Movement.Up ? pois.splice(currentIndex - 1, 0, this.poi) :pois.splice(currentIndex + 1, 0, this.poi);
 
         path.pois = pois;
-        PathService.instance.selectedCustomPath = path;
+        StorageService.instance.selectedCustomPath = path;
     }
 
     private setupRemoveBtn(): void {
@@ -116,10 +116,10 @@ export class CustomPathCardComponent extends HTMLElement {
         if (!removeBtn) return;
         removeBtn.addEventListener('click', (e: Event) => {
             e.stopPropagation();
-            let currentIndex: number = PathService.instance.selectedCustomPath.pois.indexOf(this.poi!);
-            let path: Path = PathService.instance.selectedCustomPath;
+            let currentIndex: number = StorageService.instance.selectedCustomPath.pois.indexOf(this.poi!);
+            let path: Path = StorageService.instance.selectedCustomPath;
             path.pois.splice(currentIndex, 1);
-            PathService.instance.selectedCustomPath = path;
+            StorageService.instance.selectedCustomPath = path;
         });
     }
 }

@@ -1,5 +1,4 @@
 import * as Cesium from 'cesium';
-
 import { Layer, PropertyType } from './Layer.model';
 
 export class PointOfInterest {
