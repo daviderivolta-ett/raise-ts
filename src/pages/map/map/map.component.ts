@@ -7,6 +7,7 @@ import { BenchToggleObservable } from '../../../observables/bench-toggle.observa
 import style from './map.component.scss?raw';
 import { PoiService } from '../../../services/poi.service';
 import { PointOfInterest } from '../../../models/PointOfInterest.model';
+import { EventObservable } from '../../../observables/event.observable';
 
 export class MapComponent extends HTMLElement {
     public shadowRoot: ShadowRoot;
@@ -71,6 +72,8 @@ export class MapComponent extends HTMLElement {
     }
 
     private clickOnMap(movement: Cesium.ScreenSpaceEventHandler.PositionedEvent): void {           
+        EventObservable.instance.publish('empty-searchbar', null);
+        
         const windowPosition: Cesium.Cartesian2 = movement.position;  
         const pickedObject: any = this.viewer.scene.pick(windowPosition);
         

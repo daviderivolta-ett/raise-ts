@@ -105,7 +105,9 @@ export class CustomPathFormComponent extends HTMLElement {
 
             const cartographic: Cesium.Cartographic = PositionService.geolocationToCartographic(position);
             const pois: PointOfInterest[] = TspService.instance.nearestInsertion(StorageService.instance.selectedCustomPath.pois, cartographic);
-            console.log(pois);            
+            const path: Path = StorageService.instance.selectedCustomPath;
+            path.pois = pois;
+            StorageService.instance.selectedCustomPath = path;
         });
     }
 

@@ -41,7 +41,6 @@ router.addRoutes(routes);
 
 // Local Storage
 StorageService.instance.getCustomPaths();
-console.log(StorageService.instance.paths);
 if (!StorageService.instance.paths.some((path: Path) => path.name === 'default')) StorageService.instance.saveNewPath('default');
 const selectedPath: Path | undefined = StorageService.instance.paths.find((path: Path) => path.lastSelected === true);
 if (selectedPath) StorageService.instance.selectedCustomPath = selectedPath;

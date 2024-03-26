@@ -51,7 +51,7 @@ export class TspService {
             path.push(remainingPois.splice(nextIndex, 1)[0]);
         }
 
-        return path;
+        return path.reverse();
     }
 
 }

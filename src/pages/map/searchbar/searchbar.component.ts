@@ -8,8 +8,19 @@ export interface LayerSearchResult {
 }
 
 export class SearchbarComponent extends HTMLInputElement {
+    private _inputValue: string = '';
+
     constructor() {
         super();
+    }
+
+    public get inputValue(): string {
+        return this._inputValue;
+    }
+
+    public set inputValue(inputValue: string) {
+        this._inputValue = inputValue;
+        this.update();
     }
 
     public connectedCallback(): void {
@@ -17,16 +28,19 @@ export class SearchbarComponent extends HTMLInputElement {
     }
 
     private setup(): void {
-        this.addEventListener('input', () => {
-            let layerSearchResult: LayerSearchResult = { layers: [], searchValue: '' };
-            if (this.value === '') {
-                EventObservable.instance.publish('search-layer', layerSearchResult);
-            } else {
-                const filteredLayers: Layer[] = DataService._instance.filterLayersByNameAndTag(DataService._instance.data, this.value);
-                layerSearchResult = { layers: filteredLayers, searchValue: this.value };
-                EventObservable.instance.publish('search-layer', layerSearchResult);
-            }
-        });
+        this.addEventListener('input', () => this.inputValue = this.value);
+        EventObservable.instance.subscribe('empty-searchbar', () => this.value = this.inputValue = '');
+    }
+
+    private update(): void {
+        let layerSearchResult: LayerSearchResult = { layers: [], searchValue: '' };
+        if (this.inputValue === '') {
+            EventObservable.instance.publish('search-layer', layerSearchResult);
+        } else {
+            const filteredLayers: Layer[] = DataService._instance.filterLayersByNameAndTag(DataService._instance.data, this.value);
+            layerSearchResult = { layers: filteredLayers, searchValue: this.inputValue };
+            EventObservable.instance.publish('search-layer', layerSearchResult);
+        }
     }
 }
 
