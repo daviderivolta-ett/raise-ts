@@ -1,6 +1,10 @@
 import { DialogType } from '../../../models/DialogType.model';
 import { Path } from '../../../models/Path.model';
+import { PointOfInterest } from '../../../models/PointOfInterest.model';
+import { PositionService } from '../../../services/position.service';
 import { StorageService } from '../../../services/storage.service';
+import { TspService } from '../../../services/tsp.service';
+import * as Cesium from 'cesium';
 
 export class CustomPathFormComponent extends HTMLElement {
     public shadowRoot: ShadowRoot;
@@ -49,6 +53,11 @@ export class CustomPathFormComponent extends HTMLElement {
 
     private update(): void {
         switch (this.type) {
+            case DialogType.SortPois:
+                this.renderSortPoisForm();
+                this.setupSortPoisForm();
+                break;
+
             case DialogType.AddPath:
                 this.renderAddPathForm();
                 this.setupAddPathForm();
@@ -69,6 +78,35 @@ export class CustomPathFormComponent extends HTMLElement {
                 this.setupEditPathForm();
                 break;
         }
+    }
+
+    private renderSortPoisForm(): void {
+        this.shadowRoot.innerHTML =
+            `
+            <form class="form">
+                <h4>Riordina</h4>
+                <p>Riordinare i punti di interesse del percorso ${StorageService.instance.selectedCustomPath.name}?</p>
+                <div class="call-to-actions">
+                    <button type="button" class="cancel-btn">Annulla</button>
+                    <button type="submit" class="submit-btn">Salva</button>
+                 </div>
+            </form>
+            `
+            ;
+    }
+
+    private setupSortPoisForm(): void {
+        const form: HTMLFormElement | null = this.shadowRoot.querySelector('.form');
+        if (!form) return;
+
+        form.addEventListener('submit', () => {
+            const position: GeolocationPosition | null = PositionService.instance.position;
+            if (!position) return;
+
+            const cartographic: Cesium.Cartographic = PositionService.geolocationToCartographic(position);
+            const pois: PointOfInterest[] = TspService.instance.nearestInsertion(StorageService.instance.selectedCustomPath.pois, cartographic);
+            console.log(pois);            
+        });
     }
 
     private renderEditPathForm(): void {

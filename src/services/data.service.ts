@@ -119,7 +119,6 @@ export class DataService {
         );
     }
 
-
     public getAllLayers(data: Data): Layer[] {
         const allLayers: Layer[] = [];
 

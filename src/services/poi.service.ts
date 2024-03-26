@@ -61,7 +61,7 @@ export class PoiService {
 
         poi.position = this.parsePoiPosition(entity);
         poi.type = this.parsePoiType(entity);
-
+    
         return poi;
     }
 

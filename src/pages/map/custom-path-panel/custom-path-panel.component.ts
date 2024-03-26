@@ -54,11 +54,13 @@ export class CustomPathComponent extends HTMLElement {
     }
 
     private setup(): void {
+        const sortBtn: HTMLButtonElement | null = this.shadowRoot.querySelector('.sort-btn');
         const editBtn: HTMLButtonElement | null = this.shadowRoot.querySelector('.edit-btn');
         const addBtn: HTMLButtonElement | null = this.shadowRoot.querySelector('.add-btn');
         const bookmarkBtn : HTMLButtonElement | null = this.shadowRoot.querySelector('.bookmark-btn');
         const loadBtn : HTMLButtonElement | null = this.shadowRoot.querySelector('.load-btn');
 
+        if (sortBtn) sortBtn.addEventListener('click', () => DialogService.instance.createFormDialog(DialogType.SortPois));
         if (editBtn) editBtn.addEventListener('click', () => DialogService.instance.createFormDialog(DialogType.EditPath));
         if (addBtn) addBtn.addEventListener('click', () => DialogService.instance.createFormDialog(DialogType.AddPath));
         if (bookmarkBtn) bookmarkBtn.addEventListener('click', () => DialogService.instance.createFormDialog(DialogType.BookmarkPath));

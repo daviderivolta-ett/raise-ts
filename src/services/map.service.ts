@@ -106,11 +106,11 @@ export class MapService {
         currentCameraPosition.height > 2000000 ? currentCameraPosition.height = 2000 : currentCameraPosition.height;
         let initialPosition: Cesium.Cartesian3 = Cesium.Cartesian3.fromDegrees(8.934080815653985, 44.40753207658791, 2000);
 
-        if (position && position instanceof GeolocationPosition) {          
+        if (position && position instanceof GeolocationPosition) {
             initialPosition = Cesium.Cartesian3.fromDegrees(position.coords.longitude, position.coords.latitude, currentCameraPosition.height);
         }
-        
-        if (position && position instanceof Cesium.Cartographic) {                  
+
+        if (position && position instanceof Cesium.Cartographic) {
             initialPosition = Cesium.Cartesian3.fromRadians(position.longitude, position.latitude, currentCameraPosition.height);
         }
 
@@ -272,6 +272,10 @@ export class MapService {
                     f.properties.uuid = layer.layer + f.geometry.coordinates[1] + f.geometry.coordinates[0];
                     break;
 
+                case FeatureGeometryType.MultiPoint:
+                    f.properties.uuid = layer.layer + (f.geometry.coordinates as number[][])[0][1] + (f.geometry.coordinates as number[][])[0][0];
+                    break;
+
                 case FeatureGeometryType.LineString || FeatureGeometryType.Polygon || FeatureGeometryType.MultiPoint:
                     f.properties.uuid = layer.layer + (f.geometry.coordinates as number[][])[0][1] + (f.geometry.coordinates as number[][])[0][0];
                     break;
@@ -340,7 +344,7 @@ export class MapService {
         return entity;
     }
 
-    public openGoogleMaps(position: Cesium.Cartographic): void {      
+    public openGoogleMaps(position: Cesium.Cartographic): void {
         const url: string = `https://www.google.it/maps/dir/?api=1&destination=${Cesium.Math.toDegrees(position.latitude)},${Cesium.Math.toDegrees(position.longitude)}`;
         window.open(url, '_blank');
     }

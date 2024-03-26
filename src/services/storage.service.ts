@@ -1,7 +1,11 @@
+import { Layer, LayerProperty, LayerStyle, PropertyType } from '../models/Layer.model';
 import { Path } from '../models/Path.model';
+import { PoiProperty, PoiType, PointOfInterest } from '../models/PointOfInterest.model';
 import { Tab } from '../models/Tab.model';
 import { EventObservable } from '../observables/event.observable';
 import { TabsObservable } from '../observables/tabs.observable';
+
+import * as Cesium from 'cesium';
 
 export class StorageService {
     private static _instance: StorageService;
@@ -38,11 +42,92 @@ export class StorageService {
 
     public getCustomPaths(): void {
         const pathsString: string | null = localStorage.getItem('paths');
-        if (pathsString) this.paths = JSON.parse(pathsString) as Path[];
+        if (pathsString) {
+            const rawPaths: any[] = JSON.parse(pathsString);
+            const paths: Path[] = rawPaths.map((path: any) => this.parseCustomPath(path));
+            this.paths = paths;
+        }
     }
 
     public setCustomPaths(): void {
         localStorage.setItem('paths', JSON.stringify(this.paths));
+    }
+
+    private parseCustomPath(path: any): Path {
+        let p: Path = Path.createEmpty();
+
+        if (path.lastSelected) p.lastSelected = path.lastSelected;
+        if (path.name) p.name = path.name;
+        if (path.pois) p.pois = path.pois.map((poi: any) => this.parsePoi(poi));
+
+        return p;
+    }
+
+    private parsePoi(poi: any): PointOfInterest {
+        let p: PointOfInterest = PointOfInterest.createEmpty();
+
+        p.layer = this.parseLayer(poi.layer);
+        p.name = poi.name;
+        p.position = new Cesium.Cartographic(poi.position.longitude, poi.position.latitude, poi.position.height);
+        p.props = poi.props.map((prop: any) => this.parsePoiProperty(prop));
+        p.type = this.parsePoiType(poi.type);
+        p.uuid = poi.uuid;
+
+        return p;
+    }
+
+    private parseLayer(layer: any): Layer {        
+        return new Layer(
+            layer.name,
+            layer.layer,
+            layer.url = layer.url,
+            new LayerStyle(layer.style.color, layer.style.opacity),
+            layer.tags,
+            layer.relevantProperties.map((property: any) => {
+                let p: LayerProperty = LayerProperty.createEmpty();
+                p.displayName = property.display_name;
+                p.propertyName = property.property_name;
+
+                switch (property.type) {
+                    case 'image':
+                        p.type = PropertyType.Image;
+                        break;
+                    case 'number':
+                        p.type = PropertyType.Number;
+                        break;
+                    default:
+                        p.type = PropertyType.String;
+                        break;
+                }
+
+                return p;
+            })
+        );
+    }
+
+    private parsePoiProperty(rawProp: any): PoiProperty {
+        let prop: PoiProperty = PoiProperty.createEmpty();
+        if (rawProp.displayName) prop.displayName = rawProp.displayName;
+        if (rawProp.type) prop.type = rawProp.type;
+        if (rawProp.value) prop.value = rawProp.value;
+        return prop;
+    }
+
+    private parsePoiType(type: string): PoiType {
+        let t: PoiType;
+        switch (type) {
+            case 'polyline':
+                t = PoiType.Polyline;
+                break;
+            case 'polygon':
+                t = PoiType.Polygon;
+                break;
+            default:
+                t = PoiType.Point;
+                break;
+        }
+
+        return t;
     }
 
     public editPath(name: string): void {
@@ -61,7 +146,7 @@ export class StorageService {
         const defaultPath: Path | undefined = this.paths.find((path: Path) => path.name === 'default');
         if (defaultPath) this.selectedCustomPath = defaultPath;
         this.paths = [...paths];
-        
+
         this.setCustomPaths();
     }
 
