@@ -76,24 +76,45 @@ export class CustomPathFormComponent extends HTMLElement {
             `
             <form class="form">
                 <h4>Modifica percorso</h4>
-                <input type="text" class="path-name-input">
+                <input type="text" name="path-name" class="path-name-input">
                 <div class="call-to-actions">
                     <button type="button" class="cancel-btn">Annulla</button>
                     <button type="submit" class="submit-btn">Salva</button>
                 </div>
-                <button class="type" class="delete-btn">Elimina percorso</button>
+                <button type="button" class="delete-btn">Elimina percorso</button>
             </form>
             `
             ;
     }
 
     private setupEditPathForm(): void {
-        const deleteBtn: HTMLButtonElement | null = this.shadowRoot.querySelector('.delete-btn');
-        if (deleteBtn) deleteBtn.addEventListener('click', () => this.dispatchEvent(new CustomEvent('close-dialog')));
-
         const nameInput: HTMLInputElement | null = this.shadowRoot.querySelector('input');
-        const path: Path = this.paths[0];
-        if (nameInput) nameInput.value = path.name;
+        if (!nameInput) return;
+
+        const deleteBtn: HTMLButtonElement | null = this.shadowRoot.querySelector('.delete-btn');
+        if (!deleteBtn) return;
+
+        const submitBtn: HTMLButtonElement | null = this.shadowRoot.querySelector('.submit-btn');
+        if (!submitBtn) return;
+
+        const form: HTMLFormElement | null = this.shadowRoot.querySelector('.form');
+        if (!form) return;
+
+        nameInput.value = StorageService.instance.selectedCustomPath.name;
+        const checkInput = () => submitBtn.disabled = nameInput.value.trim().length === 0 || StorageService.instance.paths.some((path: Path) => path.name === nameInput.value.toLowerCase());
+        nameInput.addEventListener('input', checkInput);
+        nameInput.addEventListener('change', checkInput);
+
+        form.addEventListener('submit', () => {
+            const data: FormData = new FormData(form);
+            const pathName: FormDataEntryValue | null = data.get('path-name');
+            if (pathName) StorageService.instance.editPath(pathName.toString());
+        });
+
+        deleteBtn.addEventListener('click', () => {
+            this.dispatchEvent(new CustomEvent('close-dialog'));
+            StorageService.instance.deletePath();
+        });
     }
 
     private renderAddPathForm(): void {
@@ -124,7 +145,7 @@ export class CustomPathFormComponent extends HTMLElement {
         if (!form) return;
 
         if (nameInput.value.length === 0) submitBtn.disabled = true;
-        
+
         const checkInput = () => {
             submitBtn.disabled = nameInput.value.trim().length === 0 || StorageService.instance.paths.some((path: Path) => path.name === nameInput.value.toLowerCase());
         };
@@ -198,6 +219,7 @@ export class CustomPathFormComponent extends HTMLElement {
         radio.name = 'saved-paths';
         radio.id = path.name.replace(' ', '');
         radio.value = path.name.replace(' ', '');
+        if (path.name === StorageService.instance.selectedCustomPath.name) radio.checked = true;
         label.innerHTML = path.name;
         label.setAttribute('for', path.name.replace(' ', ''));
         selection.appendChild(radio);

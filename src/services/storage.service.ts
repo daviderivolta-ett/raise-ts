@@ -51,7 +51,17 @@ export class StorageService {
         const paths: Path[] = this.paths.filter((path: Path) => path.lastSelected !== true);
         path.name = name;
         paths.push(path);
+        this.selectedCustomPath = path;
 
+        this.setCustomPaths();
+    }
+
+    public deletePath(): void {
+        const paths: Path[] = this.paths.filter((path: Path) => path.lastSelected !== true);
+        const defaultPath: Path | undefined = this.paths.find((path: Path) => path.name === 'default');
+        if (defaultPath) this.selectedCustomPath = defaultPath;
+        this.paths = [...paths];
+        
         this.setCustomPaths();
     }
 
@@ -61,6 +71,7 @@ export class StorageService {
         path.lastSelected = true;
         path.name = name;
         this.paths.push(path);
+        this.selectedCustomPath = path;
 
         this.setCustomPaths();
     }
