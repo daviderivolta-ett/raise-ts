@@ -87,3 +87,8 @@ export class Layer {
     }
 
 }
+
+export interface SavedLayers {
+    active: Layer[],
+    bench: Layer[]
+}

@@ -40,6 +40,8 @@ const routes: Route[] = [indexRoute, mapRoute, notFoundRoute];
 router.addRoutes(routes);
 
 // Local Storage
+StorageService.instance.getSavedLayers();
+console.log(StorageService.instance.layers);
 StorageService.instance.getCustomPaths();
 if (!StorageService.instance.paths.some((path: Path) => path.name === 'default')) StorageService.instance.saveNewPath('default');
 const selectedPath: Path | undefined = StorageService.instance.paths.find((path: Path) => path.lastSelected === true);

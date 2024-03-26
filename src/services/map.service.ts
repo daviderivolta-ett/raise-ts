@@ -1,18 +1,23 @@
 import * as Cesium from 'cesium';
 
-import { MapTheme } from '../models/MapTheme.model';
-import { Layer, LayerProperty, LayerStyle } from '../models/Layer.model';
+import { Layer, LayerProperty, LayerStyle, SavedLayers } from '../models/Layer.model';
 import { Feature, FeatureGeometryType } from '../models/Feature.model';
+import { MapTheme } from '../models/MapTheme.model';
+import { SnackbarType } from '../models/SnackbarType.model';
+
 import { EventObservable } from '../observables/event.observable';
 import { SnackbarService } from './snackbar.service';
-import { SnackbarType } from '../models/SnackbarType.model';
 
 export class MapService {
     private static _instance: MapService;
+
     private _viewer!: Cesium.Viewer;
+
     private MAP_THEMES_URL: string = './json/themes.json';
     public mapThemes: MapTheme[] = [];
     public currentTheme: number = 0;
+
+    private _layers: SavedLayers = { active: [], bench: [] };
     private _activeLayers: Layer[] = [];
     private _benchLayers: Layer[] = [];
 
@@ -34,6 +39,15 @@ export class MapService {
         this._viewer = viewer;
     }
 
+    public get layers(): SavedLayers {
+        return this._layers;
+    }
+
+    public set layers(layers: SavedLayers) {
+        this._layers = layers;
+        localStorage.setItem('layers', JSON.stringify(this.layers));
+    }
+
     public get activeLayers(): Layer[] {
         return this._activeLayers;
     }
@@ -41,6 +55,7 @@ export class MapService {
     public set activeLayers(activeLayers: Layer[]) {
         this._activeLayers = activeLayers;
         EventObservable.instance.publish('active-layers-updated', this.activeLayers);
+        this.layers = { ...this.layers, active: this.activeLayers };
     }
 
     public get benchLayers(): Layer[] {
@@ -50,6 +65,7 @@ export class MapService {
     public set benchLayers(benchLayers: Layer[]) {
         this._benchLayers = benchLayers;
         EventObservable.instance.publish('bench-layers-updated', this.benchLayers);
+        this.layers = { ...this.layers, bench: this.benchLayers };
     }
 
     public async getMapThemes(): Promise<MapTheme[]> {

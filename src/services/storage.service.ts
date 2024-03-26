@@ -1,16 +1,18 @@
-import { Layer, LayerProperty, LayerStyle, PropertyType } from '../models/Layer.model';
-import { Path } from '../models/Path.model';
+import * as Cesium from 'cesium';
+
+import { Layer, LayerProperty, LayerStyle, PropertyType, SavedLayers } from '../models/Layer.model';
 import { PoiProperty, PoiType, PointOfInterest } from '../models/PointOfInterest.model';
+import { Path } from '../models/Path.model';
 import { Tab } from '../models/Tab.model';
+
 import { EventObservable } from '../observables/event.observable';
 import { TabsObservable } from '../observables/tabs.observable';
-
-import * as Cesium from 'cesium';
 
 export class StorageService {
     private static _instance: StorageService;
     private _paths: Path[] = [];
     private _selectedCustomPath: Path = Path.createDefault();
+    private _layers: SavedLayers = { active: [], bench: [] };
 
     constructor() {
         if (StorageService._instance) return StorageService._instance;
@@ -34,10 +36,31 @@ export class StorageService {
         return this._selectedCustomPath;
     }
 
+    public get layers(): SavedLayers {
+        return this._layers;
+    }
+
+    public set layers(layers: SavedLayers) {
+        this._layers = layers;
+    }
+
     public set selectedCustomPath(selectedCustomPath: Path) {
         this._selectedCustomPath = selectedCustomPath;
         EventObservable.instance.publish('selected-custom-path-updated', this.selectedCustomPath);
         TabsObservable.instance.currentTab = Tab.CustomPath;
+    }
+
+    public getSavedLayers(): void {
+        const savedLayersString: string | null = localStorage.getItem('layers');
+        if (!savedLayersString) return;
+
+        const rawSavedLayers: any = JSON.parse(savedLayersString);
+        let savedLayers: SavedLayers = { active: [], bench: [] };
+
+        savedLayers.active = rawSavedLayers.active.map((layer: any) => this.parseLayer(layer));
+        savedLayers.bench = rawSavedLayers.bench.map((layer: any) => this.parseLayer(layer));
+
+        this.layers = savedLayers;        
     }
 
     public getCustomPaths(): void {
@@ -76,7 +99,7 @@ export class StorageService {
         return p;
     }
 
-    private parseLayer(layer: any): Layer {        
+    private parseLayer(layer: any): Layer {
         return new Layer(
             layer.name,
             layer.layer,

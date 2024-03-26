@@ -1,5 +1,8 @@
 import { Layer } from '../../../models/Layer.model';
+
 import { EventObservable } from '../../../observables/event.observable';
+import { StorageService } from '../../../services/storage.service';
+
 import { CarouselChipComponent } from '../carousel-chip/carousel-chip.component';
 
 import style from './carousel.component.scss?raw';
@@ -7,7 +10,7 @@ import chipStyle from '../carousel-chip/carousel-chip.component.scss?raw';
 
 export class CarouselComponent extends HTMLElement {
     public shadowRoot: ShadowRoot;
-    private _layers: Layer[] = [];
+    private _layers: Layer[] = StorageService.instance.layers.active;
 
     constructor() {
         super();
@@ -34,6 +37,7 @@ export class CarouselComponent extends HTMLElement {
 
     public connectedCallback(): void {
         this.setup();
+        if (this.layers.length !== 0) this.update();
     }
 
     private setup(): void {

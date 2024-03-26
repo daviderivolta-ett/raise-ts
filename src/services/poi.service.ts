@@ -1,9 +1,11 @@
 import * as Cesium from 'cesium';
+
 import { PoiProperty, PoiType, PointOfInterest } from '../models/PointOfInterest.model';
 import { Layer } from '../models/Layer.model';
+import { Tab } from '../models/Tab.model';
+
 import { EventObservable } from '../observables/event.observable';
 import { TabsObservable } from '../observables/tabs.observable';
-import { Tab } from '../models/Tab.model';
 
 export class PoiService {
     private static _instance: PoiService;

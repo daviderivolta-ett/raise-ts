@@ -88,7 +88,7 @@ export class CustomPathFormComponent extends HTMLElement {
                 <p>Riordinare i punti di interesse del percorso ${StorageService.instance.selectedCustomPath.name}?</p>
                 <div class="call-to-actions">
                     <button type="button" class="cancel-btn">Annulla</button>
-                    <button type="submit" class="submit-btn">Salva</button>
+                    <button type="submit" class="submit-btn">Riordina</button>
                  </div>
             </form>
             `

@@ -1,5 +1,6 @@
-import { SnackbarComponent } from '../components/snackbar/snackbar.component';
 import { SnackbarType } from '../models/SnackbarType.model';
+
+import { SnackbarComponent } from '../components/snackbar/snackbar.component';
 
 export class SnackbarService {
     private static _instance: SnackbarService;

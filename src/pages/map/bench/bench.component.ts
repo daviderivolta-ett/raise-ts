@@ -1,5 +1,8 @@
 import { Layer } from '../../../models/Layer.model';
+
 import { EventObservable } from '../../../observables/event.observable';
+import { StorageService } from '../../../services/storage.service';
+
 import { BenchChipComponent } from '../bench-chip/bench-chip.component';
 
 import style from './bench.component.scss?raw';
@@ -8,7 +11,7 @@ import chipStyle from '../bench-chip/bench-chip.component.scss?raw';
 export class BenchComponent extends HTMLElement {
     public shadowRoot: ShadowRoot;
     private _isVisible: boolean = false;
-    private _layers: Layer[] = [];
+    private _layers: Layer[] = StorageService.instance.layers.bench;
 
     constructor() {
         super();
@@ -42,9 +45,10 @@ export class BenchComponent extends HTMLElement {
         this.update();
     }
 
-    public connectedCallback(): void {
+    public connectedCallback(): void {     
         this.render();
         this.setup();
+        if (this.layers.length !== 0) this.update();
     }
 
     private render(): void {
