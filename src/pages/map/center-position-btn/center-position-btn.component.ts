@@ -1,5 +1,4 @@
 import { EventObservable } from "../../../observables/event.observable";
-import { MapService } from "../../../services/map.service";
 import { PositionService } from "../../../services/position.service";
 
 export class CenterPositionBtn extends HTMLButtonElement {
@@ -26,10 +25,10 @@ export class CenterPositionBtn extends HTMLButtonElement {
         this.addEventListener('click', async () => {         
             await PositionService.instance.getUserPosition();           
             if (PositionService.instance.position) {
-                MapService.instance.setCameraToPosition(PositionService.instance.position);
-                MapService.instance.checkUserPin(PositionService.instance.position);
+                EventObservable.instance.publish('set-camera', PositionService.instance.position);
+                EventObservable.instance.publish('check-user-position', PositionService.instance.position);
             } else {
-                MapService.instance.setCameraToPosition(null);
+                EventObservable.instance.publish('set-camera', null);
             }
         });
 

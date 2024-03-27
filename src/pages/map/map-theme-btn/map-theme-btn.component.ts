@@ -1,3 +1,4 @@
+import { EventObservable } from '../../../observables/event.observable';
 import { MapService } from '../../../services/map.service';
 
 export class MapThemeBtnComponent extends HTMLButtonElement {
@@ -13,7 +14,7 @@ export class MapThemeBtnComponent extends HTMLButtonElement {
         this.addEventListener('click', () => {
             MapService.instance.currentTheme++;           
             if (MapService.instance.currentTheme >= MapService.instance.mapThemes.length) MapService.instance.currentTheme = 0;
-            MapService.instance.changeTheme(MapService.instance.currentTheme);
+            EventObservable.instance.publish('change-map-theme', null);
         });
     }
 }

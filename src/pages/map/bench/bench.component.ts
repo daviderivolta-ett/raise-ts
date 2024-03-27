@@ -11,7 +11,7 @@ import chipStyle from '../bench-chip/bench-chip.component.scss?raw';
 export class BenchComponent extends HTMLElement {
     public shadowRoot: ShadowRoot;
     private _isVisible: boolean = false;
-    private _layers: Layer[] = StorageService.instance.layers.bench;
+    private _layers: Layer[] = [];
 
     constructor() {
         super();
@@ -48,11 +48,10 @@ export class BenchComponent extends HTMLElement {
     public connectedCallback(): void {     
         this.render();
         this.setup();
-        if (this.layers.length !== 0) this.update();
     }
 
     private render(): void {
-
+        this.layers = StorageService.instance.benchLayers;
     }
 
     private setup(): void {

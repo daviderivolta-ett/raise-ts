@@ -1,6 +1,7 @@
 import { MyColor } from '../../../models/color.model';
 import { Layer } from '../../../models/layer.model';
-import { MapService } from '../../../services/map.service';
+
+import { EventObservable } from '../../../observables/event.observable';
 
 export class BenchChipComponent extends HTMLButtonElement {
     private _layer: Layer = Layer.createEmpty();
@@ -49,12 +50,12 @@ export class BenchChipComponent extends HTMLButtonElement {
 
     private setup(): void {
         this.addEventListener('click', () => {
-            MapService.instance.unbenchLayer(this.layer);
+            EventObservable.instance.publish('unbench-layer', this.layer);
         });
 
         this.removeIcon.addEventListener('click', (e: Event) => {
             e.stopPropagation();
-            MapService.instance.removeLayerFromBench(this.layer);
+            EventObservable.instance.publish('remove-layer-from-bench', this.layer);
         });
     }
 }

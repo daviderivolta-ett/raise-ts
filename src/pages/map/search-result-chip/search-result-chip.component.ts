@@ -1,6 +1,7 @@
 import { MyColor } from '../../../models/color.model';
 import { Layer } from '../../../models/layer.model';
-import { MapService } from '../../../services/map.service';
+
+import { EventObservable } from '../../../observables/event.observable';
 
 export class SearchResultChipComponent extends HTMLButtonElement {
     private _layer: Layer = Layer.createEmpty();
@@ -42,8 +43,8 @@ export class SearchResultChipComponent extends HTMLButtonElement {
     }
 
     private setup(): void {
-        this.addEventListener('click', async () => {
-            await MapService.instance.addLayer(this.layer);
+        this.addEventListener('click', () => {
+            EventObservable.instance.publish('add-layer', this.layer);
         });
     }
 }

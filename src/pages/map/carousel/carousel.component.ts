@@ -10,7 +10,7 @@ import chipStyle from '../carousel-chip/carousel-chip.component.scss?raw';
 
 export class CarouselComponent extends HTMLElement {
     public shadowRoot: ShadowRoot;
-    private _layers: Layer[] = StorageService.instance.layers.active;
+    private _layers: Layer[] = [];
 
     constructor() {
         super();
@@ -36,14 +36,19 @@ export class CarouselComponent extends HTMLElement {
     }
 
     public connectedCallback(): void {
+        this.render();
         this.setup();
-        if (this.layers.length !== 0) this.update();
+    }
+
+    private render(): void {
+        this.layers = StorageService.instance.activeLayers;
     }
 
     private setup(): void {
         EventObservable.instance.subscribe('active-layers-updated', (layers: Layer[]) => {
             this.layers = [...layers];
         });
+
     }
 
     private update(): void {

@@ -75,16 +75,7 @@ export class MapPage extends HTMLElement {
         this.map = this.shadowRoot.querySelector('app-map') as MapComponent;
     }
 
-    private setup(): void {
-        MapService.instance.addBaseLayers(MapService.instance.mapThemes);      
-
-        if (PositionService.instance.position) {
-            MapService.instance.setCameraToPosition(PositionService.instance.position);
-            MapService.instance.checkUserPin(PositionService.instance.position);
-        } else {
-            MapService.instance.setCameraToPosition(null);
-        }
-    }
+    private setup(): void { }
 }
 
 customElements.define('page-map', MapPage);

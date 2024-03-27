@@ -1,25 +1,14 @@
 import * as Cesium from 'cesium';
 
-import { Layer, LayerProperty, LayerStyle, SavedLayers } from '../models/layer.model';
+import { Layer, LayerProperty, LayerStyle } from '../models/layer.model';
 import { Feature, FeatureGeometryType } from '../models/feature.model';
 import { MapTheme } from '../models/map-theme.model';
-import { SnackbarType } from '../models/snackbar-type.model';
-
-import { EventObservable } from '../observables/event.observable';
-import { SnackbarService } from './snackbar.service';
 
 export class MapService {
     private static _instance: MapService;
-
     private _viewer!: Cesium.Viewer;
-
     private MAP_THEMES_URL: string = './json/themes.json';
     public mapThemes: MapTheme[] = [];
-    public currentTheme: number = 0;
-
-    private _layers: SavedLayers = { active: [], bench: [] };
-    private _activeLayers: Layer[] = [];
-    private _benchLayers: Layer[] = [];
 
     constructor() {
         if (MapService._instance) return MapService._instance;
@@ -37,35 +26,6 @@ export class MapService {
 
     public set viewer(viewer: Cesium.Viewer) {
         this._viewer = viewer;
-    }
-
-    public get layers(): SavedLayers {
-        return this._layers;
-    }
-
-    public set layers(layers: SavedLayers) {
-        this._layers = layers;
-        localStorage.setItem('layers', JSON.stringify(this.layers));
-    }
-
-    public get activeLayers(): Layer[] {
-        return this._activeLayers;
-    }
-
-    public set activeLayers(activeLayers: Layer[]) {
-        this._activeLayers = activeLayers;
-        EventObservable.instance.publish('active-layers-updated', this.activeLayers);
-        this.layers = { ...this.layers, active: this.activeLayers };
-    }
-
-    public get benchLayers(): Layer[] {
-        return this._benchLayers;
-    }
-
-    public set benchLayers(benchLayers: Layer[]) {
-        this._benchLayers = benchLayers;
-        EventObservable.instance.publish('bench-layers-updated', this.benchLayers);
-        this.layers = { ...this.layers, bench: this.benchLayers };
     }
 
     public async getMapThemes(): Promise<MapTheme[]> {
@@ -95,178 +55,6 @@ export class MapService {
             theme.layer,
             theme.credit
         );
-    }
-
-    public addBaseLayers(themes: MapTheme[]): void {
-        themes.forEach((theme: MapTheme) => {
-            this.viewer.imageryLayers.addImageryProvider(this.createImageryProvider(theme));
-        });
-    }
-
-    public createImageryProvider(theme: MapTheme): Cesium.WebMapTileServiceImageryProvider {
-        return new Cesium.WebMapTileServiceImageryProvider(
-            {
-                url: theme.url,
-                layer: theme.layer,
-                credit: new Cesium.Credit(theme.credit),
-                tileMatrixSetID: 'default',
-                style: 'default',
-                format: 'image/jpeg',
-                maximumLevel: 19,
-            }
-        );
-    }
-
-    public setCameraToPosition(position: GeolocationPosition | Cesium.Cartographic | null): void {
-        let currentCameraPosition: Cesium.Cartographic = this.viewer.camera.positionCartographic;
-        currentCameraPosition.height > 2000000 ? currentCameraPosition.height = 2000 : currentCameraPosition.height;
-        let initialPosition: Cesium.Cartesian3 = Cesium.Cartesian3.fromDegrees(8.934080815653985, 44.40753207658791, 2000);
-
-        if (position && position instanceof GeolocationPosition) {
-            initialPosition = Cesium.Cartesian3.fromDegrees(position.coords.longitude, position.coords.latitude, currentCameraPosition.height);
-        }
-
-        if (position && position instanceof Cesium.Cartographic) {
-            initialPosition = Cesium.Cartesian3.fromRadians(position.longitude, position.latitude, currentCameraPosition.height);
-        }
-
-
-        this.viewer.camera.flyTo({
-            destination: initialPosition,
-            orientation: {
-                heading: Cesium.Math.toRadians(0.0),
-                pitch: Cesium.Math.toRadians(-90.0),
-                roll: 0
-            },
-            duration: 0.5
-        })
-    }
-
-    public changeTheme(index: number): void {
-        let choosenTheme: Cesium.ImageryLayer = this.viewer.imageryLayers.get(index);
-        this.viewer.imageryLayers.raiseToTop(choosenTheme);
-    }
-
-    public checkUserPin(position: GeolocationPosition): void {
-        const userPin: Cesium.Entity | undefined = this.viewer.entities.getById('user-pin');
-        userPin ? this.updateUserPin(userPin, position) : this.createUserPin(position);
-    }
-
-    public createUserPin(position: GeolocationPosition): void {
-        this.viewer.entities.add({
-            name: 'user-pin',
-            id: 'user-pin',
-            position: Cesium.Cartesian3.fromDegrees(position.coords.longitude, position.coords.latitude, 0.0),
-            point: {
-                pixelSize: 8,
-                color: Cesium.Color.BLUE.withAlpha(0.5),
-                outlineColor: Cesium.Color.BLUE,
-                outlineWidth: 1
-            }
-        });
-    }
-
-    public updateUserPin(pin: Cesium.Entity, position: GeolocationPosition): void {
-        const getPosition = () => {
-            return Cesium.Cartesian3.fromDegrees(position.coords.longitude, position.coords.latitude, 0.0);
-        };
-        pin.position = new Cesium.ConstantPositionProperty(getPosition());
-    }
-
-    public changeMapMode(): void {
-        let currentMode: Cesium.SceneMode = this.viewer.scene.mode;
-        currentMode === Cesium.SceneMode.SCENE3D ? this.viewer.scene.morphTo2D(1) : this.viewer.scene.morphTo3D(1);
-    }
-
-    public async addLayerToMap(layer: Layer): Promise<void> {
-        try {
-            const geoJson: any = this.createGeoJson(layer);
-            const dataSource: Cesium.DataSource = await Cesium.GeoJsonDataSource.load(geoJson);
-            dataSource.name = layer.layer;
-            this.viewer.dataSources.add(dataSource);
-            this.styleFeature(dataSource, layer.style);
-        } catch (error) {
-            throw error;
-        }
-    }
-
-    public isLayerOnMap(layer: Layer): boolean {
-        const foundDataSources: Cesium.DataSource[] = this.viewer.dataSources.getByName(layer.layer);
-        return foundDataSources.length > 0 ? true : false;
-    }
-
-    public addLayerToActiveLayers(layer: Layer): void {
-        this._activeLayers.unshift(layer);
-        this.activeLayers = [...this._activeLayers];
-
-        const isBenched: boolean = this._benchLayers.some((l: Layer) => l.layer === layer.layer);
-        if (isBenched) {
-            this._benchLayers = this._benchLayers.filter((l: Layer) => l.layer !== layer.layer);
-            this.benchLayers = this._benchLayers;
-        }
-    }
-
-    public removeLayerFromMap(layer: Layer): void {
-        const foundDataSources: Cesium.DataSource[] = this.viewer.dataSources.getByName(layer.layer);
-        foundDataSources.forEach((dataSource: Cesium.DataSource) => this.viewer.dataSources.remove(dataSource));
-    }
-
-    public removeLayerFromActiveLayers(layer: Layer): void {
-        this._activeLayers = this._activeLayers.filter((l: Layer) => l.layer !== layer.layer);
-        this.activeLayers = [...this._activeLayers];
-    }
-
-    public removeLayer(layer: Layer): void {
-        const foundDataSources: Cesium.DataSource[] = this.viewer.dataSources.getByName(layer.layer);
-        foundDataSources.forEach((dataSource: Cesium.DataSource) => this.viewer.dataSources.remove(dataSource));
-
-        this._activeLayers = this._activeLayers.filter((l: Layer) => l.layer !== layer.layer);
-        this.activeLayers = [...this._activeLayers];
-    }
-
-    public addLayerToBench(layer: Layer): void {
-        this._benchLayers.unshift(layer);
-        this.benchLayers = [...this._benchLayers];
-    }
-
-    public removeLayerFromBench(layer: Layer): void {
-        this._benchLayers = this._benchLayers.filter((l: Layer) => l.layer !== layer.layer);
-        this.benchLayers = this._benchLayers;
-    }
-
-    public async addLayer(layer: Layer): Promise<void> {
-        if (!this.isLayerOnMap(layer)) {
-            try {
-                SnackbarService.instance.createSnackbar(SnackbarType.Loader, layer.layer, 'Caricamento...');
-                await this.addLayerToMap(layer);
-                this.addLayerToActiveLayers(layer);
-                SnackbarService.instance.removeSnackbar(layer.layer);
-            } catch (error) {
-                SnackbarService.instance.removeSnackbar(layer.layer);
-                SnackbarService.instance.createSnackbar(SnackbarType.Error, '', 'Errore nel caricamento del layer');
-            }
-        } else {
-            SnackbarService.instance.createSnackbar(SnackbarType.Temporary, '', 'Layer già presente', 3);
-        }
-    }
-
-    public benchLayer(layer: Layer): void {
-        this.removeLayerFromMap(layer);
-        this.removeLayerFromActiveLayers(layer);
-        this.addLayerToBench(layer);
-    }
-
-    public async unbenchLayer(layer: Layer): Promise<void> {
-        try {
-            SnackbarService.instance.createSnackbar(SnackbarType.Loader, layer.layer, 'Caricamento...');
-            await this.addLayerToMap(layer);
-            this.removeLayerFromBench(layer);
-            this.addLayerToActiveLayers(layer);
-            SnackbarService.instance.removeSnackbar(layer.layer);
-        } catch (error) {
-            SnackbarService.instance.removeSnackbar(layer.layer);
-            SnackbarService.instance.createSnackbar(SnackbarType.Error, '', 'Errore nel caricamento del layer');
-        }
     }
 
     public async createGeoJson(layer: Layer): Promise<any> {
@@ -327,7 +115,7 @@ export class MapService {
         return geoJson;
     }
 
-    private styleFeature(dataSource: Cesium.DataSource, style: LayerStyle): void {
+    public styleFeature(dataSource: Cesium.DataSource, style: LayerStyle): void {
         dataSource.entities.values.forEach((entity: Cesium.Entity) => {
             if (entity.billboard) this.stylePointFeature(entity, style);
             if (entity.polyline) this.stylePolylineFeature(entity, style);

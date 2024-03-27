@@ -1,7 +1,7 @@
 import { MyColor } from '../../../models/color.model';
 import { Layer } from '../../../models/layer.model';
+
 import { EventObservable } from '../../../observables/event.observable';
-import { MapService } from '../../../services/map.service';
 
 export class CarouselChipComponent extends HTMLButtonElement {
     private _layer: Layer = Layer.createEmpty();
@@ -47,7 +47,7 @@ export class CarouselChipComponent extends HTMLButtonElement {
 
     private setup(): void {
         this.removeIcon.addEventListener('click', () => {
-            MapService.instance.benchLayer(this.layer);
+            EventObservable.instance.publish('bench-layer', this.layer);
             EventObservable.instance.publish('open-bench', true);
         });
     }

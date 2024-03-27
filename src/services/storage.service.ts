@@ -13,6 +13,8 @@ export class StorageService {
     private _paths: Path[] = [];
     private _selectedCustomPath: Path = Path.createDefault();
     private _layers: SavedLayers = { active: [], bench: [] };
+    private _activeLayers: Layer[] = [];
+    private _benchLayers: Layer[] = [];
 
     constructor() {
         if (StorageService._instance) return StorageService._instance;
@@ -42,6 +44,27 @@ export class StorageService {
 
     public set layers(layers: SavedLayers) {
         this._layers = layers;
+        localStorage.setItem('layers', JSON.stringify(this.layers));
+    }
+
+    public get activeLayers(): Layer[] {
+        return this._activeLayers;
+    }
+
+    public set activeLayers(activeLayers: Layer[]) {
+        this._activeLayers = activeLayers;
+        EventObservable.instance.publish('active-layers-updated', this.activeLayers);
+        this.layers = { ...this.layers, active: this.activeLayers };
+    }
+
+    public get benchLayers(): Layer[] {
+        return this._benchLayers;
+    }
+
+    public set benchLayers(benchLayers: Layer[]) {
+        this._benchLayers = benchLayers;
+        EventObservable.instance.publish('bench-layers-updated', this.benchLayers);
+        this.layers = { ...this.layers, bench: this.benchLayers };
     }
 
     public set selectedCustomPath(selectedCustomPath: Path) {
@@ -60,16 +83,17 @@ export class StorageService {
         savedLayers.active = rawSavedLayers.active.map((layer: any) => this.parseLayer(layer));
         savedLayers.bench = rawSavedLayers.bench.map((layer: any) => this.parseLayer(layer));
 
-        this.layers = savedLayers;        
+        this._layers = savedLayers;
+        this._activeLayers = this._layers.active;
+        this._benchLayers = this._layers.bench;
     }
 
     public getCustomPaths(): void {
         const pathsString: string | null = localStorage.getItem('paths');
-        if (pathsString) {
-            const rawPaths: any[] = JSON.parse(pathsString);
-            const paths: Path[] = rawPaths.map((path: any) => this.parseCustomPath(path));
-            this.paths = paths;
-        }
+        if (!pathsString) return;
+        const rawPaths: any[] = JSON.parse(pathsString);
+        const paths: Path[] = rawPaths.map((path: any) => this.parseCustomPath(path));
+        this._paths = paths;
     }
 
     public setCustomPaths(): void {

@@ -22,9 +22,7 @@ export class MapModeButtonComponent extends HTMLButtonElement {
     }
 
     private setup(): void {
-        this.addEventListener('click', () => {
-            MapService.instance.changeMapMode();
-        });
+        this.addEventListener('click', () => EventObservable.instance.publish('change-map-mode', null));
 
         EventObservable.instance.subscribe('toggle-tabs', (isOpen: boolean) => {
             this.isOpen = isOpen;
