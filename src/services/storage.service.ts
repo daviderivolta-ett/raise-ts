@@ -132,8 +132,8 @@ export class StorageService {
             layer.tags,
             layer.relevantProperties.map((property: any) => {
                 let p: LayerProperty = LayerProperty.createEmpty();
-                p.displayName = property.display_name;
-                p.propertyName = property.property_name;
+                p.displayName = property.displayName;
+                p.propertyName = property.propertyName;
 
                 switch (property.type) {
                     case 'image':
