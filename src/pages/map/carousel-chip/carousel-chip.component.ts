@@ -1,4 +1,5 @@
-import { Layer } from '../../../models/Layer.model';
+import { MyColor } from '../../../models/color.model';
+import { Layer } from '../../../models/layer.model';
 import { EventObservable } from '../../../observables/event.observable';
 import { MapService } from '../../../services/map.service';
 
@@ -38,9 +39,7 @@ export class CarouselChipComponent extends HTMLButtonElement {
             ;
 
         this.legend = this.querySelector('.legend') as HTMLSpanElement;
-        this.legend.style.backgroundColor = this._layer.style.color;
-        this.legend.style.borderStyle = 'solid';
-        this.legend.style.borderWidth = '2px';
+        this.legend.style.backgroundColor = MyColor.rgbToRgba(MyColor.hexToRgb(this._layer.style.color), 0.5);
         this.legend.style.borderColor = this._layer.style.color;
 
         this.removeIcon = this.querySelector('.icon') as HTMLSpanElement;

@@ -1,4 +1,4 @@
-import { Tab } from '../models/Tab.model';
+import { Tab } from '../models/tab.model';
 import { EventObservable } from './event.observable';
 
 export class TabsObservable {

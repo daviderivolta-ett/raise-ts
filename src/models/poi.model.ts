@@ -1,5 +1,5 @@
 import * as Cesium from 'cesium';
-import { Layer, PropertyType } from './Layer.model';
+import { Layer, PropertyType } from './layer.model';
 
 export class PointOfInterest {
     uuid: string;

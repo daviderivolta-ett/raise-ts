@@ -1,4 +1,4 @@
-import { Route, RouteType } from '../models/Route.model';
+import { Route, RouteType } from '../models/route.model';
 
 export class Router extends HTMLElement {
     public shadowRoot: ShadowRoot;

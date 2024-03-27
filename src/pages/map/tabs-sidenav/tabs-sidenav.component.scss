@@ -4,7 +4,7 @@
     right: -360px;
     width: 360px;
     height: 100vh;
-    background-color: white;
+    background-color: rgb(var(--bg-inset), 1);
     animation: slideOut .3s ease-in-out forwards;
 }
 

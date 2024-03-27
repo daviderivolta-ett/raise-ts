@@ -1,4 +1,4 @@
-import { Layer } from '../../../models/Layer.model';
+import { Layer } from '../../../models/layer.model';
 import { EventObservable } from '../../../observables/event.observable';
 import { DataService } from '../../../services/data.service';
 

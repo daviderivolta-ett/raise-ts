@@ -1,9 +1,9 @@
 import * as Cesium from 'cesium';
 
-import { Layer, LayerProperty, LayerStyle, SavedLayers } from '../models/Layer.model';
-import { Feature, FeatureGeometryType } from '../models/Feature.model';
-import { MapTheme } from '../models/MapTheme.model';
-import { SnackbarType } from '../models/SnackbarType.model';
+import { Layer, LayerProperty, LayerStyle, SavedLayers } from '../models/layer.model';
+import { Feature, FeatureGeometryType } from '../models/feature.model';
+import { MapTheme } from '../models/map-theme.model';
+import { SnackbarType } from '../models/snackbar-type.model';
 
 import { EventObservable } from '../observables/event.observable';
 import { SnackbarService } from './snackbar.service';
@@ -94,7 +94,7 @@ export class MapService {
             theme.url,
             theme.layer,
             theme.credit
-        )
+        );
     }
 
     public addBaseLayers(themes: MapTheme[]): void {

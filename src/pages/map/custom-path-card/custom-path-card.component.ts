@@ -1,5 +1,6 @@
-import { Path } from '../../../models/Path.model';
-import { PointOfInterest } from '../../../models/PointOfInterest.model';
+import { MyColor } from '../../../models/color.model';
+import { Path } from '../../../models/path.model';
+import { PoiProperty, PointOfInterest } from '../../../models/poi.model';
 import { PoiService } from '../../../services/poi.service';
 import { StorageService } from '../../../services/storage.service';
 
@@ -30,7 +31,6 @@ export class CustomPathCardComponent extends HTMLElement {
 
     public set poi(poi: PointOfInterest) {
         this._poi = poi;
-        // this.update();
     }
 
     public connectedCallback(): void {
@@ -43,9 +43,13 @@ export class CustomPathCardComponent extends HTMLElement {
         this.shadowRoot.innerHTML =
             `
             <div class="change-order">
-                <button class="arrow move-up">su</button>
+                <button class="arrow move-up">
+                    <span class="material-symbols-outlined">keyboard_arrow_up</span>                
+                </button>
                 <span class="order"></span>
-                <button class="arrow move-down">giù</button>
+                <button class="arrow move-down">
+                    <span class="material-symbols-outlined">keyboard_arrow_down</span>
+                </button>
             </div>
             <div class="info">
                 <div class="title">
@@ -54,7 +58,9 @@ export class CustomPathCardComponent extends HTMLElement {
                 </div>
                 <p class="category"></p>
             </div>
-            <button class="remove-btn">X</button>
+            <button class="remove-btn">
+                <span class="material-symbols-outlined">close</span>
+            </button>
             `
             ;
     }
@@ -70,7 +76,15 @@ export class CustomPathCardComponent extends HTMLElement {
 
         const legend: HTMLSpanElement | null = this.shadowRoot.querySelector('.legend');
         if (legend) {
-            legend.style.backgroundColor = this.poi.layer.style.color;
+            legend.style.backgroundColor = MyColor.rgbToRgba(MyColor.hexToRgb(this.poi.layer.style.color), 0.5);        
+            legend.style.borderColor = this.poi.layer.style.color;
+        }
+
+        const category: HTMLParagraphElement | null = this.shadowRoot.querySelector('.category');
+        if (category) {
+            this.poi.props.forEach((prop: PoiProperty) => {
+                prop.displayName === 'Nome' ? category.innerHTML = prop.value : category.innerHTML = this.poi!.name;
+            })
         }
     }
 
@@ -104,7 +118,7 @@ export class CustomPathCardComponent extends HTMLElement {
         let currentIndex: number = StorageService.instance.selectedCustomPath.pois.indexOf(this.poi);
         pois.splice(currentIndex, 1);
 
-        movement === Movement.Up ? pois.splice(currentIndex - 1, 0, this.poi) :pois.splice(currentIndex + 1, 0, this.poi);
+        movement === Movement.Up ? pois.splice(currentIndex - 1, 0, this.poi) : pois.splice(currentIndex + 1, 0, this.poi);
 
         path.pois = pois;
         StorageService.instance.selectedCustomPath = path;

@@ -1,9 +1,9 @@
 import * as Cesium from 'cesium';
 
-import { Layer, LayerProperty, LayerStyle, PropertyType, SavedLayers } from '../models/Layer.model';
-import { PoiProperty, PoiType, PointOfInterest } from '../models/PointOfInterest.model';
-import { Path } from '../models/Path.model';
-import { Tab } from '../models/Tab.model';
+import { Layer, LayerProperty, LayerStyle, PropertyType, SavedLayers } from '../models/layer.model';
+import { PoiProperty, PoiType, PointOfInterest } from '../models/poi.model';
+import { Path } from '../models/path.model';
+import { Tab } from '../models/tab.model';
 
 import { EventObservable } from '../observables/event.observable';
 import { TabsObservable } from '../observables/tabs.observable';

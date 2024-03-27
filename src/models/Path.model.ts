@@ -1,4 +1,4 @@
-import { PointOfInterest } from './PointOfInterest.model';
+import { PointOfInterest } from './poi.model';
 
 export class Path {
     name: string;

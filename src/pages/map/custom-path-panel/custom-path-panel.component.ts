@@ -1,6 +1,6 @@
-import { DialogType } from '../../../models/DialogType.model';
-import { Path } from '../../../models/Path.model';
-import { PointOfInterest } from '../../../models/PointOfInterest.model';
+import { DialogType } from '../../../models/dialog-type.model';
+import { Path } from '../../../models/path.model';
+import { PointOfInterest } from '../../../models/poi.model';
 import { EventObservable } from '../../../observables/event.observable';
 import { DialogService } from '../../../services/dialog.service';
 import { StorageService } from '../../../services/storage.service';

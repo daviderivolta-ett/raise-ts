@@ -6,7 +6,7 @@ import { BenchToggleObservable } from '../../../observables/bench-toggle.observa
 
 import style from './map.component.scss?raw';
 import { PoiService } from '../../../services/poi.service';
-import { PointOfInterest } from '../../../models/PointOfInterest.model';
+import { PointOfInterest } from '../../../models/poi.model';
 import { EventObservable } from '../../../observables/event.observable';
 
 export class MapComponent extends HTMLElement {

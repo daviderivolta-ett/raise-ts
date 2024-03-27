@@ -1,4 +1,4 @@
-import { SnackbarType } from '../../models/SnackbarType.model';
+import { SnackbarType } from '../../models/snackbar-type.model';
 
 import style from './snackbar.component.scss?raw';
 

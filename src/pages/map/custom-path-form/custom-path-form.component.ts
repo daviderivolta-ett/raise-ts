@@ -1,6 +1,6 @@
-import { DialogType } from '../../../models/DialogType.model';
-import { Path } from '../../../models/Path.model';
-import { PointOfInterest } from '../../../models/PointOfInterest.model';
+import { DialogType } from '../../../models/dialog-type.model';
+import { Path } from '../../../models/path.model';
+import { PointOfInterest } from '../../../models/poi.model';
 import { PositionService } from '../../../services/position.service';
 import { StorageService } from '../../../services/storage.service';
 import { TspService } from '../../../services/tsp.service';

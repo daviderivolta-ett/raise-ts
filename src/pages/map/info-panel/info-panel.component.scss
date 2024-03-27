@@ -4,6 +4,20 @@
     height: 100%;
 }
 
+.title {
+    display: flex;
+    align-items: center;
+}
+
+.legend {
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    border-radius: 100%;
+    border-width: 2px;
+    border-style: solid;
+}
+
 .info {
     overflow-y: hidden;
     flex: 1;

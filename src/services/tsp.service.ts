@@ -1,6 +1,6 @@
 import * as Cesium from 'cesium';
 
-import { PointOfInterest } from '../models/PointOfInterest.model';
+import { PointOfInterest } from '../models/poi.model';
 
 export class TspService {
     private static _instance: TspService;

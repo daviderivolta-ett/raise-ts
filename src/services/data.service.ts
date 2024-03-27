@@ -1,4 +1,4 @@
-import { Data, Layer, LayerCategory, LayerGroup, LayerProperty, PropertyType, LayerStyle } from '../models/Layer.model';
+import { Data, Layer, LayerCategory, LayerGroup, LayerProperty, PropertyType, LayerStyle } from '../models/layer.model';
 
 export class DataService {
     private CATEGORIES_URL: string = './json/categories.json';

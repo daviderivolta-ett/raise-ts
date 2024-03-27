@@ -1,4 +1,4 @@
-import { Tab } from '../../../models/Tab.model';
+import { Tab } from '../../../models/tab.model';
 import { EventObservable } from '../../../observables/event.observable';
 
 import style from './tabs.component.scss?raw';

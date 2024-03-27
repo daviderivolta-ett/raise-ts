@@ -1,8 +1,8 @@
 import * as Cesium from 'cesium';
 
-import { PoiProperty, PoiType, PointOfInterest } from '../models/PointOfInterest.model';
-import { Layer } from '../models/Layer.model';
-import { Tab } from '../models/Tab.model';
+import { PoiProperty, PoiType, PointOfInterest } from '../models/poi.model';
+import { Layer } from '../models/layer.model';
+import { Tab } from '../models/tab.model';
 
 import { EventObservable } from '../observables/event.observable';
 import { TabsObservable } from '../observables/tabs.observable';

@@ -1,5 +1,5 @@
 // Models
-import { Route, RouteType } from './models/Route.model';
+import { Route, RouteType } from './models/route.model';
 
 // Components
 import './components/router.component';
@@ -28,7 +28,7 @@ import './pages/map/custom-path-form/custom-path-form.component';
 // Classes
 import { Router } from './components/router.component';
 import { StorageService } from './services/storage.service';
-import { Path } from './models/Path.model';
+import { Path } from './models/path.model';
 
 // Routing
 const router: Router = document.querySelector('app-router') as Router;

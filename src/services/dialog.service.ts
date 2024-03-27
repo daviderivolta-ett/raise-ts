@@ -1,4 +1,4 @@
-import { DialogType } from "../models/DialogType.model";
+import { DialogType } from "../models/dialog-type.model";
 
 import { CustomPathFormComponent } from "../pages/map/custom-path-form/custom-path-form.component";
 import { DialogComponent } from "../pages/map/dialog/dialog.component";

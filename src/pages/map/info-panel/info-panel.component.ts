@@ -1,5 +1,6 @@
-import { Path } from '../../../models/Path.model';
-import { PoiProperty, PoiType, PointOfInterest } from '../../../models/PointOfInterest.model';
+import { MyColor } from '../../../models/color.model';
+import { Path } from '../../../models/path.model';
+import { PoiProperty, PoiType, PointOfInterest } from '../../../models/poi.model';
 import { EventObservable } from '../../../observables/event.observable';
 import { MapService } from '../../../services/map.service';
 import { PoiService } from '../../../services/poi.service';
@@ -73,8 +74,12 @@ export class InfoPanelComponent extends HTMLElement {
             `
             ;
 
+        const legend: HTMLSpanElement = this.shadowRoot.querySelector('.legend') as HTMLSpanElement;
         const category: HTMLParagraphElement = this.shadowRoot.querySelector('.category') as HTMLParagraphElement;
         const tools: HTMLDivElement = this.shadowRoot.querySelector('.tools') as HTMLDivElement;
+
+        legend.style.backgroundColor = MyColor.rgbToRgba(MyColor.hexToRgb(this._poi!.layer.style.color), 0.5);
+        legend.style.borderColor = this._poi!.layer.style.color;
 
         this.poi.props.forEach((prop: PoiProperty) => {
             prop.displayName === 'Nome' ? category.innerHTML = prop.value : category.innerHTML = this.poi!.name;

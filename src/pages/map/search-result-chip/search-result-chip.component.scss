@@ -16,6 +16,8 @@ button[is="app-search-result-chip"] .info .legend {
     width: 12px;
     height: 12px;
     border-radius: 100%;
+    border-width: 2px;
+    border-style: solid;
 }
 
 button[is="app-search-result-chip"] .info label {
