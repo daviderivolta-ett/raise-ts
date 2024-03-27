@@ -2,13 +2,11 @@ import * as Cesium from 'cesium';
 
 import { Layer, LayerProperty, LayerStyle } from '../models/layer.model';
 import { Feature, FeatureGeometryType } from '../models/feature.model';
-import { MapTheme } from '../models/map-theme.model';
 
 export class MapService {
     private static _instance: MapService;
-    private _viewer!: Cesium.Viewer;
-    private MAP_THEMES_URL: string = './json/themes.json';
-    public mapThemes: MapTheme[] = [];
+
+
 
     constructor() {
         if (MapService._instance) return MapService._instance;
@@ -18,43 +16,6 @@ export class MapService {
     static get instance(): MapService {
         if (!MapService._instance) MapService._instance = new MapService();
         return MapService._instance;
-    }
-
-    public get viewer(): Cesium.Viewer {
-        return this._viewer;
-    }
-
-    public set viewer(viewer: Cesium.Viewer) {
-        this._viewer = viewer;
-    }
-
-    public async getMapThemes(): Promise<MapTheme[]> {
-        if (this.mapThemes.length !== 0) {
-            return this.mapThemes;
-        } else {
-            let mapThemes: MapTheme[] = await this.fetchMapThemes(this.MAP_THEMES_URL);
-            this.mapThemes = mapThemes;
-            return mapThemes;
-        }
-    }
-
-    public async fetchMapThemes(url: string): Promise<MapTheme[]> {
-        let mapThemes: MapTheme[] = [];
-        try {
-            mapThemes = await fetch(url).then(res => res.json());
-            mapThemes = mapThemes.map((theme: any) => this.parseMapTheme(theme));
-        } catch (error) {
-            console.error(error);
-        }
-        return mapThemes;
-    }
-
-    private parseMapTheme(theme: any): MapTheme {
-        return new MapTheme(
-            theme.url,
-            theme.layer,
-            theme.credit
-        );
     }
 
     public async createGeoJson(layer: Layer): Promise<any> {

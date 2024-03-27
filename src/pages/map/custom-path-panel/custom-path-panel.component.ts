@@ -40,7 +40,7 @@ export class CustomPathComponent extends HTMLElement {
     private render(): void {
         this.shadowRoot.innerHTML =
             `
-            <h4>Percorso selezionato: ${this.path.name}</h4>
+            <div class="header"><h4>Percorso selezionato: ${this.path.name}</h4></div>
             <div class="list"></div>
             <div class="custom-path-tools">
                 <button type="button" class="tool-btn sort-btn"><span class="material-symbols-outlined">sort</span></button>

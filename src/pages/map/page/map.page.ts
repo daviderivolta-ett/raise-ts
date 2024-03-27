@@ -1,6 +1,6 @@
 import { DataService } from '../../../services/data.service';
-import { MapService } from '../../../services/map.service';
 import { PositionService } from '../../../services/position.service';
+import { ThemeService } from '../../../services/theme.service';
 import { MapComponent } from '../map/map.component';
 
 import style from './map.page.scss?raw';
@@ -21,7 +21,7 @@ export class MapPage extends HTMLElement {
 
     public async connectedCallback(): Promise<void> {
         await DataService.instance.getData();
-        await MapService.instance.getMapThemes();
+        await ThemeService.instance.getMapThemes();
         await PositionService.instance.getUserPosition();
 
         this.render();

@@ -2,24 +2,30 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
 
 :root {
-    font-family: 'Inter', sans-serif;
-    font-size: 13px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 12px;
+    color: rgb(168, 178, 209);
 
     --snackbar-duration: 1s;
 
-    --f-emphasis: 204, 214, 246;
+    --f-emphasis: 233, 235, 244;
     --f-default: 168, 178, 209;
-    --f-muted: 136, 146, 176;
+    --f-muted: 73, 85, 117;
     --f-accent: 100, 255, 218;
 
-    --bg-inset: 20, 20, 50;
-    --bg-default: 29, 29, 66;
-    --bg-subtle: 35, 53, 84;
+    --bg-inset: 10, 25, 47;
+    --bg-default: 17, 34, 64;
+    --bg-subtle: 32, 52, 81;
     --bg-accent: 24, 55, 86;
+    --bg-muted: 73, 85, 117;
 
     --border-accent: 100, 255, 218;
 
-    --border-radius: 8px;
+    --border-radius-s: 4px;
+    --border-radius-m: 8px;
+    --border-radius-circle: 96px;
+
+    --font-size-s: .85rem;
 }
 
 * {

@@ -27,6 +27,7 @@ export class TabsComponent extends HTMLElement {
 
     public set currentTab(currentTab: Tab) {
         this._currentTab = currentTab;
+        this.switchPanel();
         this.switchTab();
     }
 
@@ -40,9 +41,9 @@ export class TabsComponent extends HTMLElement {
         this.shadowRoot.innerHTML =
             `
             <nav class="header">
-                <button class="tab info-tab">Info</button>
-                <button class="tab suggested-route-tab">Percorsi suggeriti</button>
-                <button class="tab custom-route-tab">Percorsi custom</button>
+                <button class="tab info-tab">Informazioni<span class="border"></span></button>
+                <button class="tab suggested-route-tab">Percorsi suggeriti<span class="border"></span></button>
+                <button class="tab custom-route-tab">Percorsi custom<span class="border"></span></button>
             </nav>
             <div class="panel"></div>
             `
@@ -80,7 +81,7 @@ export class TabsComponent extends HTMLElement {
         this.panel.innerHTML = '<app-custom-path-panel></app-custom-path-panel>';
     }
 
-    private switchTab(): void {
+    private switchPanel(): void {
         switch (this.currentTab) {
             case Tab.CustomPath:
                 this.renderCustomPathPanel();
@@ -89,11 +90,36 @@ export class TabsComponent extends HTMLElement {
             case Tab.SuggestedPath:
                 this.renderSuggestedRoutePanel();
                 break;
-        
+
             default:
                 this.renderInfoPanel();
                 break;
         }
+    }
+
+    private switchTab(): void {
+        this.removeSelectedStatus();
+
+        if (!this.customRouteTab || !this.suggestedRouteTab || !this.infoTab) return;
+
+        switch (this.currentTab) {
+            case Tab.CustomPath:
+                this.customRouteTab.classList.add('selected');
+                break;
+
+            case Tab.SuggestedPath:
+                this.suggestedRouteTab.classList.add('selected');
+                break;
+
+            default:
+                this.infoTab.classList.add('selected');
+                break;
+        }
+    }
+
+    private removeSelectedStatus(): void {
+        const tabs: HTMLButtonElement[] = Array.from(this.shadowRoot.querySelectorAll('.tab'));
+        tabs.forEach((tab: HTMLButtonElement) => tab.classList.remove('selected'));
     }
 }
 

@@ -9,3 +9,8 @@ export class MapTheme {
         this.credit = credit;
     }
 }
+
+export enum Theme {
+    Light = 'light',
+    Dark = 'dark'
+}

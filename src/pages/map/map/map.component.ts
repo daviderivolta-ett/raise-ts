@@ -1,13 +1,14 @@
 import * as Cesium from 'cesium';
 
 import { PointOfInterest } from '../../../models/poi.model';
-import { MapTheme } from '../../../models/map-theme.model';
+import { MapTheme } from '../../../models/theme.model';
 import { Layer } from '../../../models/layer.model';
 import { SnackbarType } from '../../../models/snackbar-type.model';
 
 import { TabsToggleObservable } from '../../../observables/tabs-toggle.observable';
 import { BenchToggleObservable } from '../../../observables/bench-toggle.observable';
 import { EventObservable } from '../../../observables/event.observable';
+import { ThemeService } from '../../../services/theme.service';
 import { StorageService } from '../../../services/storage.service';
 import { PositionService } from '../../../services/position.service';
 import { MapService } from '../../../services/map.service';
@@ -21,6 +22,7 @@ export class MapComponent extends HTMLElement {
     public shadowRoot: ShadowRoot;
     public container: HTMLElement = document.createElement('div');
     public viewer!: Cesium.Viewer;
+    public imageryLayers: Record<string, Cesium.ImageryLayer> = {};
 
     constructor() {
         super();
@@ -35,7 +37,7 @@ export class MapComponent extends HTMLElement {
 
     public connectedCallback(): void {
         this.render();
-        this.addBaseLayers(MapService.instance.mapThemes);
+        this.addBaseLayers(ThemeService.instance.mapThemes);
         this.setup();
         StorageService.instance.activeLayers.forEach((layer: Layer) => this.addLayerToMap(layer));
     }
@@ -78,7 +80,7 @@ export class MapComponent extends HTMLElement {
             this.setCameraToPosition(null);
         }
 
-        EventObservable.instance.subscribe('change-map-theme', () => this.changeTheme(0));
+        EventObservable.instance.subscribe('change-theme', (theme: MapTheme) => this.changeTheme(theme));
         EventObservable.instance.subscribe('change-map-mode', () => this.changeMapMode());
         EventObservable.instance.subscribe('set-camera', (position: GeolocationPosition) => this.setCameraToPosition(position));
         EventObservable.instance.subscribe('check-user-position', (position: GeolocationPosition) => this.checkUserPin(position));
@@ -121,26 +123,15 @@ export class MapComponent extends HTMLElement {
 
     private addBaseLayers(themes: MapTheme[]): void {
         themes.forEach((theme: MapTheme) => {
-            this.viewer.imageryLayers.addImageryProvider(this.createImageryProvider(theme));
+            const imagerylayer: Cesium.ImageryLayer = new Cesium.ImageryLayer(ThemeService.instance.createImageryProvider(theme));
+            this.viewer.imageryLayers.add(imagerylayer);
+            this.imageryLayers[theme.layer] = imagerylayer;
         });
     }
 
-    private createImageryProvider(theme: MapTheme): Cesium.WebMapTileServiceImageryProvider {
-        return new Cesium.WebMapTileServiceImageryProvider(
-            {
-                url: theme.url,
-                layer: theme.layer,
-                credit: new Cesium.Credit(theme.credit),
-                tileMatrixSetID: 'default',
-                style: 'default',
-                format: 'image/jpeg',
-                maximumLevel: 19,
-            }
-        );
-    }
-
-    public changeTheme(index: number): void {
-        let choosenTheme: Cesium.ImageryLayer = this.viewer.imageryLayers.get(index);
+    public changeTheme(theme: MapTheme): void {
+        const index: number = this.viewer.imageryLayers.indexOf(this.imageryLayers[theme.layer]);
+        let choosenTheme: Cesium.ImageryLayer = this.viewer.imageryLayers.get(index);        
         this.viewer.imageryLayers.raiseToTop(choosenTheme);
     }
 

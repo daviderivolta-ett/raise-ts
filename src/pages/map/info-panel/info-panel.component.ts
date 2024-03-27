@@ -49,7 +49,7 @@ export class InfoPanelComponent extends HTMLElement {
     }
 
     private render(): void {
-        this.shadowRoot.innerHTML = '<p>Nessun punto selezionato</p>';
+        this.shadowRoot.innerHTML = '<p class="empty-msg">Nessun punto selezionato</p>';
     }
 
     private setup(): void {
@@ -98,6 +98,7 @@ export class InfoPanelComponent extends HTMLElement {
     private renderDirectionsBtn(): HTMLButtonElement | null {
         if (!this.poi) return null;
         const button: HTMLButtonElement = document.createElement('button');
+        button.classList.add('directions-btn');
         button.innerHTML = 'Indicazioni';
         button.addEventListener('click', () => MapService.instance.openGoogleMaps(this.poi!.position));
         return button;
@@ -107,6 +108,7 @@ export class InfoPanelComponent extends HTMLElement {
         if (!this.poi) return null;
         if (this.poi.type !== PoiType.Point) return null;
         const button: HTMLButtonElement = document.createElement('button');
+        button.classList.add('add-to-path-btn');
         button.innerHTML = 'Aggiungi';
         button.addEventListener('click', () => {
             const selectedCustomPath: Path = StorageService.instance.selectedCustomPath;
@@ -160,9 +162,12 @@ export class InfoPanelComponent extends HTMLElement {
 
     private renderTopic(prop: PoiProperty): HTMLDivElement {
         const topic: HTMLDivElement = document.createElement('div');
-        const label: HTMLHeadingElement = document.createElement('h4');
+        topic.classList.add('property');
+        const label: HTMLLabelElement = document.createElement('label');
+        label.classList.add('property-label');
         label.innerHTML = prop.displayName;
         const info: HTMLParagraphElement = document.createElement('p');
+        info.classList.add('property-value');
         prop.value !== '' ? info.innerHTML = prop.value : info.innerHTML = '-';
         topic.appendChild(label);
         topic.appendChild(info);
