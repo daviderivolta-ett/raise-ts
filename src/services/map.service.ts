@@ -6,8 +6,6 @@ import { Feature, FeatureGeometryType } from '../models/feature.model';
 export class MapService {
     private static _instance: MapService;
 
-
-
     constructor() {
         if (MapService._instance) return MapService._instance;
         MapService._instance = this;

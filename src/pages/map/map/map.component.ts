@@ -80,8 +80,9 @@ export class MapComponent extends HTMLElement {
             this.setCameraToPosition(null);
         }
 
-        EventObservable.instance.subscribe('change-theme', (theme: MapTheme) => this.changeTheme(theme));
+        EventObservable.instance.subscribe('change-theme', (data: { isPhysicalMap: boolean, theme: MapTheme }) => this.changeTheme(data.isPhysicalMap, data.theme));
         EventObservable.instance.subscribe('change-map-mode', () => this.changeMapMode());
+        EventObservable.instance.subscribe('toggle-physical-map', (data: { isPhysicalMap: boolean, currentTheme: MapTheme }) => this.togglePhysicalMap(data.isPhysicalMap, data.currentTheme));
         EventObservable.instance.subscribe('set-camera', (position: GeolocationPosition) => this.setCameraToPosition(position));
         EventObservable.instance.subscribe('check-user-position', (position: GeolocationPosition) => this.checkUserPin(position));
         EventObservable.instance.subscribe('add-layer', (layer: Layer) => this.addLayer(layer));
@@ -129,10 +130,23 @@ export class MapComponent extends HTMLElement {
         });
     }
 
-    public changeTheme(theme: MapTheme): void {
+    public changeTheme(isPhysicalMap: boolean, theme: MapTheme): void {
+        if (isPhysicalMap) return;
         const index: number = this.viewer.imageryLayers.indexOf(this.imageryLayers[theme.layer]);
-        let choosenTheme: Cesium.ImageryLayer = this.viewer.imageryLayers.get(index);        
+        let choosenTheme: Cesium.ImageryLayer = this.viewer.imageryLayers.get(index);
         this.viewer.imageryLayers.raiseToTop(choosenTheme);
+    }
+
+    public togglePhysicalMap(isPhysicalMap: boolean, currentTheme: MapTheme): void {
+        if (isPhysicalMap) {
+            for (const key in this.imageryLayers) {
+                const index: number = this.viewer.imageryLayers.indexOf(this.imageryLayers[key]);
+                const theme: Cesium.ImageryLayer = this.viewer.imageryLayers.get(index);
+                this.viewer.imageryLayers.lowerToBottom(theme);
+            }
+        } else {
+            this.changeTheme(isPhysicalMap, currentTheme);
+        }
     }
 
     public changeMapMode(): void {

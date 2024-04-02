@@ -1,6 +1,7 @@
 import { EventObservable } from '../../../observables/event.observable';
+import { ThemeService } from '../../../services/theme.service';
 
-export class MapModeButtonComponent extends HTMLButtonElement {
+export class MapTypeBtnComponent extends HTMLButtonElement {
     private _isOpen: boolean = false;
 
     constructor() {
@@ -12,7 +13,7 @@ export class MapModeButtonComponent extends HTMLButtonElement {
     }
 
     set isOpen(isOpen: boolean) {
-        this._isOpen = isOpen;
+        this._isOpen = isOpen;  
         this.isOpen === true ? this.classList.add('open') : this.classList.remove('open');
     }
 
@@ -21,13 +22,12 @@ export class MapModeButtonComponent extends HTMLButtonElement {
     }
 
     private setup(): void {
-        this.addEventListener('click', () => EventObservable.instance.publish('change-map-mode', null));
+        this.addEventListener('click', () => ThemeService.instance.togglePhysicalMap());
 
         EventObservable.instance.subscribe('toggle-tabs', (isOpen: boolean) => {
             this.isOpen = isOpen;
         });
     }
-
 }
 
-customElements.define('app-map-mode-btn', MapModeButtonComponent, { extends: 'button' });
+customElements.define('app-map-type-btn', MapTypeBtnComponent, { extends: 'button' });

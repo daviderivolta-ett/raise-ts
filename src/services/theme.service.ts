@@ -7,6 +7,7 @@ export class ThemeService {
     private static _instance: ThemeService;
     private MAP_THEMES_URL: string = './json/themes.json';
     private _currentTheme: Theme = Theme.Dark;
+    private _isPhysicalMap: boolean = false;
     public mapThemes: MapTheme[] = [];
 
     constructor() {
@@ -26,7 +27,16 @@ export class ThemeService {
     public set currentTheme(currentTheme: Theme) {
         this._currentTheme = currentTheme;
         this.changeColors(this.currentTheme);
-        EventObservable.instance.publish('change-theme', this.chooseMapTheme(this.currentTheme));
+        EventObservable.instance.publish('change-theme', { isPhysicalMap: this.isPhysicalMap, theme: this.chooseMapTheme(this.currentTheme) });
+    }
+
+    public get isPhysicalMap(): boolean {
+        return this._isPhysicalMap;
+    }
+
+    public set isPhysicalMap(isPhysicalMap: boolean) {
+        this._isPhysicalMap = isPhysicalMap;
+        EventObservable.instance.publish('toggle-physical-map', { isPhysicalMap: this.isPhysicalMap, currentTheme: this.chooseMapTheme(this.currentTheme) });
     }
 
     public async getMapThemes(): Promise<MapTheme[]> {
@@ -76,6 +86,10 @@ export class ThemeService {
         this.currentTheme === Theme.Light ? this.currentTheme = Theme.Dark : this.currentTheme = Theme.Light;
     }
 
+    public togglePhysicalMap(): void {
+        this.isPhysicalMap === true ? this.isPhysicalMap = false : this.isPhysicalMap = true;
+    }
+
     private chooseMapTheme(theme: Theme): MapTheme {
         const mapTheme: MapTheme | undefined = theme === Theme.Dark ?
             this.mapThemes.find((theme: MapTheme) => theme.layer === 'carto-dark') :
@@ -99,16 +113,16 @@ export class ThemeService {
                 break;
         }
     }
-    
+
     private setLightTheme(): void {
         document.documentElement.style.setProperty('--f-default', '0, 29, 53');
         document.documentElement.style.setProperty('--f-emphasis', '0, 0, 0');
-        
+
         document.documentElement.style.setProperty('--bg-inset', '246, 248, 252');
         document.documentElement.style.setProperty('--bg-default', '234, 241, 251');
         document.documentElement.style.setProperty('--bg-subtle', '211, 227, 253');
     }
-    
+
     private setDarkTheme(): void {
         document.documentElement.style.setProperty('--f-default', '168, 178, 209');
         document.documentElement.style.setProperty('--f-emphasis', '233, 235, 244');

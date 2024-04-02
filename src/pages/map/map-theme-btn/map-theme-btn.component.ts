@@ -10,10 +10,7 @@ export class MapThemeBtnComponent extends HTMLButtonElement {
     }
 
     private setup(): void {
-        this.addEventListener('click', () => {
-            // EventObservable.instance.publish('change-map-theme', null);    
-            ThemeService.instance.toggleTheme();
-        });
+        this.addEventListener('click', () => ThemeService.instance.toggleTheme());
     }
 }
 
