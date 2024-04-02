@@ -14,7 +14,8 @@ export class DialogComponent extends HTMLDialogElement {
     }
 
     private render(): void {
-        this.closeBtn.innerHTML = 'CLOSE';
+        this.closeBtn.innerHTML = `<span class="material-symbols-outlined close-icon">close</span>`;
+        this.closeBtn.classList.add('close');
         this.prepend(this.closeBtn);
     }
 

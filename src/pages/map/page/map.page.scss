@@ -18,10 +18,6 @@
     width: 360px;
 }
 
-button[is="app-searchbar"] {
-    width: 100%;
-}
-
 app-search-result {
     position: fixed;
     top: 80px;
@@ -37,9 +33,27 @@ app-search-result {
     width: 40px;
     height: 40px;
     padding: 16px;
+    font-size: 1.4rem;
+    color: rgb(var(--f-default));
+    background-color: rgb(var(--bg-default));
+    border: none;
+
+    &:hover {
+        color: rgb(var(--f-emphasis));
+        background-color: rgb(var(--bg-inset));
+    }
+}
+
+button[is="app-tabs-toggle"] {
+    border-radius: var(--border-radius-circle) 0 0 var(--border-radius-circle);
+}
+
+button[is="app-map-theme-btn"] {
+    border-radius: 0 var(--border-radius-circle) var(--border-radius-circle) 0;
 }
 
 .map-controls {
+    border-radius: var(--border-radius-m);
     animation: slideOut .3s ease-in-out forwards;
 }
 
@@ -50,7 +64,7 @@ app-search-result {
 button[is="app-map-type-btn"] {
     position: fixed;
     bottom: 120px;
-    right: 24px;
+    right: 24px;    
 }
 
 button[is="app-map-mode-btn"] {
@@ -60,10 +74,38 @@ button[is="app-map-mode-btn"] {
 }
 
 button[is="app-center-position-btn"] {
-    cursor: pointer;
     position: fixed;
     bottom: 24px;
     right: 24px;
+}
+
+input[is="app-searchbar"] {
+    color: rgb(var(--f-default));
+    background-color: rgb(var(--bg-default));
+    padding: 0 16px;
+    border: none;
+    width: 100%;
+    outline: none;
+
+    &::placeholder {
+        color: rgb(var(--f-muted));
+    }
+
+    &:focus {
+        background-color: rgb(var(--bg-inset));
+    }
+}
+
+app-tabs-sidenav {
+    position: fixed;
+    top: 0;
+    right: -360px;
+}
+
+app-bench {
+    position: fixed;
+    top: 50%;
+    right: -360px;
 }
 
 .material-symbols-outlined {
@@ -92,5 +134,30 @@ button[is="app-center-position-btn"] {
 
     to {
         right: 24px;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .header {
+       flex-direction: column;
+       gap: 8px;
+    }
+
+    .search {
+        width: 100%;
+    }
+
+    app-bench {
+        top: inherit;
+        right: inherit;
+        bottom: 24px;
+        left: -360px;
+    }
+
+    app-tabs-sidenav {
+        top: inherit;
+        right: inherit;
+        bottom: 0;
+        left: 0;
     }
 }

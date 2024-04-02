@@ -92,7 +92,7 @@ export class StorageService {
         const pathsString: string | null = localStorage.getItem('paths');
         if (!pathsString) return;
         const rawPaths: any[] = JSON.parse(pathsString);
-        const paths: Path[] = rawPaths.map((path: any) => this.parseCustomPath(path));
+        const paths: Path[] = rawPaths.map((path: any) => this.parseCustomPath(path));     
         this._paths = paths;
     }
 
@@ -100,10 +100,10 @@ export class StorageService {
         localStorage.setItem('paths', JSON.stringify(this.paths));
     }
 
-    private parseCustomPath(path: any): Path {
+    private parseCustomPath(path: any): Path {      
         let p: Path = Path.createEmpty();
-
-        if (path.lastSelected) p.lastSelected = path.lastSelected;
+        
+        if (typeof path.lastSelected === 'boolean') p.lastSelected = path.lastSelected;
         if (path.name) p.name = path.name;
         if (path.pois) p.pois = path.pois.map((poi: any) => this.parsePoi(poi));
 
@@ -191,7 +191,10 @@ export class StorageService {
     public deletePath(): void {
         const paths: Path[] = this.paths.filter((path: Path) => path.lastSelected !== true);
         const defaultPath: Path | undefined = this.paths.find((path: Path) => path.name === 'default');
-        if (defaultPath) this.selectedCustomPath = defaultPath;
+        if (defaultPath) {
+            defaultPath.lastSelected = true;
+            this.selectedCustomPath = defaultPath
+        };
         this.paths = [...paths];
 
         this.setCustomPaths();
@@ -219,6 +222,10 @@ export class StorageService {
     public loadPath(name: string): void {
         const path: Path | undefined = this.paths.find((path: Path) => path.name === name);
         if (!path) return;
+        this.paths.forEach((path: Path) => path.lastSelected = false);
+        path.lastSelected = true;      
         this.selectedCustomPath = path;
+
+        this.setCustomPaths();
     }
 }

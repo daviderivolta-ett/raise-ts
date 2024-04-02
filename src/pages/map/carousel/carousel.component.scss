@@ -1,8 +1,12 @@
 :host {
-    background-color: white;
+    background-color: transparent;
     display: flex;
+    gap: 8px;
     overflow-x: auto;
     max-width: calc(100% - 360px);
+    scrollbar-width: none;
+    padding: 0 0 0 16px;
+    box-sizing: border-box;
 }
 
 .material-symbols-outlined {
@@ -12,4 +16,11 @@
         'wght' 400,
         'GRAD' 0,
         'opsz' 24;
+}
+
+@media screen and (max-width: 768px) {
+    :host {
+        padding: 0;
+        max-width: 100%;
+    }
 }

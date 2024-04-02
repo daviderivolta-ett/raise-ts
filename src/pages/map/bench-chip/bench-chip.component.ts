@@ -33,6 +33,7 @@ export class BenchChipComponent extends HTMLButtonElement {
                 <span class="legend"></span>
                 <label>${this.layer.name}</label>
             </div>
+            <span class="divider"></span>
             <span class="icon add-icon">
                 <span class="material-symbols-outlined">delete</span>
             </span>

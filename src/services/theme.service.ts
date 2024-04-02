@@ -26,7 +26,7 @@ export class ThemeService {
 
     public set currentTheme(currentTheme: Theme) {
         this._currentTheme = currentTheme;
-        this.changeColors(this.currentTheme);
+        // this.changeColors(this.currentTheme);
         EventObservable.instance.publish('change-theme', { isPhysicalMap: this.isPhysicalMap, theme: this.chooseMapTheme(this.currentTheme) });
     }
 
@@ -115,20 +115,32 @@ export class ThemeService {
     }
 
     private setLightTheme(): void {
-        document.documentElement.style.setProperty('--f-default', '0, 29, 53');
-        document.documentElement.style.setProperty('--f-emphasis', '0, 0, 0');
+        document.documentElement.style.setProperty('--f-default', '5, 5, 5');
+        document.documentElement.style.setProperty('--f-emphasis', '32, 33, 36');
+        document.documentElement.style.setProperty('--f-muted', '101, 103, 107');
+        document.documentElement.style.setProperty('--f-accent', '8, 102, 255');
 
-        document.documentElement.style.setProperty('--bg-inset', '246, 248, 252');
-        document.documentElement.style.setProperty('--bg-default', '234, 241, 251');
-        document.documentElement.style.setProperty('--bg-subtle', '211, 227, 253');
+        document.documentElement.style.setProperty('--bg-inset', '255, 255, 255');
+        document.documentElement.style.setProperty('--bg-default', '246, 248, 252');
+        document.documentElement.style.setProperty('--bg-subtle', '228, 230, 233');
+        document.documentElement.style.setProperty('--bg-accent', '199, 225, 242');
+        document.documentElement.style.setProperty('--bg-muted', '234, 234, 234');
+
+        document.documentElement.style.setProperty('--border-accent', '8, 102, 255');
     }
 
     private setDarkTheme(): void {
         document.documentElement.style.setProperty('--f-default', '168, 178, 209');
         document.documentElement.style.setProperty('--f-emphasis', '233, 235, 244');
+        document.documentElement.style.setProperty('--f-muted', '73, 85, 117');
+        document.documentElement.style.setProperty('--f-accent', '100, 255, 218');
 
         document.documentElement.style.setProperty('--bg-inset', '10, 25, 47');
         document.documentElement.style.setProperty('--bg-default', '17, 34, 64');
         document.documentElement.style.setProperty('--bg-subtle', '32, 52, 81');
+        document.documentElement.style.setProperty('--bg-accent', '24, 55, 86');
+        document.documentElement.style.setProperty('--bg-muted', '73, 85, 117');
+
+        document.documentElement.style.setProperty('--border-accent', '100, 255, 218');
     }
 }

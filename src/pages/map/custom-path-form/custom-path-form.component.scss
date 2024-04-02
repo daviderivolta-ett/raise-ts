@@ -1,0 +1,105 @@
+.form {
+    color: rgb(var(--f-default));
+}
+
+h4,
+p {
+    margin: 0;
+}
+
+h4 {
+    color: rgb(var(--f-emphasis));
+    margin: 0 0 16px 0;
+}
+
+p {
+    margin: 0 0 8px 0;
+}
+
+input.path-name-input {
+    width: 100%;
+    height: 40px;
+    outline: none;
+    padding: 0;
+    box-sizing: border-box;
+    border-width: 0 0 1px 0;
+    background-color: transparent;
+    border-style: solid;
+    color: rgb(var(--f-emphasis));
+    border-color: rgb(var(--f-default));
+    margin: 0 0 16px 0;
+
+    &::placeholder {
+        color: rgb(var(--f-muted));
+    }
+}
+
+.list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin: 16px 0 0 0;
+}
+
+.selection input {
+    position: absolute;
+    top: 0;
+    left: 0;
+    opacity: 0;
+    height: 0;
+    width: 0;
+}
+
+.selection label {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    height: 32px;
+    padding: 0 16px;
+    box-sizing: border-box;
+    background-color: rgb(var(--bg-subtle));
+    border: 1px solid transparent;
+    border-radius: var(--border-radius-circle);
+}
+
+.selection input:checked + label {
+    border-color: rgb(var(--border-accent));
+}
+
+.call-to-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    margin: 16px 0 0 0;
+}
+
+.featured {
+    color: rgb(var(--f-emphasis));
+    font-weight: 600;
+}
+
+button {
+    cursor: pointer;
+    width: 100%;
+    border: none;
+    border-radius: var(--border-radius-circle);
+    color: rgb(var(--f-default));
+    background-color: rgb(var(--bg-subtle));
+    padding: 8px 0;
+    border: 1px solid transparent;
+    box-sizing: border-box;
+}
+
+button.submit-btn {
+    color: rgb(var(--f-default));
+    background-color: rgb(var(--bg-accent));
+    border-color: rgb(var(--border-accent));
+}
+
+button.delete-btn {
+    color: rgb(var(--f-danger));
+    background-color: transparent;
+    margin: 16px 0 0 0;
+}

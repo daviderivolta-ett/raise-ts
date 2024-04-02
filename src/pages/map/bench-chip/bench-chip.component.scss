@@ -3,19 +3,35 @@ button[is="app-bench-chip"] {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    height: 40px;
     width: 100%;
     text-wrap: nowrap;
+    color: rgb(var(--f-default));
+    background-color: rgb(var(--bg-default));
+    border: none;
+    padding: 0;
+    border-radius: var(--border-radius-circle);
 }
 
 button[is="app-bench-chip"] .info {
     display: flex;
     align-items: center;
+    height: 100%;
+    width: 100%;
+    gap: 8px;
+    padding: 0 16px;
+    border-radius: var(--border-radius-circle) 0  0 var(--border-radius-circle);
+
+    &:hover {
+        background-color: rgb(var(--bg-inset));
+    }
 }
 
 button[is="app-bench-chip"] .info .legend {
     display: inline-block;
     width: 12px;
     height: 12px;
+    min-width: 12px;
     border-radius: 100%;
     border-width: 2px;
     border-style: solid;
@@ -23,4 +39,34 @@ button[is="app-bench-chip"] .info .legend {
 
 button[is="app-bench-chip"] .info label {
     cursor: pointer;
+}
+
+button[is="app-bench-chip"] .icon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.4rem;
+    height: 40px;
+    padding: 0 16px 0 12px;
+    color: rgb(var(--f-danger));
+    border-radius: 0 var(--border-radius-circle) var(--border-radius-circle) 0;
+
+    &:hover {
+        background-color: rgb(var(--bg-inset));
+    }
+}
+
+button[is="app-bench-chip"] .divider {
+    width: 1px;
+    height: calc(100% - 16px);
+    background-color: rgb(var(--bg-muted));
+}
+
+.material-symbols-outlined {
+    font-family: 'Material Symbols Outlined';
+    font-variation-settings:
+        'FILL' 0,
+        'wght' 400,
+        'GRAD' 0,
+        'opsz' 24;
 }

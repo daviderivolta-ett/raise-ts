@@ -1,24 +1,21 @@
 :host {
-    position: fixed;
-    top: 0;
-    right: -360px;
     width: 360px;
-    height: 100vh;
-    background-color: wheat;
+    height: fit-content;
+    transform: translateY(-50%);
+    background-color: transparent;
     animation: slideOut .3s ease-in-out forwards;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 0 24px;
+    box-sizing: border-box;
+    max-height: 400px;
+    overflow-y: auto;
+    scrollbar-width: none;
 }
 
 :host(.visible) {
     animation: slideIn .3s ease-in-out forwards;
-}
-
-.material-symbols-outlined {
-    font-family: 'Material Symbols Outlined';
-    font-variation-settings:
-        'FILL' 0,
-        'wght' 400,
-        'GRAD' 0,
-        'opsz' 24;
 }
 
 @keyframes slideIn {
@@ -38,5 +35,32 @@
 
     to {
         right: -360px;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    :host {
+        transform: translateY(0);
+        max-height: calc(100% - 144px);
+    }
+
+    @keyframes slideIn {
+        from {
+            left: -360px;
+        }
+
+        to {
+            left: 0;
+        }
+    }
+
+    @keyframes slideOut {
+        from {
+            left: 0;
+        }
+
+        to {
+            left: -360px;
+        }
     }
 }

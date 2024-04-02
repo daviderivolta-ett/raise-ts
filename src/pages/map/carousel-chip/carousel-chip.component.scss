@@ -3,20 +3,30 @@ button[is="app-carousel-chip"] {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    width: 100%;
+    height: 40px;
     text-wrap: nowrap;
+    color: rgb(var(--f-default));
+    background-color: rgb(var(--bg-default));
+    border: none;
+    padding: 0;
+    border-radius: var(--border-radius-circle);
 }
 
 button[is="app-carousel-chip"] .info {
     display: flex;
     align-items: center;
+    height: 100%;
+    width: 100%;
+    gap: 8px;
+    padding: 0 16px;
+    border-radius: var(--border-radius-circle) 0  0 var(--border-radius-circle);
 }
 
 button[is="app-carousel-chip"] .info .legend {
     display: inline-block;
-    width: 14px;
-    height: 14px;
-    min-width: 14px;
+    width: 12px;
+    height: 12px;
+    min-width: 12px;
     border-radius: 100%;
     border-width: 2px;
     border-style: solid;
@@ -24,4 +34,25 @@ button[is="app-carousel-chip"] .info .legend {
 
 button[is="app-carousel-chip"] .info label {
     cursor: pointer;
+}
+
+button[is="app-carousel-chip"] .divider {
+    width: 1px;
+    height: calc(100% - 16px);
+    background-color: rgb(var(--bg-muted));
+}
+
+button[is="app-carousel-chip"] .icon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.4rem;
+    height: 40px;
+    padding: 0 16px 0 12px;
+    color: rgb(var(--f-danger));
+    border-radius: 0 var(--border-radius-circle) var(--border-radius-circle) 0;
+
+    &:hover {
+        background-color: rgb(var(--bg-inset));
+    }
 }

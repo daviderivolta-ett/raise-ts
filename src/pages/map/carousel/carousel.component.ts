@@ -11,6 +11,9 @@ import chipStyle from '../carousel-chip/carousel-chip.component.scss?raw';
 export class CarouselComponent extends HTMLElement {
     public shadowRoot: ShadowRoot;
     private _layers: Layer[] = [];
+    public startX: number = 0;
+    public dragScoll: number = 0;
+    public isDragging: boolean = false;
 
     constructor() {
         super();
@@ -49,6 +52,10 @@ export class CarouselComponent extends HTMLElement {
             this.layers = [...layers];
         });
 
+        this.addEventListener('mousedown', (e: MouseEvent) => this.startDrag(e));
+        this.addEventListener('mousemove', (e: MouseEvent) => this.drag(e));
+        this.addEventListener('mouseleave', () => this.endDrag());
+        this.addEventListener('mouseup', () => this.endDrag());
     }
 
     private update(): void {
@@ -59,6 +66,23 @@ export class CarouselComponent extends HTMLElement {
             chip.setAttribute('is', 'app-carousel-chip');
             this.shadowRoot.append(chip);
         });
+    }
+
+    private startDrag(e: MouseEvent): void {
+        this.isDragging = true; 
+        this.startX = e.pageX;
+        this.dragScoll = this.scrollLeft;
+    }
+
+    private endDrag(): void {
+        this.isDragging = false;
+    }
+
+    private drag(e: MouseEvent): void {
+        if (!this.isDragging) return;
+        e.preventDefault();
+        const deviation: number = e.pageX - this.startX;
+        this.scrollLeft = this.dragScoll - deviation;  
     }
 }
 

@@ -6,6 +6,8 @@ import { StorageService } from '../../../services/storage.service';
 import { TspService } from '../../../services/tsp.service';
 import * as Cesium from 'cesium';
 
+import style from './custom-path-form.component.scss?raw';
+
 export class CustomPathFormComponent extends HTMLElement {
     public shadowRoot: ShadowRoot;
     private _type: DialogType | null = null;
@@ -15,6 +17,10 @@ export class CustomPathFormComponent extends HTMLElement {
         super();
 
         this.shadowRoot = this.attachShadow({ mode: 'closed' });
+
+        let sheet: CSSStyleSheet = new CSSStyleSheet();
+        sheet.replaceSync(style);
+        this.shadowRoot.adoptedStyleSheets.push(sheet);
     }
 
     get type(): DialogType | null {
@@ -84,8 +90,8 @@ export class CustomPathFormComponent extends HTMLElement {
         this.shadowRoot.innerHTML =
             `
             <form class="form">
-                <h4>Riordina</h4>
-                <p>Riordinare i punti di interesse del percorso ${StorageService.instance.selectedCustomPath.name}?</p>
+                <h4 class="title">Riordina</h4>
+                <p>Riordinare i punti di interesse del percorso <span class="featured">${StorageService.instance.selectedCustomPath.name}</span>?</p>
                 <div class="call-to-actions">
                     <button type="button" class="cancel-btn">Annulla</button>
                     <button type="submit" class="submit-btn">Riordina</button>
@@ -115,8 +121,8 @@ export class CustomPathFormComponent extends HTMLElement {
         this.shadowRoot.innerHTML =
             `
             <form class="form">
-                <h4>Modifica percorso</h4>
-                <input type="text" name="path-name" class="path-name-input">
+                <h4 class="title">Modifica percorso</h4>
+                <input type="text" name="path-name" class="path-name-input" placeholder="Nome percorso">
                 <div class="call-to-actions">
                     <button type="button" class="cancel-btn">Annulla</button>
                     <button type="submit" class="submit-btn">Salva</button>
@@ -161,9 +167,9 @@ export class CustomPathFormComponent extends HTMLElement {
         this.shadowRoot.innerHTML =
             `
             <form class="form">
-                <h4>Nuovo percorso</h4>
+                <h4 class="title">Nuovo percorso</h4>
                 <p>Scegli il nome del nuovo percorso</p>
-                <input type="text" class="path-name-input">
+                <input type="text" class="path-name-input" placeholder="Nome percorso">
                 <p>Attenzione: questa azione eliminerà i dati non salvati sul percorso attualmente selezionato.</p>
                 <div class="call-to-actions">
                     <button type="button" class="cancel-btn">Annulla</button>
@@ -200,8 +206,8 @@ export class CustomPathFormComponent extends HTMLElement {
         this.shadowRoot.innerHTML =
             `
             <form class="form">
-                <h4>Salva</h4>
-                <p>Questa sovrascriverà i dati relativi al percorso ${(this.paths.find((path: Path) => path.lastSelected === true)?.name)}. Procedere?</p>
+                <h4 class="title">Salva</h4>
+                <p>Questa sovrascriverà i dati relativi al percorso <span class="featured">${(this.paths.find((path: Path) => path.lastSelected === true)?.name)}</span>. Procedere?</p>
                 <div class="call-to-actions">
                     <button type="button" class="cancel-btn">Annulla</button>
                     <button type="submit" class="submit-btn">Salva</button>
@@ -220,7 +226,7 @@ export class CustomPathFormComponent extends HTMLElement {
         this.shadowRoot.innerHTML =
             `
             <form class="form">
-                <h4>Carica percorso</h4>
+                <h4 class="title">Carica percorso</h4>
                 <p>Percorsi salvati in memoria.</p>
                 <div class="list"></div>
                 <div class="call-to-actions">

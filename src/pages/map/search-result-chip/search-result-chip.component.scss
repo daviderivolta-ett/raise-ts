@@ -4,17 +4,24 @@ button[is="app-search-result-chip"] {
     align-items: center;
     justify-content: space-between;
     width: 100%;
+    text-wrap: nowrap;
+    color: rgb(var(--f-default));
+    background-color: rgb(var(--bg-default));
+    border: none;
+    border-radius: var(--border-radius-circle);
+    padding: 8px 16px;
 }
 
 button[is="app-search-result-chip"] .info {
     display: flex;
-    align-items: center;
+    gap: 8px;
 }
 
 button[is="app-search-result-chip"] .info .legend {
     display: inline-block;
     width: 12px;
     height: 12px;
+    min-width: 12px;
     border-radius: 100%;
     border-width: 2px;
     border-style: solid;
@@ -22,4 +29,8 @@ button[is="app-search-result-chip"] .info .legend {
 
 button[is="app-search-result-chip"] .info label {
     cursor: pointer;
+}
+
+button[is="app-search-result-chip"] .icon {
+    font-size: 1.4rem;
 }

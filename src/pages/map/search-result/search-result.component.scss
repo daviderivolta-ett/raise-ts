@@ -9,10 +9,17 @@
 }
 
 .container {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
     max-height: 192px;
     overflow-y: auto;
     padding: 24px 16px;
-    background-color: white;
+    color: rgb(var(--f-default));
+    background-color: rgb(var(--bg-inset));
+    border-radius: var(--border-radius-m);
+    scrollbar-width: thin;
+    scrollbar-color: rgb(var(--bg-muted), 1) transparent;
 }
 
 .material-symbols-outlined {
