@@ -54,7 +54,7 @@ export class PoiService {
                         break;
 
                     default:
-                        let rawProp: any = (propertyBag[name] as Cesium.ConstantProperty).valueOf();
+                        let rawProp: any = (propertyBag[name] as Cesium.ConstantProperty).valueOf();                     
                         poi.props.push(this.parsePoiProperty(rawProp));
                         break;
                 }
@@ -63,7 +63,7 @@ export class PoiService {
 
         poi.position = this.parsePoiPosition(entity);
         poi.type = this.parsePoiType(entity);
-        console.log(poi);
+
         return poi;
     }
 
@@ -81,7 +81,7 @@ export class PoiService {
         }
 
         if (entity.polygon && entity.polygon.hierarchy) {
-            let pos: Cesium.Cartesian3 | undefined = entity.polygon.hierarchy.getValue(Cesium.JulianDate.now());
+            let pos: Cesium.Cartesian3 | undefined = entity.polygon.hierarchy.getValue(Cesium.JulianDate.now()).positions[0]; 
             if (pos) position = Cesium.Cartographic.fromCartesian(pos);
         }
 

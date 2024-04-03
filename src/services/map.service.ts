@@ -2,6 +2,7 @@ import * as Cesium from 'cesium';
 
 import { Layer, LayerProperty, LayerStyle } from '../models/layer.model';
 import { Feature, FeatureGeometryType } from '../models/feature.model';
+import { PointOfInterest } from '../models/poi.model';
 
 export class MapService {
     private static _instance: MapService;
@@ -23,6 +24,109 @@ export class MapService {
         let geoJsonNewProp: any = this.substituteRelevantProperties(geoJson, layer);
         let geoJsonAddProp = this.createFeatureAdditionalProperties(geoJsonNewProp, layer);
         return geoJsonAddProp;
+    }
+
+    public async createGeoJsonFromEntity(entity: Cesium.Entity): Promise<any> {
+        let geojson: any = {
+            type: "Feature",
+            geometry: {
+                type: "Point",
+                coordinates: []
+            },
+            properties: {}
+        }
+
+        if (entity.point && entity.position) {
+            geojson.geometry.type = 'Point';
+            let cartographic: Cesium.Cartographic | null = this.createGeojsonPointCoordinates(entity)
+            if (cartographic) geojson.geometry.coordinates = [Cesium.Math.toDegrees(cartographic.longitude), Cesium.Math.toDegrees(cartographic.latitude)];
+        }
+
+        if (entity.polyline && entity.polyline.positions) {
+            geojson.geometry.type = 'LineString';
+            geojson.geometry.coordinates = this.createGeojsonPolylineCoordinates(entity);
+        }
+
+        if (entity.polygon && entity.polygon.hierarchy) {
+            geojson.geometry.type = 'Polygon';
+            geojson.geometry.coordinates = this.createGeojsonPolygonCoordinates(entity)
+        }
+
+        return geojson;
+    }
+
+    private createGeojsonFeatureFromPoi(poi: PointOfInterest): any {
+        return {
+            type: "Feature",
+            geometry: {
+                type: "Point",
+                coordinates: [Cesium.Math.toDegrees(poi.position.longitude), Cesium.Math.toDegrees(poi.position.latitude)]
+            },
+            properties: {}
+        }
+    }
+
+    public createGeojsonFeatureCollectionFromPois(pois: PointOfInterest[]): any {
+        let geoJson: any = {
+            type: "FeatureCollection",
+            features: []
+        }
+
+        let features: any = pois.map((poi: PointOfInterest) => this.createGeojsonFeatureFromPoi(poi));
+        geoJson.features = features;
+        return geoJson;
+    }
+
+    private createGeojsonPointCoordinates(entity: Cesium.Entity): Cesium.Cartographic | null {
+        if (!entity.position) return null;
+        let pos: Cesium.Cartesian3 | undefined = entity.position.getValue(Cesium.JulianDate.now());
+        if (!pos) return null
+        let cartographic: Cesium.Cartographic = Cesium.Cartographic.fromCartesian(pos);
+        return cartographic;
+    }
+
+    private createGeojsonPolylineCoordinates(entity: Cesium.Entity): number[][] {
+        if (!entity.polyline || !entity.polyline.positions) return [];
+        let pos: Cesium.Cartesian3[] | undefined = entity.polyline.positions.getValue(Cesium.JulianDate.now());
+        let array: number[][] = [];
+        if (pos) {
+            pos.forEach((p: Cesium.Cartesian3) => {
+                let arr: number[];
+                let cartographic: Cesium.Cartographic = Cesium.Cartographic.fromCartesian(p);
+                arr = [Cesium.Math.toDegrees(cartographic.longitude), Cesium.Math.toDegrees(cartographic.latitude)];
+                array.push(arr);
+            });
+        }
+        return array;
+    }
+
+    private createGeojsonPolygonCoordinates(entity: Cesium.Entity): number[][][] {
+        if (!entity.polygon || !entity.polygon.hierarchy) return [];
+        let pos: Cesium.PolygonHierarchy | undefined = entity.polygon.hierarchy.getValue(Cesium.JulianDate.now());
+        let array = [];
+
+        if (pos) {
+            let positionsArray: number[][] = []
+            pos.positions.forEach((p: Cesium.Cartesian3) => {
+                let arr: number[];
+                let cartographic: Cesium.Cartographic = Cesium.Cartographic.fromCartesian(p);
+                arr = [Cesium.Math.toDegrees(cartographic.longitude), Cesium.Math.toDegrees(cartographic.latitude)];
+                positionsArray.push(arr);
+            });
+            array.push(positionsArray);
+            pos.holes.forEach((h: Cesium.PolygonHierarchy) => {
+                let holeArray: number[][] = [];
+                h.positions.forEach((p: Cesium.Cartesian3) => {
+                    let array: number[];
+                    let cartographic: Cesium.Cartographic = Cesium.Cartographic.fromCartesian(p);
+                    array = [Cesium.Math.toDegrees(cartographic.longitude), Cesium.Math.toDegrees(cartographic.latitude)];
+                    holeArray.push(array);
+                });
+                array.push(holeArray);
+            });
+        }
+
+        return array;
     }
 
     private createFeatureAdditionalProperties(geoJson: any, layer: Layer): any {
@@ -75,8 +179,8 @@ export class MapService {
     }
 
     public styleFeature(dataSource: Cesium.DataSource, style: LayerStyle): void {
-        dataSource.entities.values.forEach((entity: Cesium.Entity) => {
-            if (entity.billboard) this.stylePointFeature(entity, style);
+        dataSource.entities.values.forEach((entity: Cesium.Entity) => {      
+            if (entity.billboard) dataSource.name === 'custom-path' ? this.styleCustomPath(entity) : this.stylePointFeature(entity, style);
             if (entity.polyline) this.stylePolylineFeature(entity, style);
             if (entity.polygon) this.stylePolygonFeature(entity, style);
         });
@@ -86,9 +190,20 @@ export class MapService {
         entity.billboard = undefined;
         entity.point = new Cesium.PointGraphics({
             pixelSize: 8,
-            color: Cesium.Color.fromCssColorString(style.color).withAlpha(0.5),
+            color: Cesium.Color.fromCssColorString(style.color).withAlpha(style.opacity),
             outlineColor: Cesium.Color.fromCssColorString(style.color),
             outlineWidth: 1
+        });
+        return entity;
+    }
+
+    private styleCustomPath(entity: Cesium.Entity): Cesium.Entity { 
+        entity.billboard = undefined;
+        entity.point = new Cesium.PointGraphics({
+            pixelSize: 16,
+            color: Cesium.Color.TRANSPARENT,
+            outlineColor: Cesium.Color.BLUE,
+            outlineWidth: 2
         });
         return entity;
     }

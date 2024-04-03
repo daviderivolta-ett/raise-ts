@@ -72,7 +72,7 @@ export class TabsComponent extends HTMLElement {
     private renderSuggestedRoutePanel(): void {
         if (!this.panel) return;
         this.panel.innerHTML = '';
-        this.panel.innerHTML = '<p>SUGGESTED PATH</p>';
+        this.panel.innerHTML = '';
     }
 
     private renderCustomPathPanel(): void {

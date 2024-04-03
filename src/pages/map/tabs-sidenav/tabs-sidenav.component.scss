@@ -9,6 +9,21 @@
     animation: slideIn .3s ease-in-out forwards;
 }
 
+.toggle {
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 32px;
+}
+
+.close {
+    height: 3px;
+    width: 40px;
+    background-color: rgb(var(--f-default));
+    border-radius: var(--border-radius-circle);
+}
+
 @keyframes slideIn {
     from {
         right: -360px;

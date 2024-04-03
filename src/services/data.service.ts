@@ -94,8 +94,8 @@ export class DataService {
         return new Layer(
             layer.name,
             layer.layer,
-            layer.url = layer.layer_url_wfs,
-            new LayerStyle(layer.style.color, layer.style.opacity),
+            layer.layer_url_wfs,
+            new LayerStyle(layer.style.color, parseFloat(layer.style.opacity)),
             layer.tags,
             layer.relevant_properties.map((property: any) => {
                 let p: LayerProperty = LayerProperty.createEmpty();

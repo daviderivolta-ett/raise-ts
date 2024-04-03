@@ -1,8 +1,9 @@
 import * as Cesium from 'cesium';
 
 import { PointOfInterest } from '../../../models/poi.model';
+import { Path } from '../../../models/path.model';
 import { MapTheme } from '../../../models/theme.model';
-import { Layer } from '../../../models/layer.model';
+import { Layer, LayerStyle } from '../../../models/layer.model';
 import { SnackbarType } from '../../../models/snackbar-type.model';
 
 import { TabsToggleObservable } from '../../../observables/tabs-toggle.observable';
@@ -89,6 +90,10 @@ export class MapComponent extends HTMLElement {
         EventObservable.instance.subscribe('unbench-layer', (layer: Layer) => this.unbenchLayer(layer));
         EventObservable.instance.subscribe('remove-layer-from-bench', (layer: Layer) => this.removeLayerFromBench(layer));
         EventObservable.instance.subscribe('bench-layer', (layer: Layer) => this.benchLayer(layer));
+        EventObservable.instance.subscribe('load-custom-path', (path: Path) => {
+            let geojson: any = MapService.instance.createGeojsonFeatureCollectionFromPois(path.pois);
+            this.loadCustomDataSource(geojson, 'custom-path');
+        });
     }
 
     private mouseOver(movement: Cesium.ScreenSpaceEventHandler.MotionEvent): void {
@@ -114,8 +119,14 @@ export class MapComponent extends HTMLElement {
 
         const entity: Cesium.Entity = pickedObject.id;
 
+        if (entity.id === 'user-pin') return;
+        if (entity.name && (entity.name.includes('selected-feature') || entity.name.includes('custom-path'))) return;
+
         BenchToggleObservable.instance.isOpen = false;
         TabsToggleObservable.instance.isOpen = true;
+
+        const selectedPoiGeojson: any = MapService.instance.createGeoJsonFromEntity(entity);
+        this.loadCustomDataSource(selectedPoiGeojson, 'selected-feature');
 
         const poi: PointOfInterest = PoiService.instance.parsePoi(entity);
         PoiService.instance.selectedPoi = poi;
@@ -203,6 +214,19 @@ export class MapComponent extends HTMLElement {
             return Cesium.Cartesian3.fromDegrees(position.coords.longitude, position.coords.latitude, 0.0);
         };
         pin.position = new Cesium.ConstantPositionProperty(getPosition());
+    }
+
+    public async loadCustomDataSource(geojson: any, name: string): Promise<void> {
+        let dataSource: Cesium.DataSource = await Cesium.GeoJsonDataSource.load(geojson);
+
+        const existingDataSources: Cesium.DataSource[] = this.viewer.dataSources.getByName(name);
+        existingDataSources.forEach((dataSource: Cesium.DataSource) => this.viewer.dataSources.remove(dataSource));
+
+        dataSource.name = name;
+        MapService.instance.styleFeature(dataSource, LayerStyle.createEmpty());
+        await this.viewer.dataSources.add(dataSource);
+        dataSource.entities.values.forEach((entity: Cesium.Entity, index: number) => entity.name = `${name}-${index}`);
+        this.viewer.dataSources.lowerToBottom(dataSource);
     }
 
     public async addLayerToMap(layer: Layer): Promise<void> {

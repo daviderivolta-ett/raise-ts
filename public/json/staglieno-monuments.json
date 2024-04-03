@@ -7,7 +7,7 @@
       "layer_url_wfs": "./GeoJson/staglieno.geojson",
       "style": {
         "color": "#7ae8fe",
-        "opacity": 1
+        "opacity": 0.5
       },
       "tags": [
         "cultura",

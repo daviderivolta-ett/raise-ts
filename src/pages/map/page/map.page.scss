@@ -61,24 +61,6 @@ button[is="app-map-theme-btn"] {
     animation: slideIn .3s ease-in-out forwards;
 }
 
-button[is="app-map-type-btn"] {
-    position: fixed;
-    bottom: 120px;
-    right: 24px;    
-}
-
-button[is="app-map-mode-btn"] {
-    position: fixed;
-    bottom: 72px;
-    right: 24px;
-}
-
-button[is="app-center-position-btn"] {
-    position: fixed;
-    bottom: 24px;
-    right: 24px;
-}
-
 input[is="app-searchbar"] {
     color: rgb(var(--f-default));
     background-color: rgb(var(--bg-default));
@@ -117,26 +99,6 @@ app-bench {
         'opsz' 24;
 }
 
-@keyframes slideIn {
-    from {
-        right: 24px;
-    }
-
-    to {
-        right: calc(24px + 360px);
-    }
-}
-
-@keyframes slideOut {
-    from {
-        right: calc(24px + 360px);
-    }
-
-    to {
-        right: 24px;
-    }
-}
-
 @media screen and (max-width: 768px) {
     .header {
        flex-direction: column;
@@ -145,6 +107,10 @@ app-bench {
 
     .search {
         width: 100%;
+    }
+
+    app-search-result {
+        top: 120px;
     }
 
     app-bench {

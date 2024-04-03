@@ -19,7 +19,7 @@ export class TabsToggleObservable {
     }
 
     set isOpen(isOpen) {
-        this._isOpen = isOpen;
+        this._isOpen = isOpen;    
         EventObservable.instance.publish('toggle-tabs', this.isOpen);
         if (this.isOpen) EventObservable.instance.publish('toggle-bench', false);
     }

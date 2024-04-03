@@ -7,7 +7,7 @@
       "layer_url_wfs": "./GeoJson/free-wifi-router.geojson",
       "style": {
         "color": "#f7cb90",
-        "opacity": 1
+        "opacity": 0.5
       },
       "tags": [
         "città",
@@ -51,7 +51,7 @@
       "layer_url_wfs": "https://geoservizi.regione.liguria.it/geoserver/M2196/wms",
       "style": {
         "color": "#e597ca",
-        "opacity": 1
+        "opacity": 0.5
       },
       "tags": [
         "città",

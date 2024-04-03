@@ -56,21 +56,7 @@ export class MapPage extends HTMLElement {
                     <app-carousel></app-carousel>
                 </div>
                 <app-search-result></app-search-result>
-                <button is="app-map-type-btn" class="fa-button map-controls">
-                    <span class="icon">
-                        <span class="material-symbols-outlined">map</span>
-                    </span>
-                </button>
-                <button is="app-map-mode-btn" class="fa-button map-controls">
-                    <span class="icon">
-                        <span class="material-symbols-outlined">view_in_ar</span>
-                    </span>
-                </button>
-                <button is="app-center-position-btn" class="fa-button map-controls">
-                    <span class="icon">
-                        <span class="material-symbols-outlined">my_location</span>
-                    </span>
-                </button>
+                <app-map-controls></app-map-controls>
                 <app-tabs-sidenav></app-tabs-sidenav>
                 <app-bench></app-bench>
             </div>

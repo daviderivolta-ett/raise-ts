@@ -7,7 +7,7 @@
       "layer_url_wfs": "./GeoJson/car-sharing.geojson",
       "style": {
         "color": "#aaac98",
-        "opacity": 1
+        "opacity": 0.5
       },
       "tags": [
         "città",
@@ -36,7 +36,7 @@
       "layer_url_wfs": "./GeoJson/parcheggi-interscambio.geojson",
       "style": {
         "color": "#12ca7f",
-        "opacity": 1
+        "opacity": 0.5
       },
       "tags": [
         "città",

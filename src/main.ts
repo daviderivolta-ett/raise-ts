@@ -25,6 +25,7 @@ import './pages/map/custom-path-panel/custom-path-panel.component';
 import './pages/map/dialog/dialog.component';
 import './pages/map/custom-path-form/custom-path-form.component';
 import './pages/map/map-type-btn/map-type-btn.component';
+import './pages/map/map-controls/map-controls.component';
 
 // Classes
 import { Router } from './components/router.component';

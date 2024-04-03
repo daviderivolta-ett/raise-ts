@@ -29,6 +29,7 @@ export class CustomPathComponent extends HTMLElement {
     public set path(path: Path) {
         this._path = path;
         this.update();
+        EventObservable.instance.publish('load-custom-path', this.path);
     }
 
     public connectedCallback(): void {
@@ -57,8 +58,8 @@ export class CustomPathComponent extends HTMLElement {
         const sortBtn: HTMLButtonElement | null = this.shadowRoot.querySelector('.sort-btn');
         const editBtn: HTMLButtonElement | null = this.shadowRoot.querySelector('.edit-btn');
         const addBtn: HTMLButtonElement | null = this.shadowRoot.querySelector('.add-btn');
-        const bookmarkBtn : HTMLButtonElement | null = this.shadowRoot.querySelector('.bookmark-btn');
-        const loadBtn : HTMLButtonElement | null = this.shadowRoot.querySelector('.load-btn');
+        const bookmarkBtn: HTMLButtonElement | null = this.shadowRoot.querySelector('.bookmark-btn');
+        const loadBtn: HTMLButtonElement | null = this.shadowRoot.querySelector('.load-btn');
 
         if (sortBtn) sortBtn.addEventListener('click', () => DialogService.instance.createFormDialog(DialogType.SortPois));
         if (editBtn) editBtn.addEventListener('click', () => DialogService.instance.createFormDialog(DialogType.EditPath));
@@ -81,7 +82,7 @@ export class CustomPathComponent extends HTMLElement {
             list.appendChild(card);
         });
 
-        const editBtn: HTMLButtonElement | null = this.shadowRoot.querySelector('.edit-btn');     
+        const editBtn: HTMLButtonElement | null = this.shadowRoot.querySelector('.edit-btn');
         if (editBtn && this.path.name === 'default') editBtn.disabled = true;
     }
 
