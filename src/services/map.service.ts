@@ -179,8 +179,20 @@ export class MapService {
     }
 
     public styleFeature(dataSource: Cesium.DataSource, style: LayerStyle): void {
-        dataSource.entities.values.forEach((entity: Cesium.Entity) => {      
-            if (entity.billboard) dataSource.name === 'custom-path' ? this.styleCustomPath(entity) : this.stylePointFeature(entity, style);
+        dataSource.entities.values.forEach((entity: Cesium.Entity) => {
+            if (entity.billboard) {
+                switch (dataSource.name) {
+                    case 'custom-path':
+                        this.styleCustomPath(entity);
+                        break;
+                    case 'selected-feature':
+                        this.styleSelectedFeature(entity);
+                        break;
+                    default:
+                        this.stylePointFeature(entity, style);
+                        break;
+                }
+            }
             if (entity.polyline) this.stylePolylineFeature(entity, style);
             if (entity.polygon) this.stylePolygonFeature(entity, style);
         });
@@ -197,12 +209,23 @@ export class MapService {
         return entity;
     }
 
-    private styleCustomPath(entity: Cesium.Entity): Cesium.Entity { 
+    private styleCustomPath(entity: Cesium.Entity): Cesium.Entity {
+        entity.billboard = undefined;
+        entity.point = new Cesium.PointGraphics({
+            pixelSize: 12,
+            color: Cesium.Color.TRANSPARENT,
+            outlineColor: Cesium.Color.BLUE,
+            outlineWidth: 2
+        });
+        return entity;
+    }
+
+    private styleSelectedFeature(entity: Cesium.Entity): Cesium.Entity {
         entity.billboard = undefined;
         entity.point = new Cesium.PointGraphics({
             pixelSize: 16,
             color: Cesium.Color.TRANSPARENT,
-            outlineColor: Cesium.Color.BLUE,
+            outlineColor: Cesium.Color.GREEN,
             outlineWidth: 2
         });
         return entity;

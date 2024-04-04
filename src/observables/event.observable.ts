@@ -21,6 +21,16 @@ export class EventObservable {
         this.listeners[eventType].push(callback);
     }
 
+    public unsubscribe(eventType: string, callback: Function): void {
+        if (this.listeners[eventType]) {
+            this.listeners[eventType] = this.listeners[eventType].filter(cb => cb !== callback);
+        }
+    }
+
+    public unsubscribeAll(eventType: string): void {
+        delete this.listeners[eventType];
+    }
+
     public publish(eventType: string, data: any): void {
         if (this.listeners[eventType]) {
             this.listeners[eventType].forEach(callback => callback(data));

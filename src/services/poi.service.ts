@@ -25,10 +25,10 @@ export class PoiService {
         return this._selectedPoi;
     }
 
-    public set selectedPoi(selectedPoi: PointOfInterest) {
+    public set selectedPoi(selectedPoi: PointOfInterest | null) {
         this._selectedPoi = selectedPoi;
         EventObservable.instance.publish('selected-poi', this.selectedPoi);
-        TabsObservable.instance.currentTab = Tab.Info;
+        if (this._selectedPoi !== null) TabsObservable.instance.currentTab = Tab.Info;
     }
 
     public parsePoi(entity: Cesium.Entity): PointOfInterest {

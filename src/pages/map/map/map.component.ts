@@ -94,6 +94,11 @@ export class MapComponent extends HTMLElement {
             let geojson: any = MapService.instance.createGeojsonFeatureCollectionFromPois(path.pois);
             this.loadCustomDataSource(geojson, 'custom-path');
         });
+        EventObservable.instance.subscribe('selected-poi', (poi: PointOfInterest | null) => {
+            if (!poi) return;
+            let geojson: any = MapService.instance.createGeojsonFeatureCollectionFromPois([poi]);
+            this.loadCustomDataSource(geojson, 'selected-feature');
+        });
     }
 
     private mouseOver(movement: Cesium.ScreenSpaceEventHandler.MotionEvent): void {
@@ -112,15 +117,30 @@ export class MapComponent extends HTMLElement {
         if (!pickedObject || !pickedObject.id) {
             TabsToggleObservable.instance.isOpen = false;
             BenchToggleObservable.instance.isOpen = false;
+            PoiService.instance.selectedPoi = null;
+            this.removeCustomDataSource('selected-feature');
             return;
         }
 
-        if (!(pickedObject.id instanceof Cesium.Entity)) return;
+        if (!(pickedObject.id instanceof Cesium.Entity)) {
+            PoiService.instance.selectedPoi = null;
+            this.removeCustomDataSource('selected-feature');
+            return;
+        }
 
         const entity: Cesium.Entity = pickedObject.id;
 
-        if (entity.id === 'user-pin') return;
-        if (entity.name && (entity.name.includes('selected-feature') || entity.name.includes('custom-path'))) return;
+        if (entity.id === 'user-pin') {
+            PoiService.instance.selectedPoi = null;
+            this.removeCustomDataSource('selected-feature');
+            return;
+        }
+
+        if (entity.name && (entity.name.includes('selected-feature') || entity.name.includes('custom-path'))) {
+            PoiService.instance.selectedPoi = null;
+            this.removeCustomDataSource('selected-feature');
+            return;
+        }
 
         BenchToggleObservable.instance.isOpen = false;
         TabsToggleObservable.instance.isOpen = true;
@@ -227,6 +247,11 @@ export class MapComponent extends HTMLElement {
         await this.viewer.dataSources.add(dataSource);
         dataSource.entities.values.forEach((entity: Cesium.Entity, index: number) => entity.name = `${name}-${index}`);
         this.viewer.dataSources.lowerToBottom(dataSource);
+    }
+
+    public removeCustomDataSource(name: string): void {
+        const existingDataSources: Cesium.DataSource[] = this.viewer.dataSources.getByName(name);
+        existingDataSources.forEach((dataSource: Cesium.DataSource) => this.viewer.dataSources.remove(dataSource));
     }
 
     public async addLayerToMap(layer: Layer): Promise<void> {

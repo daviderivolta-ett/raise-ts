@@ -90,7 +90,7 @@ export class CustomPathCardComponent extends HTMLElement {
 
     private setup(): void {
         if (!this.poi) return;
-        this.addEventListener('click', () => PoiService.instance.selectedPoi = this.poi!);
+        this.addEventListener('click', () => PoiService.instance.selectedPoi = this.poi);
         this.setupOrderBtns();
         this.setupRemoveBtn();
     }
