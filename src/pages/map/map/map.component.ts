@@ -1,6 +1,6 @@
 import * as Cesium from 'cesium';
 
-import { PointOfInterest } from '../../../models/poi.model';
+import { PoiType, PointOfInterest } from '../../../models/poi.model';
 import { Path } from '../../../models/path.model';
 import { MapTheme } from '../../../models/theme.model';
 import { Layer, LayerStyle } from '../../../models/layer.model';
@@ -95,7 +95,7 @@ export class MapComponent extends HTMLElement {
             this.loadCustomDataSource(geojson, 'custom-path');
         });
         EventObservable.instance.subscribe('selected-poi', (poi: PointOfInterest | null) => {
-            if (!poi) return;
+            if (!poi || poi.type !== PoiType.Point) return;
             let geojson: any = MapService.instance.createGeojsonFeatureCollectionFromPois([poi]);
             this.loadCustomDataSource(geojson, 'selected-feature');
         });
@@ -238,7 +238,6 @@ export class MapComponent extends HTMLElement {
 
     public async loadCustomDataSource(geojson: any, name: string): Promise<void> {
         let dataSource: Cesium.DataSource = await Cesium.GeoJsonDataSource.load(geojson);
-
         const existingDataSources: Cesium.DataSource[] = this.viewer.dataSources.getByName(name);
         existingDataSources.forEach((dataSource: Cesium.DataSource) => this.viewer.dataSources.remove(dataSource));
 

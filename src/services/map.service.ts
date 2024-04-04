@@ -47,7 +47,7 @@ export class MapService {
             geojson.geometry.coordinates = this.createGeojsonPolylineCoordinates(entity);
         }
 
-        if (entity.polygon && entity.polygon.hierarchy) {
+        if (entity.polygon && entity.polygon.hierarchy) {            
             geojson.geometry.type = 'Polygon';
             geojson.geometry.coordinates = this.createGeojsonPolygonCoordinates(entity)
         }
@@ -179,7 +179,7 @@ export class MapService {
     }
 
     public styleFeature(dataSource: Cesium.DataSource, style: LayerStyle): void {
-        dataSource.entities.values.forEach((entity: Cesium.Entity) => {
+        dataSource.entities.values.forEach((entity: Cesium.Entity) => {  
             if (entity.billboard) {
                 switch (dataSource.name) {
                     case 'custom-path':

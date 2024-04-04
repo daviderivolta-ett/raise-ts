@@ -25,7 +25,7 @@ export class LayerStyle {
     }
 
     static createEmpty(): LayerStyle {
-        return new LayerStyle('rgb(4, 4, 132)', 1);
+        return new LayerStyle('#008000', 1);
     }
 }
 
