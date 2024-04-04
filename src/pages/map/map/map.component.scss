@@ -1,3 +1,51 @@
 .map {
     height: 100%;
+    width: 100%;
+    animation: grow .3s ease-in-out forwards;
+}
+
+:host(.reduce) .map {
+    animation: shrink .3s ease-in-out forwards;
+}
+
+@keyframes shrink {
+    from {
+        width: 100%;
+    }
+
+    to {
+        width: calc(100% - 360px);
+    }
+}
+
+@keyframes grow {
+    from  {
+        width: calc(100% - 360px);
+    }
+
+    to {
+        width: 100%;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    @keyframes shrink {
+        from {
+            height: 100%;
+        }
+    
+        to {
+            height: calc(100% - 360px);
+        }
+    }
+    
+    @keyframes grow {
+        from  {
+            height: calc(100% - 360px);
+        }
+    
+        to {
+            height: 100%;
+        }
+    }
 }

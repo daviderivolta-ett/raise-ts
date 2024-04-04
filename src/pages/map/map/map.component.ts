@@ -24,6 +24,7 @@ export class MapComponent extends HTMLElement {
     public container: HTMLElement = document.createElement('div');
     public viewer!: Cesium.Viewer;
     public imageryLayers: Record<string, Cesium.ImageryLayer> = {};
+    private _isOpen: boolean = false;
 
     constructor() {
         super();
@@ -34,6 +35,15 @@ export class MapComponent extends HTMLElement {
         sheet.replace(style);
         cesiumSheet.replace(cesiumStyle);
         this.shadowRoot.adoptedStyleSheets = [cesiumSheet, sheet];
+    }
+
+    get isOpen(): boolean {
+        return this._isOpen;
+    }
+
+    set isOpen(isOpen: boolean) {
+        this._isOpen = isOpen;
+        this.isOpen === true ? this.classList.add('reduce') : this.classList.remove('reduce');
     }
 
     public connectedCallback(): void {
@@ -81,6 +91,7 @@ export class MapComponent extends HTMLElement {
             this.setCameraToPosition(null);
         }
 
+        EventObservable.instance.subscribe('toggle-tabs', (isOpen: boolean) => this.isOpen = isOpen);
         EventObservable.instance.subscribe('change-theme', (data: { isPhysicalMap: boolean, theme: MapTheme }) => this.changeTheme(data.isPhysicalMap, data.theme));
         EventObservable.instance.subscribe('change-map-mode', () => this.changeMapMode());
         EventObservable.instance.subscribe('toggle-physical-map', (data: { isPhysicalMap: boolean, currentTheme: MapTheme }) => this.togglePhysicalMap(data.isPhysicalMap, data.currentTheme));
