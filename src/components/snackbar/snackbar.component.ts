@@ -70,6 +70,7 @@ export class SnackbarComponent extends HTMLElement {
     private createDismissButton(): void {
         const dismissButton: HTMLButtonElement = document.createElement('button');
         dismissButton.innerHTML = `<span class="material-symbols-outlined">close</span>`;
+        dismissButton.classList.add('dismiss-btn');
         this.shadowRoot.append(dismissButton);
         dismissButton.addEventListener('click', () => this.remove());
     }

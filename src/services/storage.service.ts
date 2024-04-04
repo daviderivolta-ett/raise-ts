@@ -202,6 +202,8 @@ export class StorageService {
         this.selectedCustomPath = path;
 
         this.setCustomPaths();
+
+        SnackbarService.instance.createSnackbar(SnackbarType.Temporary, 'modified-path', `Percorso ${name} modificato con successo.`);
     }
 
     public deletePath(): void {
@@ -214,6 +216,8 @@ export class StorageService {
         this.paths = [...paths];
 
         this.setCustomPaths();
+
+        SnackbarService.instance.createSnackbar(SnackbarType.Temporary, 'deleted-path', `Percorso eliminato con successo.`);
     }
 
     public saveNewPath(name: string): void {
@@ -225,6 +229,8 @@ export class StorageService {
         this.selectedCustomPath = path;
 
         this.setCustomPaths();
+
+        SnackbarService.instance.createSnackbar(SnackbarType.Temporary, 'new-path', `Percorso ${name} creato con successo.`);
     }
 
     public savePath(): void {
@@ -233,6 +239,8 @@ export class StorageService {
         this.paths = [...paths];
 
         this.setCustomPaths();
+
+        SnackbarService.instance.createSnackbar(SnackbarType.Temporary, 'saved-path', `Percorso salvato con successo.`);
     }
 
     public loadPath(name: string): void {
@@ -243,5 +251,7 @@ export class StorageService {
         this.selectedCustomPath = path;
 
         this.setCustomPaths();
+
+        SnackbarService.instance.createSnackbar(SnackbarType.Temporary, 'loaded-path', `Percorso ${name} caricato con successo.`);
     }
 }

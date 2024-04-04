@@ -43,7 +43,7 @@
         },
         {
           "property_name": "CONTESTO_URBANO",
-          "display_name": "Constesto urbano",
+          "display_name": "Contesto urbano",
           "type": "string"
         },
         {
