@@ -17,7 +17,7 @@ export class SnackbarService {
         return SnackbarService._instance;
     }
 
-    public createSnackbar(type: SnackbarType, snackbarId: string, message: string, duration?: number): void {
+    public createSnackbar(type: SnackbarType, snackbarId: string, message: string, duration: number = 2): void {
         this.container = document.querySelector('.snackbar-container');
         if (!this.container) return;
         const snackbar: SnackbarComponent = new SnackbarComponent();

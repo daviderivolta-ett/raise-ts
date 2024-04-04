@@ -1,5 +1,4 @@
 import { MyColor } from '../../../models/color.model';
-import { Path } from '../../../models/path.model';
 import { PoiProperty, PoiType, PointOfInterest } from '../../../models/poi.model';
 import { EventObservable } from '../../../observables/event.observable';
 import { MapService } from '../../../services/map.service';
@@ -121,9 +120,10 @@ export class InfoPanelComponent extends HTMLElement {
         button.classList.add('add-to-path-btn');
         button.innerHTML = 'Aggiungi';
         button.addEventListener('click', () => {
-            const selectedCustomPath: Path = StorageService.instance.selectedCustomPath;
-            selectedCustomPath.pois.unshift(this.poi!);
-            StorageService.instance.selectedCustomPath = selectedCustomPath;
+            // const selectedCustomPath: Path = StorageService.instance.selectedCustomPath;
+            // if (this.poi) selectedCustomPath.pois.unshift(this.poi);
+            // StorageService.instance.selectedCustomPath = selectedCustomPath;
+            if (this.poi) StorageService.instance.addPoiToSelectedPath(this.poi);
         });
         return button;
     }

@@ -7,6 +7,8 @@ import { Tab } from '../models/tab.model';
 
 import { EventObservable } from '../observables/event.observable';
 import { TabsObservable } from '../observables/tabs.observable';
+import { SnackbarService } from './snackbar.service';
+import { SnackbarType } from '../models/snackbar-type.model';
 
 export class StorageService {
     private static _instance: StorageService;
@@ -92,7 +94,7 @@ export class StorageService {
         const pathsString: string | null = localStorage.getItem('paths');
         if (!pathsString) return;
         const rawPaths: any[] = JSON.parse(pathsString);
-        const paths: Path[] = rawPaths.map((path: any) => this.parseCustomPath(path));     
+        const paths: Path[] = rawPaths.map((path: any) => this.parseCustomPath(path));
         this._paths = paths;
     }
 
@@ -100,9 +102,9 @@ export class StorageService {
         localStorage.setItem('paths', JSON.stringify(this.paths));
     }
 
-    private parseCustomPath(path: any): Path {      
+    private parseCustomPath(path: any): Path {
         let p: Path = Path.createEmpty();
-        
+
         if (typeof path.lastSelected === 'boolean') p.lastSelected = path.lastSelected;
         if (path.name) p.name = path.name;
         if (path.pois) p.pois = path.pois.map((poi: any) => this.parsePoi(poi));
@@ -177,6 +179,20 @@ export class StorageService {
         return t;
     }
 
+    public addPoiToSelectedPath(poi: PointOfInterest): void {
+        if (this.isPoiInSelectedPath(poi)) {
+            SnackbarService.instance.createSnackbar(SnackbarType.Temporary, 'already-present', 'Il punto di interesse si trova già nel percorso selezionato.');
+            return;
+        }
+        const path: Path = this.selectedCustomPath;
+        path.pois.unshift(poi);
+        this.selectedCustomPath = path;
+    }
+
+    public isPoiInSelectedPath(poi: PointOfInterest): boolean {
+        return this.selectedCustomPath.pois.some((p: PointOfInterest) => p.name === poi.name);
+    }
+
     public editPath(name: string): void {
         const path: Path | undefined = this.paths.find((path: Path) => path.lastSelected === true);
         if (!path) return;
@@ -223,7 +239,7 @@ export class StorageService {
         const path: Path | undefined = this.paths.find((path: Path) => path.name === name);
         if (!path) return;
         this.paths.forEach((path: Path) => path.lastSelected = false);
-        path.lastSelected = true;      
+        path.lastSelected = true;
         this.selectedCustomPath = path;
 
         this.setCustomPaths();
