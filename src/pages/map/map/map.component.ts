@@ -50,7 +50,7 @@ export class MapComponent extends HTMLElement {
         this.render();
         this.addBaseLayers(ThemeService.instance.mapThemes);
         this.setup();
-        StorageService.instance.activeLayers.forEach((layer: Layer) => this.addLayerToMap(layer));
+        this.addSavedPath();
     }
 
     private render(): void {
@@ -108,6 +108,7 @@ export class MapComponent extends HTMLElement {
         EventObservable.instance.subscribe('selected-poi', (poi: PointOfInterest | null) => {
             if (!poi || poi.type !== PoiType.Point) return;
             let geojson: any = MapService.instance.createGeojsonFeatureCollectionFromPois([poi]);
+            this.setCameraToPosition(poi.position);
             this.loadCustomDataSource(geojson, 'selected-feature');
         });
     }
@@ -170,6 +171,12 @@ export class MapComponent extends HTMLElement {
             this.viewer.imageryLayers.add(imagerylayer);
             this.imageryLayers[theme.layer] = imagerylayer;
         });
+    }
+
+    private addSavedPath(): void {
+        StorageService.instance.activeLayers.forEach((layer: Layer) => this.addLayerToMap(layer));
+        const geojson: any = MapService.instance.createGeojsonFeatureCollectionFromPois(StorageService.instance.selectedCustomPath.pois);
+        this.loadCustomDataSource(geojson, 'custom-path');
     }
 
     public changeTheme(isPhysicalMap: boolean, theme: MapTheme): void {
