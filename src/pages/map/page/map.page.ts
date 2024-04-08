@@ -1,5 +1,7 @@
+import { Path } from '../../../models/path.model';
 import { DataService } from '../../../services/data.service';
 import { PositionService } from '../../../services/position.service';
+import { StorageService } from '../../../services/storage.service';
 import { ThemeService } from '../../../services/theme.service';
 import { MapComponent } from '../map/map.component';
 
@@ -13,7 +15,7 @@ export class MapPage extends HTMLElement {
         super();
 
         this.shadowRoot = this.attachShadow({ mode: 'closed' });
-        
+
         let sheet: CSSStyleSheet = new CSSStyleSheet();
         sheet.replaceSync(style);
         this.shadowRoot.adoptedStyleSheets.push(sheet);
@@ -23,6 +25,10 @@ export class MapPage extends HTMLElement {
         await DataService.instance.getData();
         await ThemeService.instance.getMapThemes();
         await PositionService.instance.getUserPosition();
+
+        if (!StorageService.instance.paths.some((path: Path) => path.name === 'default')) StorageService.instance.saveNewPath('default');
+        const selectedPath: Path | undefined = StorageService.instance.paths.find((path: Path) => path.lastSelected === true);
+        if (selectedPath) StorageService.instance.selectedCustomPath = selectedPath;
 
         this.render();
         this.setup();
@@ -52,6 +58,11 @@ export class MapPage extends HTMLElement {
                                 <span class="material-symbols-outlined">contrast</span>
                             </span>
                         </button>
+                        <button class="fa-button tags-page-link">
+                            <span class="icon">
+                                <span class="material-symbols-outlined">apps</span>
+                            </span>
+                        </button>
                     </div>
                     <app-carousel></app-carousel>
                 </div>
@@ -66,7 +77,11 @@ export class MapPage extends HTMLElement {
         this.map = this.shadowRoot.querySelector('app-map') as MapComponent;
     }
 
-    private setup(): void { }
+    private setup(): void {
+        const link: HTMLButtonElement | null = this.shadowRoot.querySelector('.tags-page-link');
+        if (!link) return;
+        link.addEventListener('click', () => window.location.hash = '/');
+    }
 }
 
 customElements.define('page-map', MapPage);

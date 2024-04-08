@@ -52,6 +52,10 @@ export class TabsSidenavComponent extends HTMLElement {
     private update(): void {
         this.isVisible === true ? this.classList.add('visible') : this.classList.remove('visible');
     }
+
+    public disconnectedCallback(): void {
+        EventObservable.instance.unsubscribeAll('toggle-tabs');
+    }
 }
 
 customElements.define('app-tabs-sidenav', TabsSidenavComponent);

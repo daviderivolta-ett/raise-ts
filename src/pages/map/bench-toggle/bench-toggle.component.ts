@@ -29,6 +29,10 @@ export class BenchToggleComponent extends HTMLButtonElement {
             this.isOpen = isOpen;
         });
     }
+
+    public disconnectedCallback(): void {
+        EventObservable.instance.unsubscribeAll('toggle-bench');
+    }
 }
 
 customElements.define('app-bench-toggle', BenchToggleComponent, { extends: 'button' });

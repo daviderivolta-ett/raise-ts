@@ -36,6 +36,10 @@ export class CenterPositionBtn extends HTMLButtonElement {
             this.isOpen = isOpen;
         })
     }
+
+    public disconnectedCallback(): void {
+        EventObservable.instance.unsubscribeAll('toggle-tabs');
+    }
 }
 
 customElements.define('app-center-position-btn', CenterPositionBtn, { extends: 'button' });

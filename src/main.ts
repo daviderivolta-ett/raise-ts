@@ -3,7 +3,7 @@ import { Route, RouteType } from './models/route.model';
 
 // Components
 import './components/router.component';
-import './pages/tags/tags.page';
+import './pages/tags/page/tags.page';
 import './pages/map/page/map.page';
 import './pages/map/map/map.component';
 import './pages/map/map-mode-btn/map-mode-btn.component';
@@ -26,11 +26,11 @@ import './pages/map/dialog/dialog.component';
 import './pages/map/custom-path-form/custom-path-form.component';
 import './pages/map/map-type-btn/map-type-btn.component';
 import './pages/map/map-controls/map-controls.component';
+import './pages/tags/tags-wall/tags-wall.component';
 
 // Classes
 import { Router } from './components/router.component';
 import { StorageService } from './services/storage.service';
-import { Path } from './models/path.model';
 
 // Routing
 const router: Router = document.querySelector('app-router') as Router;
@@ -42,8 +42,6 @@ const routes: Route[] = [indexRoute, mapRoute, notFoundRoute];
 router.addRoutes(routes);
 
 // Local Storage
+StorageService.instance.getTags();
 StorageService.instance.getSavedLayers();
 StorageService.instance.getCustomPaths();
-if (!StorageService.instance.paths.some((path: Path) => path.name === 'default')) StorageService.instance.saveNewPath('default');
-const selectedPath: Path | undefined = StorageService.instance.paths.find((path: Path) => path.lastSelected === true);
-if (selectedPath) StorageService.instance.selectedCustomPath = selectedPath;

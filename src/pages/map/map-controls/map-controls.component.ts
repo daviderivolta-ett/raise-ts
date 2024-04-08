@@ -55,6 +55,10 @@ export class MapControlsComponent extends HTMLElement {
     private setup(): void {
         EventObservable.instance.subscribe('toggle-tabs', (isOpen: boolean) => this.isOpen = isOpen);
     }
+
+    public disconnectedCallback(): void {
+        EventObservable.instance.unsubscribeAll('toggle-tabs');
+    }
 }
 
 customElements.define('app-map-controls', MapControlsComponent);

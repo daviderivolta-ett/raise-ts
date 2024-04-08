@@ -113,6 +113,21 @@ export class MapComponent extends HTMLElement {
         });
     }
 
+    public disconnectedCallback(): void {
+        EventObservable.instance.unsubscribeAll('toggle-tabs');
+        EventObservable.instance.unsubscribeAll('change-theme');
+        EventObservable.instance.unsubscribeAll('change-map-mode');
+        EventObservable.instance.unsubscribeAll('toggle-physical-map');
+        EventObservable.instance.unsubscribeAll('set-camera');
+        EventObservable.instance.unsubscribeAll('check-user-position');
+        EventObservable.instance.unsubscribeAll('add-layer');
+        EventObservable.instance.unsubscribeAll('unbench-layer');
+        EventObservable.instance.unsubscribeAll('remove-layer-from-bench');
+        EventObservable.instance.unsubscribeAll('bench-layer');
+        EventObservable.instance.unsubscribeAll('load-custom-path');
+        EventObservable.instance.unsubscribeAll('selected-poi');
+    }
+
     private mouseOver(movement: Cesium.ScreenSpaceEventHandler.MotionEvent): void {
         const windowPosition: Cesium.Cartesian2 = movement.endPosition;
         const pickedEntity: Cesium.Cesium3DTileFeature = this.viewer.scene.pick(windowPosition);

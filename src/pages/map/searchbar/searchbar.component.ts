@@ -37,10 +37,14 @@ export class SearchbarComponent extends HTMLInputElement {
         if (this.inputValue === '') {
             EventObservable.instance.publish('search-layer', layerSearchResult);
         } else {
-            const filteredLayers: Layer[] = DataService._instance.filterLayersByNameAndTag(DataService._instance.data, this.value);
+            const filteredLayers: Layer[] = DataService.instance.filterLayersByNameAndTag(DataService.instance.data, this.value);
             layerSearchResult = { layers: filteredLayers, searchValue: this.inputValue };
             EventObservable.instance.publish('search-layer', layerSearchResult);
         }
+    }
+
+    public disconnectedCallback(): void {
+        EventObservable.instance.unsubscribeAll('empty-searchbar');
     }
 }
 

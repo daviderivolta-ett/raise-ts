@@ -37,6 +37,9 @@ export class TabsToggleComponent extends HTMLButtonElement {
         this.isOpen ? this.icon.innerHTML = 'close' : this.icon.innerHTML = 'menu';
     }
 
+    public disconnectedCallback(): void {
+        EventObservable.instance.unsubscribeAll('toggle-tabs');
+    }
 }
 
 customElements.define('app-tabs-toggle', TabsToggleComponent, { extends: 'button' });

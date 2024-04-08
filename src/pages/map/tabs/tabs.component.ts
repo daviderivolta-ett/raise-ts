@@ -61,6 +61,11 @@ export class TabsComponent extends HTMLElement {
         if (this.customRouteTab) this.customRouteTab.addEventListener('click', () => this.currentTab = Tab.CustomPath);
 
         EventObservable.instance.subscribe('current-tab-updated', (tab: Tab) => this.currentTab = tab);
+        console.log(EventObservable.instance);        
+    }
+
+    public disconnectedCallback(): void {
+        EventObservable.instance.unsubscribeAll('current-tab-updated');
     }
 
     private renderInfoPanel(): void {

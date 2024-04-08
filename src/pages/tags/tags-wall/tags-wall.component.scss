@@ -1,0 +1,88 @@
+.page {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    overflow: hidden;
+    background-color: rgb(var(--bg-inset));
+}
+
+.box {
+    max-width: 500px;
+    max-height: 100%;
+    padding: 32px;
+    background-color: rgb(var(--bg-default));
+    border-radius: var(--border-radius-l);
+    box-sizing: border-box;
+}
+
+.header {
+    text-align: center;
+}
+
+.logo {
+    width: 40px;
+}
+
+h1 {
+    color: rgb(var(--f-emphasis));
+    font-size: 1.5rem;
+    margin: 16px 0 0 0;
+}
+
+form {
+    overflow: hidden;
+}
+
+.tags-wall {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 24px 0;
+}
+
+.chip {
+    position: relative;
+    white-space: nowrap;
+}
+
+input[type="checkbox"] {
+    position: absolute;
+    height: 0;
+    width: 0;
+    opacity: 0;
+}
+
+label {
+    cursor: pointer;
+    display: block;
+    background-color: transparent;
+    border: 1px solid rgb(var(--f-default));
+    padding: 4px 8px;
+    border-radius: var( --border-radius-circle);
+}
+
+input[type="checkbox"]:checked + label {
+    color: rgb(var(--f-emphasis));
+    border-color: rgb(var(--f-accent)); 
+    background-color: rgb(var(--bg-subtle));   
+}
+
+button {
+    cursor: pointer;
+    width: 100%;
+    border: none;
+    border-radius: var(--border-radius-circle);
+    color: rgb(var(--f-default));
+    background-color: rgb(var(--bg-subtle));
+    padding: 8px 0;
+    border: 1px solid transparent;
+    box-sizing: border-box;
+}
+
+button.submit-btn {
+    color: rgb(var(--f-default));
+    background-color: rgb(var(--bg-accent));
+    border-color: rgb(var(--border-accent));
+}

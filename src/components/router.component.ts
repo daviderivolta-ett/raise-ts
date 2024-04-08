@@ -21,7 +21,7 @@ export class Router extends HTMLElement {
     }
 
     private checkRoute(): void {
-        const hash: string = window.location.hash.slice(2);
+        const hash: string = window.location.hash.slice(2);   
         this.changeRoute(hash);
     }
 

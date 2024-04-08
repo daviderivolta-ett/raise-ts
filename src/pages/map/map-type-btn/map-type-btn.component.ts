@@ -28,6 +28,10 @@ export class MapTypeBtnComponent extends HTMLButtonElement {
             this.isOpen = isOpen;
         });
     }
+
+    public disconnectedCallback(): void {
+        EventObservable.instance.unsubscribeAll('toggle-tabs');
+    }
 }
 
 customElements.define('app-map-type-btn', MapTypeBtnComponent, { extends: 'button' });

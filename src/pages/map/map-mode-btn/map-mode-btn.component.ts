@@ -28,6 +28,9 @@ export class MapModeButtonComponent extends HTMLButtonElement {
         });
     }
 
+    public disconnectedCallback(): void {
+        EventObservable.instance.unsubscribeAll('toggle-tabs');
+    }
 }
 
 customElements.define('app-map-mode-btn', MapModeButtonComponent, { extends: 'button' });

@@ -82,6 +82,10 @@ export class SearchResultComponent extends HTMLElement {
             this.container.append(chip);
         });
     }
+
+    public disconnectedCallback(): void {
+        EventObservable.instance.unsubscribeAll('search-layer');
+    }
 }
 
 customElements.define('app-search-result', SearchResultComponent);

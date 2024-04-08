@@ -2,7 +2,7 @@ import { Data, Layer, LayerCategory, LayerGroup, LayerProperty, PropertyType, La
 
 export class DataService {
     private CATEGORIES_URL: string = './json/categories.json';
-    static _instance: DataService;
+    private static _instance: DataService;
     private _data: any;
 
     constructor() {
@@ -30,7 +30,7 @@ export class DataService {
         } else {
             let data = await this.fetchAppData(this.CATEGORIES_URL);
             data = this.parseData(data);
-            this.data = data;           
+            this.data = data;
             return data;
         }
     }
@@ -148,5 +148,25 @@ export class DataService {
         });
 
         return layers;
+    }
+
+    public getAllTags(data: Data): string[] {
+        let tags: string[] = [];
+
+        data.categories.map((category: LayerCategory) => {
+            category.groups.map((group: LayerGroup | string) => {
+                if (typeof group !== 'string') {
+                    group.layers.map((layer: Layer) => {
+                        layer.tags.map((tag: string) => {
+                            tags.push(tag);
+                        });
+                    });
+                }
+            });
+        });
+
+        let uniq: string[] = [...new Set(tags)];
+
+        return uniq;
     }
 }

@@ -68,6 +68,10 @@ export class CarouselComponent extends HTMLElement {
         });
     }
 
+    public disconnectedCallback(): void {
+        EventObservable.instance.unsubscribeAll('active-layers-updated');
+    }
+
     private startDrag(e: MouseEvent): void {
         this.isDragging = true; 
         this.startX = e.pageX;

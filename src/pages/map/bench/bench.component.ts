@@ -74,6 +74,11 @@ export class BenchComponent extends HTMLElement {
         });
     }
 
+    public disconnectedCallback(): void {
+        EventObservable.instance.unsubscribeAll('bench-layers-updated');
+        EventObservable.instance.unsubscribeAll('toggle-bench');
+    }
+
     private toggleBench(): void {
         this.isVisible === true ? this.classList.add('visible') : this.classList.remove('visible');
     }

@@ -12,6 +12,7 @@ import { SnackbarType } from '../models/snackbar-type.model';
 
 export class StorageService {
     private static _instance: StorageService;
+    private _tags: string[] = [];
     private _paths: Path[] = [];
     private _selectedCustomPath: Path = Path.createDefault();
     private _layers: SavedLayers = { active: [], bench: [] };
@@ -26,6 +27,14 @@ export class StorageService {
     static get instance(): StorageService {
         if (!StorageService._instance) StorageService._instance = new StorageService();
         return StorageService._instance;
+    }
+
+    public get tags(): string[] {
+        return this._tags;
+    }
+
+    public set tags(tags: string[]) {
+        this._tags = tags;
     }
 
     public get paths(): Path[] {
@@ -56,7 +65,7 @@ export class StorageService {
     public set activeLayers(activeLayers: Layer[]) {
         this._activeLayers = activeLayers;
         EventObservable.instance.publish('active-layers-updated', this.activeLayers);
-        this.layers = { ...this.layers, active: this.activeLayers };
+        this.layers = { ...this.layers, active: this.activeLayers };                
     }
 
     public get benchLayers(): Layer[] {
@@ -66,13 +75,26 @@ export class StorageService {
     public set benchLayers(benchLayers: Layer[]) {
         this._benchLayers = benchLayers;
         EventObservable.instance.publish('bench-layers-updated', this.benchLayers);
-        this.layers = { ...this.layers, bench: this.benchLayers };
+        this.layers = { ...this.layers, bench: this.benchLayers };  
     }
 
     public set selectedCustomPath(selectedCustomPath: Path) {
         this._selectedCustomPath = selectedCustomPath;
         EventObservable.instance.publish('selected-custom-path-updated', this.selectedCustomPath);
         TabsObservable.instance.currentTab = Tab.CustomPath;
+    }
+
+    public setTags(tags: string[]): void {
+        localStorage.setItem('tags', JSON.stringify(tags));
+        this.tags = tags;
+    }
+
+    public getTags(): void {
+        const tagsString: string | null = localStorage.getItem('tags');
+        if (!tagsString) return;
+
+        const tags: string[] = JSON.parse(tagsString);
+        this.tags = tags;        
     }
 
     public getSavedLayers(): void {

@@ -86,6 +86,9 @@ export class CustomPathComponent extends HTMLElement {
         if (editBtn && this.path.name === 'default') editBtn.disabled = true;
     }
 
+    public disconnectedCallback(): void {
+        EventObservable.instance.unsubscribeAll('selected-custom-path-updated');
+    }
 }
 
 customElements.define('app-custom-path-panel', CustomPathComponent);
