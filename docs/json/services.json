@@ -7,7 +7,7 @@
       "layer_url_wfs": "./GeoJson/bagni-pubblici.geojson",
       "style": {
         "color": "#febfa4",
-        "opacity": 1
+        "opacity": 0.5
       },
       "tags": [
         "città",
@@ -52,7 +52,7 @@
       "layer_url_wfs": "./GeoJson/hospitals.geojson",
       "style": {
         "color": "#6ab58d",
-        "opacity": 1
+        "opacity": 0.5
       },
       "tags": [
         "città",
@@ -92,7 +92,7 @@
       "layer_url_wfs": "https://geoservizi.regione.liguria.it/geoserver/M452/wfs",
       "style": {
         "color": "#cb1648",
-        "opacity": 1
+        "opacity": 0.5
       },
       "tags": [
         "città",
@@ -126,7 +126,7 @@
       "layer_url_wfs": "./GeoJson/cinemas.geojson",
       "style": {
         "color": "#b795d2",
-        "opacity": 1
+        "opacity": 0.5
       },
       "tags": [
         "città",
@@ -156,7 +156,7 @@
       "layer_url_wfs": "./GeoJson/theatre.geojson",
       "style": {
         "color": "#c06156",
-        "opacity": 1
+        "opacity": 0.5
       },
       "tags": [
         "città",
@@ -216,7 +216,7 @@
       "layer_url_wfs": "./GeoJson/schools.geojson",
       "style": {
         "color": "#97424c",
-        "opacity": 1
+        "opacity": 0.5
       },
       "tags": [
         "città",
@@ -305,7 +305,7 @@
       "layer_url_wfs": "./GeoJson/mercati-rionali.geojson",
       "style": {
         "color": "#37f58e",
-        "opacity": 1
+        "opacity": 0.5
       },
       "tags": [
         "città",
@@ -349,7 +349,7 @@
       "layer_url_wfs": "./GeoJson/strutture-ricettive-turistiche.geojson",
       "style": {
         "color": "#bf5132",
-        "opacity": 1
+        "opacity": 0.5
       },
       "tags": [
         "città",
@@ -397,7 +397,7 @@
       "layer_url_wfs": "./GeoJson/drinking-water.geojson",
       "style": {
         "color": "#b89da7",
-        "opacity": 1
+        "opacity": 0.5
       },
       "tags": [
         "città",
@@ -417,7 +417,7 @@
       "layer_url_wfs": "./GeoJson/surveillance-cameras.geojson",
       "style": {
         "color": "#691a40",
-        "opacity": 1
+        "opacity": 0.5
       },
       "tags": [
         "città",
@@ -435,7 +435,7 @@
       "layer_url_wfs": "./GeoJson/atm.geojson",
       "style": {
         "color": "#4bdd99",
-        "opacity": 1
+        "opacity": 0.5
       },
       "tags": [
         "città",
@@ -460,7 +460,7 @@
       "layer_url_wfs": "./GeoJson/benches.geojson",
       "style": {
         "color": "#db2103",
-        "opacity": 1
+        "opacity": 0.5
       },
       "tags": [
         "città",

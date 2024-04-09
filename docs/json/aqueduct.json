@@ -39,7 +39,7 @@
       "layer_url_wfs": "./GeoJson/aqueduct-manufatti.geojson",
       "style": {
         "color": "#5e0ca8",
-        "opacity": 1
+        "opacity": 0.5
       },
       "tags": [
         "cultura",
@@ -81,7 +81,7 @@
       "layer_url_wfs": "./GeoJson/aqueduct-area-sosta.geojson",
       "style": {
         "color": "#64896d",
-        "opacity": 1
+        "opacity": 0.5
       },
       "tags": [
         "cultura",
@@ -104,7 +104,7 @@
       "layer_url_wfs": "./GeoJson/aqueduct-punti-accesso.geojson",
       "style": {
         "color": "#714fc7",
-        "opacity": 1
+        "opacity": 0.5
       },
       "tags": [
         "cultura",
@@ -137,7 +137,7 @@
       "layer_url_wfs": "./GeoJson/aqueduct-punti-interesse.geojson",
       "style": {
         "color": "#5d18f3",
-        "opacity": 1
+        "opacity": 0.5
       },
       "tags": [
         "cultura",
@@ -171,7 +171,7 @@
       "layer_url_wfs": "./GeoJson/aqueduct-pannelli-informativi.geojson",
       "style": {
         "color": "#d356c4",
-        "opacity": 1
+        "opacity": 0.5
       },
       "tags": [
         "cultura",
