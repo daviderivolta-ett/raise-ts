@@ -1,3 +1,4 @@
+import { Layer } from '../../../models/layer.model';
 import { DataService } from '../../../services/data.service';
 import { StorageService } from '../../../services/storage.service';
 
@@ -67,6 +68,10 @@ export class TagsWallComponent extends HTMLElement {
             const formData: FormData = new FormData(form);
             const tags: string[] = Array.from(formData.getAll('tag'), (value: FormDataEntryValue) => String(value));
             StorageService.instance.setTags(tags);
+            
+            const layers: Layer[] = DataService.instance.filterLayersByTags(DataService.instance.data, tags);           
+            StorageService.instance.activeLayers = layers;
+            StorageService.instance.benchLayers = [];
             window.location.hash = '/map';
         });
     }

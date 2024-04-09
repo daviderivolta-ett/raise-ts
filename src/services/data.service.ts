@@ -169,4 +169,32 @@ export class DataService {
 
         return uniq;
     }
+
+    public filterLayersByTag(data: Data, value: string): Layer[] {
+        let layers: Layer[] = [];
+
+        layers = data.categories.flatMap((category: LayerCategory) => {
+            return category.groups.flatMap((group: LayerGroup | string) => {
+                if (typeof group === 'string') return [Layer.createEmpty()];
+                return group.layers.filter((layer: Layer) => {
+                    return layer.tags.some((tag: string) => tag.includes(value));
+                });
+            });
+        });
+
+        return layers;
+    }
+
+    public filterLayersByTags(data: Data, tags: string[]): Layer[] {
+        let allLayers: Layer[] = [];
+
+        tags.forEach((tag: string) => {
+            const layers: Layer[] = this.filterLayersByTag(data, tag);
+            layers.forEach((layer: Layer) => allLayers.push(layer));
+        });
+
+        let uniq: Layer[] = [...new Set(allLayers)];
+
+        return uniq;
+    }
 }

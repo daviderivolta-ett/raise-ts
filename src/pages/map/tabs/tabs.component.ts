@@ -60,8 +60,7 @@ export class TabsComponent extends HTMLElement {
         if (this.suggestedRouteTab) this.suggestedRouteTab.addEventListener('click', () => this.currentTab = Tab.SuggestedPath);
         if (this.customRouteTab) this.customRouteTab.addEventListener('click', () => this.currentTab = Tab.CustomPath);
 
-        EventObservable.instance.subscribe('current-tab-updated', (tab: Tab) => this.currentTab = tab);
-        console.log(EventObservable.instance);        
+        EventObservable.instance.subscribe('current-tab-updated', (tab: Tab) => this.currentTab = tab);     
     }
 
     public disconnectedCallback(): void {
