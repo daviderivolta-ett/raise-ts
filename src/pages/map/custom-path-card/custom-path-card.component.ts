@@ -131,9 +131,9 @@ export class CustomPathCardComponent extends HTMLElement {
         removeBtn.addEventListener('click', (e: Event) => {
             e.stopPropagation();
             let currentIndex: number = StorageService.instance.selectedCustomPath.pois.indexOf(this.poi!);
-            let path: Path = StorageService.instance.selectedCustomPath;
-            path.pois.splice(currentIndex, 1);
-            StorageService.instance.selectedCustomPath = path;
+            let pois: PointOfInterest[] = [...StorageService.instance.selectedCustomPath.pois];
+            pois.splice(currentIndex, 1);
+            StorageService.instance.selectedCustomPath = {...StorageService.instance.selectedCustomPath, pois};
         });
     }
 }

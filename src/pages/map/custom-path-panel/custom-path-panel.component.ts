@@ -10,7 +10,7 @@ import style from './custom-path-panel.scss?raw';
 
 export class CustomPathComponent extends HTMLElement {
     shadowRoot: ShadowRoot;
-    private _path: Path = StorageService.instance.selectedCustomPath;
+    private _path: Path = {...StorageService.instance.selectedCustomPath};
 
     constructor() {
         super();
@@ -28,7 +28,7 @@ export class CustomPathComponent extends HTMLElement {
 
     public set path(path: Path) {
         this._path = path;
-        this.update();
+        // this.update();
         EventObservable.instance.publish('load-custom-path', this.path);
     }
 
@@ -72,7 +72,7 @@ export class CustomPathComponent extends HTMLElement {
         });
     }
 
-    private update(): void {
+    private update(): void {            
         const list: HTMLDivElement | null = this.shadowRoot.querySelector('.list');
         if (!list) return;
         list.innerHTML = '';

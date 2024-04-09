@@ -34,6 +34,7 @@ export class EventObservable {
     public publish(eventType: string, data: any): void {
         if (this.listeners[eventType]) {
             this.listeners[eventType].forEach(callback => callback(data));
+            
         }
     }
 }

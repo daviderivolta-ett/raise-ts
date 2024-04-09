@@ -11,7 +11,7 @@ import style from './custom-path-form.component.scss?raw';
 export class CustomPathFormComponent extends HTMLElement {
     public shadowRoot: ShadowRoot;
     private _type: DialogType | null = null;
-    private _paths: Path[] = StorageService.instance.paths as Path[];
+    private _paths: Path[] = [...StorageService.instance.paths];
 
     constructor() {
         super();
@@ -249,7 +249,7 @@ export class CustomPathFormComponent extends HTMLElement {
     private setupLoadPathForm(): void {
         const form: HTMLFormElement | null = this.shadowRoot.querySelector('.form');
         if (!form) return;
-        form.addEventListener('submit', () => {
+        form.addEventListener('submit', () => {        
             const data: FormData = new FormData(form);
             const selectedPath: FormDataEntryValue | null = data.get('saved-paths');
             if (selectedPath) StorageService.instance.loadPath(selectedPath.toString());

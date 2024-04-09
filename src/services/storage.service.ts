@@ -49,6 +49,12 @@ export class StorageService {
         return this._selectedCustomPath;
     }
 
+    public set selectedCustomPath(selectedCustomPath: Path) {
+        this._selectedCustomPath = selectedCustomPath;
+        EventObservable.instance.publish('selected-custom-path-updated', this.selectedCustomPath);
+        TabsObservable.instance.currentTab = Tab.CustomPath;
+    }
+
     public get layers(): SavedLayers {
         return this._layers;
     }
@@ -65,7 +71,7 @@ export class StorageService {
     public set activeLayers(activeLayers: Layer[]) {
         this._activeLayers = activeLayers;
         EventObservable.instance.publish('active-layers-updated', this.activeLayers);
-        this.layers = { ...this.layers, active: this.activeLayers };                
+        this.layers = { ...this.layers, active: this.activeLayers };
     }
 
     public get benchLayers(): Layer[] {
@@ -75,13 +81,7 @@ export class StorageService {
     public set benchLayers(benchLayers: Layer[]) {
         this._benchLayers = benchLayers;
         EventObservable.instance.publish('bench-layers-updated', this.benchLayers);
-        this.layers = { ...this.layers, bench: this.benchLayers };  
-    }
-
-    public set selectedCustomPath(selectedCustomPath: Path) {
-        this._selectedCustomPath = selectedCustomPath;
-        EventObservable.instance.publish('selected-custom-path-updated', this.selectedCustomPath);
-        TabsObservable.instance.currentTab = Tab.CustomPath;
+        this.layers = { ...this.layers, bench: this.benchLayers };
     }
 
     public setTags(tags: string[]): void {
@@ -94,7 +94,7 @@ export class StorageService {
         if (!tagsString) return;
 
         const tags: string[] = JSON.parse(tagsString);
-        this.tags = tags;        
+        this.tags = tags;
     }
 
     public getSavedLayers(): void {
@@ -117,7 +117,7 @@ export class StorageService {
         if (!pathsString) return;
         const rawPaths: any[] = JSON.parse(pathsString);
         const paths: Path[] = rawPaths.map((path: any) => this.parseCustomPath(path));
-        this._paths = paths;
+        this.paths = paths;
     }
 
     public setCustomPaths(): void {
@@ -206,9 +206,10 @@ export class StorageService {
             SnackbarService.instance.createSnackbar(SnackbarType.Temporary, 'already-present', 'Il punto di interesse si trova già nel percorso selezionato.');
             return;
         }
-        const path: Path = this.selectedCustomPath;
-        path.pois.unshift(poi);
-        this.selectedCustomPath = path;
+        const pois: PointOfInterest[] = [...this.selectedCustomPath.pois];
+        pois.unshift(poi);
+        this.selectedCustomPath = { ...Path.createEmpty(), name: this.selectedCustomPath.name }; // TODO
+        this.selectedCustomPath = { ...this.selectedCustomPath, pois };
     }
 
     public isPoiInSelectedPath(poi: PointOfInterest): boolean {
@@ -223,6 +224,7 @@ export class StorageService {
         paths.push(path);
         this.selectedCustomPath = path;
 
+        this.paths = paths;
         this.setCustomPaths();
 
         SnackbarService.instance.createSnackbar(SnackbarType.Temporary, 'modified-path', `Percorso ${name} modificato con successo.`);
@@ -235,21 +237,23 @@ export class StorageService {
             defaultPath.lastSelected = true;
             this.selectedCustomPath = defaultPath
         };
-        this.paths = [...paths];
 
+        this.paths = [...paths];
         this.setCustomPaths();
 
         SnackbarService.instance.createSnackbar(SnackbarType.Temporary, 'deleted-path', `Percorso eliminato con successo.`);
     }
 
     public saveNewPath(name: string): void {
-        this.paths = this.paths.map((path: Path) => (path.lastSelected = false, path));
+        const paths = this.paths.map((path: Path) => (path.lastSelected = false, path));
         const path: Path = Path.createEmpty();
+
         path.lastSelected = true;
         path.name = name;
-        this.paths.push(path);
+        paths.push(path);
         this.selectedCustomPath = path;
 
+        this.paths = paths;
         this.setCustomPaths();
 
         SnackbarService.instance.createSnackbar(SnackbarType.Temporary, 'new-path', `Percorso ${name} creato con successo.`);
@@ -258,8 +262,8 @@ export class StorageService {
     public savePath(): void {
         const paths: Path[] = this.paths.filter((path: Path) => path.lastSelected !== true);
         paths.push(this.selectedCustomPath);
-        this.paths = [...paths];
 
+        this.paths = paths;
         this.setCustomPaths();
 
         SnackbarService.instance.createSnackbar(SnackbarType.Temporary, 'saved-path', `Percorso salvato con successo.`);
@@ -268,10 +272,13 @@ export class StorageService {
     public loadPath(name: string): void {
         const path: Path | undefined = this.paths.find((path: Path) => path.name === name);
         if (!path) return;
-        this.paths.forEach((path: Path) => path.lastSelected = false);
+
+        const paths: Path[] = this.paths;
+        paths.forEach((path: Path) => path.lastSelected = false);
         path.lastSelected = true;
         this.selectedCustomPath = path;
 
+        this.paths = paths;
         this.setCustomPaths();
 
         SnackbarService.instance.createSnackbar(SnackbarType.Temporary, 'loaded-path', `Percorso ${name} caricato con successo.`);

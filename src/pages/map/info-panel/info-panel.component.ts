@@ -122,7 +122,7 @@ export class InfoPanelComponent extends HTMLElement {
         button.addEventListener('click', () => {
             // const selectedCustomPath: Path = StorageService.instance.selectedCustomPath;
             // if (this.poi) selectedCustomPath.pois.unshift(this.poi);
-            // StorageService.instance.selectedCustomPath = selectedCustomPath;
+            // StorageService.instance.selectedCustomPath = selectedCustomPath;                     
             if (this.poi) StorageService.instance.addPoiToSelectedPath(this.poi);
         });
         return button;
