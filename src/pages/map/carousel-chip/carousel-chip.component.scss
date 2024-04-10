@@ -5,8 +5,8 @@ button[is="app-carousel-chip"] {
     justify-content: space-between;
     height: 40px;
     text-wrap: nowrap;
-    color: rgb(var(--f-default));
-    background-color: rgb(var(--bg-default));
+    color: var(--on-surface);
+    background-color: var(--surface-container);
     border: none;
     padding: 0;
     border-radius: var(--border-radius-circle);
@@ -39,7 +39,7 @@ button[is="app-carousel-chip"] .info label {
 button[is="app-carousel-chip"] .divider {
     width: 1px;
     height: calc(100% - 16px);
-    background-color: rgb(var(--bg-muted));
+    background-color: var(--outline);
 }
 
 button[is="app-carousel-chip"] .icon {
@@ -49,10 +49,10 @@ button[is="app-carousel-chip"] .icon {
     font-size: 1.4rem;
     height: 40px;
     padding: 0 16px 0 12px;
-    color: rgb(var(--f-danger));
+    color: crimson;
     border-radius: 0 var(--border-radius-circle) var(--border-radius-circle) 0;
 
     &:hover {
-        background-color: rgb(var(--bg-inset));
+        background-color: var(--surface-container-lowest);
     }
 }

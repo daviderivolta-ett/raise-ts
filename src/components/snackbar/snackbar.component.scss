@@ -7,7 +7,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: rgb(var(--bg-accent));
+    background-color: var(--primary-container);
     border: 1px solid rgb(var(--border-accent));
     border-radius: var(--border-radius-s);
 }
@@ -16,7 +16,7 @@
     width: 100%;
     margin: 0;
     padding: 24px;
-    color: rgb(var(--f-emphasis));
+    color: var(--on-primary-container);
 }
 
 .dismiss-btn {
@@ -30,10 +30,10 @@
     background-color: transparent;
     border: none;
     border-radius: var(--border-radius-s);
-    color: rgb(var(--f-emphasis));
+    color: var(--on-primary-container);
 
     &:hover {
-        background-color: rgb(var(--bg-accent-dull));
+        opacity: .8;
     }
 }
 
@@ -61,7 +61,7 @@
     position: absolute;
     inset: 0px;
     border-radius: 50%;
-    border: 3px solid rgb(var(--f-emphasis));
+    border: 3px solid var(--on-primary-container);
     animation: prixClipFix 2s linear infinite;
 }
 
@@ -98,7 +98,7 @@
     bottom: 0;
     width: 100%;
     height: 2px;
-    background-color: rgb(var(--border-accent));
+    background-color: var(--primary);
     transform-origin: left;
     animation: reducingBar var(--snackbar-duration) linear forwards;
 }

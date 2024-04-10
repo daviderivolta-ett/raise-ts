@@ -22,13 +22,13 @@
     padding: 16px;
     font-size: 1.4rem;
     color: rgb(var(--f-default));
-    background-color: rgb(var(--bg-default));
+    background-color: var(--surface-container);
     border: none;
     border-radius: var(--border-radius-m);
 
     &:hover {
-        color: rgb(var(--f-emphasis));
-        background-color: rgb(var(--bg-inset));
+        color: var(--on-surface-variant);
+        background-color: var(--surface-container-low);
     }
 }
 

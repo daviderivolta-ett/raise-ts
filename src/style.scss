@@ -4,24 +4,9 @@
 :root {
     font-family: 'Poppins', sans-serif;
     font-size: 12px;
-    color: rgb(168, 178, 209);
+    color: var(--on-surface);
 
     --snackbar-duration: 1s;
-
-    --f-emphasis: 233, 235, 244;
-    --f-default: 168, 178, 209;
-    --f-muted: 73, 85, 117;
-    --f-accent: 100, 255, 218;
-    --f-danger: 190, 15, 58;
-
-    --bg-inset: 10, 25, 47;
-    --bg-default: 17, 34, 64;
-    --bg-subtle: 32, 52, 81;
-    --bg-accent-dull: 20, 63, 71;
-    --bg-accent: 22, 85, 97;
-    --bg-muted: 73, 85, 117;
-
-    --border-accent: 100, 255, 218;
 
     --border-radius-s: 4px;
     --border-radius-m: 8px;
@@ -29,6 +14,45 @@
     --border-radius-circle: 96px;
 
     --font-size-s: .85rem;
+
+    --primary: rgb(55, 222, 187);
+    --on-primary: rgb(0, 56, 45);
+    --primary-container: rgb(0, 81, 66);
+    --on-primary-container: rgb(184, 255, 233);
+
+    --secondary: rgb(174, 205, 194);
+    --on-secondary: rgb(25, 53, 46);
+    --secondary-container: rgb(48, 76, 68);
+    --on-secondary-container: rgb(202, 233, 222);
+
+    --tertiary: rgb(163, 204, 231);
+    --on-tertiary: rgb(1, 52, 74);
+    --tertiary-container: rgb(33, 75, 98);
+    --on-tertiary-container: rgb(197, 231, 255);
+
+    --error: rgb(255, 180, 171);
+    --on-error: rgb(105, 0, 5);
+    --error-container: rgb(147, 0, 10);
+    --on-error-container: rgb(255, 218, 214);
+
+    --surface-dim: rgb(5, 19, 41);
+    --surface: rgb(5, 19, 41);
+    --surface-bright: rgb(45, 57, 81);
+
+    --surface-container-lowest: rgb(1, 14, 36);
+    --surface-container-low: rgb(14, 27, 50);
+    --surface-container: rgb(18, 32, 54);
+    --surface-container-high: rgb(29, 42, 65);
+    --surface-container-highest: rgb(40, 53, 77);
+
+    --on-surface: rgb(214, 227, 255);
+    --on-surface-variant: rgb(171, 200, 247);
+    --outline: rgb(118, 146, 191);
+    --outline-variant: rgb(42, 72, 112);
+
+    --inverse-surface: rgb(214, 227, 255);
+    --inverse-on-surface: rgb(35, 49, 72);
+    --inverse-primary: rgb(0, 107, 88);
 }
 
 * {
@@ -67,7 +91,7 @@ p {
 dialog[is="app-dialog"] {
     position: relative;
     width: 500px;
-    background-color: rgb(var(--bg-default), 1);
+    background-color: var(--surface-container);
     border: none;
     padding: 24px;
     border-radius: var(--border-radius-m);
@@ -84,10 +108,10 @@ dialog[is="app-dialog"] .close {
     display: flex;
     justify-content: center;
     align-items: center;
-    color: rgb(var(--f-default));
+    color: var(--on-surface);
 
     &:hover {
-        color: rgb(var(--f-emphasis));
+        color: var(--on-surface-variant);
     }
 }
 
@@ -96,6 +120,6 @@ dialog[is="app-dialog"] .close .material-symbols-outlined {
 }
 
 dialog[is="app-dialog"]::backdrop {
-    background-color: rgb(var(--bg-inset), .75);
+    background-color: rgba(1, 14, 36, .5);
     backdrop-filter: blur(4px);
 }

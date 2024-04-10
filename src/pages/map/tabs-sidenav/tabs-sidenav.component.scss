@@ -1,7 +1,7 @@
 :host {
     width: 360px;
     height: 100vh;
-    background-color: rgb(var(--bg-inset), 1);
+    background-color: var(--surface-container);
     animation: slideOut .3s ease-in-out forwards;
 }
 
@@ -20,7 +20,7 @@
 .close {
     height: 3px;
     width: 40px;
-    background-color: rgb(var(--f-default));
+    background-color: var(--on-surface);
     border-radius: var(--border-radius-circle);
 }
 

@@ -5,8 +5,8 @@ button[is="app-search-result-chip"] {
     justify-content: space-between;
     width: 100%;
     text-wrap: nowrap;
-    color: rgb(var(--f-default));
-    background-color: rgb(var(--bg-default));
+    color: var(--on-surface);
+    background-color: var(--surface-container-high);
     border: none;
     border-radius: var(--border-radius-circle);
     padding: 8px 16px;

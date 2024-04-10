@@ -34,22 +34,18 @@ export class TagsWallComponent extends HTMLElement {
 
     private render(): void {
         this.shadowRoot.innerHTML =
-            `
-            <div class="page">
-                <div class="box">
-                    <div class="header">
-                        <img src="./images/RAISE_pictogram_no_bg.svg" alt="Raise logo" class="logo">
-                        <h1>Ecco alcuni dati che potrebbero interessarti</h1>
-                    </div>
-                    <form>
-                        <div class="tags-wall"></div>
-                        <button type="submit" class="submit-btn">Continua</button>
-                    </form>
-                </div>
+            `          
+            <div class="header">
+                <img src="./images/RAISE_pictogram_no_bg.svg" alt="Raise logo" class="logo">
+                <h1>Ecco alcuni dati che potrebbero interessarti</h1>
             </div>
+            <form>
+                <div class="tags-wall"></div>
+                <button type="submit" class="submit-btn">Continua</button>
+            </form>
+
             `
             ;
-
 
         const wall: HTMLDivElement | null = this.shadowRoot.querySelector('.tags-wall');
         if (!wall) return;

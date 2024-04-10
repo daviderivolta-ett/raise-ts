@@ -34,13 +34,13 @@ app-search-result {
     height: 40px;
     padding: 16px;
     font-size: 1.4rem;
-    color: rgb(var(--f-default));
-    background-color: rgb(var(--bg-default));
+    color: var(--on-surface);
+    background-color: var(--surface-container);
     border: none;
 
     &:hover {
-        color: rgb(var(--f-emphasis));
-        background-color: rgb(var(--bg-inset));
+        color: var(--on-surface-variant);
+        background-color: var(--surface-container-low);
     }
 }
 
@@ -62,19 +62,19 @@ button.tags-page-link {
 }
 
 input[is="app-searchbar"] {
-    color: rgb(var(--f-default));
-    background-color: rgb(var(--bg-default));
+    color: var(--on-surface);
+    background-color: var(--surface-container);
     padding: 0 16px;
     border: none;
     width: 100%;
     outline: none;
 
-    &::placeholder {
-        color: rgb(var(--f-muted));
+    &::placeholder {        
+        opacity: .5
     }
 
     &:focus {
-        background-color: rgb(var(--bg-inset));
+        background-color: var(--surface-container-low);
     }
 }
 

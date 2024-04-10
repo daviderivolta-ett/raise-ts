@@ -1,0 +1,17 @@
+.page {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    overflow: hidden;
+    background-color: var(--surface);
+}
+
+.box {
+    max-width: 500px;
+    max-height: 100%;
+    padding: 32px;
+    background-color: var(--surface-container);
+    border-radius: var(--border-radius-l);
+    box-sizing: border-box;
+}

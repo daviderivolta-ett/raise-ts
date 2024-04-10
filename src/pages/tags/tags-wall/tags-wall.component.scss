@@ -1,21 +1,3 @@
-.page {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    overflow: hidden;
-    background-color: rgb(var(--bg-inset));
-}
-
-.box {
-    max-width: 500px;
-    max-height: 100%;
-    padding: 32px;
-    background-color: rgb(var(--bg-default));
-    border-radius: var(--border-radius-l);
-    box-sizing: border-box;
-}
-
 .header {
     text-align: center;
 }
@@ -25,7 +7,7 @@
 }
 
 h1 {
-    color: rgb(var(--f-emphasis));
+    color: var(--on-surface);
     font-size: 1.5rem;
     margin: 16px 0 0 0;
 }
@@ -57,16 +39,16 @@ input[type="checkbox"] {
 label {
     cursor: pointer;
     display: block;
-    background-color: transparent;
-    border: 1px solid rgb(var(--f-default));
+    color: var(--on-surface);
+    background-color: var(--surface-container);
+    border: 1px solid var(--outline);
     padding: 4px 8px;
     border-radius: var( --border-radius-circle);
 }
 
 input[type="checkbox"]:checked + label {
-    color: rgb(var(--f-emphasis));
-    border-color: rgb(var(--f-accent)); 
-    background-color: rgb(var(--bg-subtle));   
+    background-color:  var(--surface-container-highest); 
+    border-color: var(--primary);  
 }
 
 button {
@@ -74,15 +56,18 @@ button {
     width: 100%;
     border: none;
     border-radius: var(--border-radius-circle);
-    color: rgb(var(--f-default));
-    background-color: rgb(var(--bg-subtle));
+    color: var(--on-primary);
+    background-color: var(--primary);
     padding: 8px 0;
     border: 1px solid transparent;
     box-sizing: border-box;
+
+    &:hover {
+        opacity: .8;
+    }
 }
 
 button.submit-btn {
-    color: rgb(var(--f-default));
-    background-color: rgb(var(--bg-accent));
-    border-color: rgb(var(--border-accent));
+    color: var(--on-primary);
+    background-color: var(--primary);
 }

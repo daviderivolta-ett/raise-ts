@@ -18,9 +18,9 @@
     font-weight: 600;
     width: 100%;
     height: 100%;
-    background-color: transparent;
+    background-color: var(--surface-container);
     border: none;
-    color: rgb(var(--f-default));
+    color: var(--on-surface);
 }
 
 .border {
@@ -29,13 +29,13 @@
     left: 0;
     height: 2px;
     width: 0;
-    background-color: rgb(var(--border-accent), 1);
+    background-color: var(--primary);
     transform-origin: left;
 }
 
 .selected {
-    color: rgb(var(--f-emphasis), 1);
-    background-color: rgb(var(--bg-default), 1);
+    color: var(--on-surface-variant);
+    background-color: var(--surface-container-high);
     
     .border {
         animation: selectedTab .2s ease-in-out forwards;        

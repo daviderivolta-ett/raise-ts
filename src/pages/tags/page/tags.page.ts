@@ -1,4 +1,6 @@
-import { DataService } from "../../../services/data.service";
+import { DataService } from '../../../services/data.service';
+
+import style from './tags.page.scss?raw';
 
 export class TagsPage extends HTMLElement {
     public shadowRoot: ShadowRoot;
@@ -6,6 +8,10 @@ export class TagsPage extends HTMLElement {
     constructor() {
         super();
         this.shadowRoot = this.attachShadow({ mode: 'closed' });
+
+        const sheet: CSSStyleSheet = new CSSStyleSheet();
+        sheet.replaceSync(style);
+        this.shadowRoot.adoptedStyleSheets.push(sheet);
     }
 
     public async connectedCallback(): Promise<void> {
@@ -16,7 +22,11 @@ export class TagsPage extends HTMLElement {
     private render(): void {
         this.shadowRoot.innerHTML =
             `
-            <app-tags-wall></app-tags-wall>
+            <div class="page">
+                <div class="box">
+                    <app-tags-wall></app-tags-wall>
+                </div>
+            </div>
             `
             ;
     }
