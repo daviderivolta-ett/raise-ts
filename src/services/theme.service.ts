@@ -114,47 +114,6 @@ export class ThemeService {
         }
     }
 
-    private setLightTheme(): void {
-        document.documentElement.style.setProperty('--primary', 'rgb(0, 107, 88)');
-        document.documentElement.style.setProperty('--on-primary', 'rgb(255, 255, 255)');
-        document.documentElement.style.setProperty('--primary-container', 'rgb(243, 255, 249)');
-        document.documentElement.style.setProperty('--on-primary-container', 'rgb(0, 32, 25)');
-
-        document.documentElement.style.setProperty('--secondary', 'rgb(71, 100, 91)');
-        document.documentElement.style.setProperty('--on-secondary', 'rgb(255, 255, 255)');
-        document.documentElement.style.setProperty('--secondary-container', 'rgb(243, 255, 249)');
-        document.documentElement.style.setProperty('--on-secondary-container', 'rgb(3, 32, 25)');
-
-        document.documentElement.style.setProperty('--tertiary', 'rgb(59, 99, 122)');
-        document.documentElement.style.setProperty('--on-tertiary', 'rgb(255, 255, 255)');
-        document.documentElement.style.setProperty('--tertiary-container', 'rgb(251, 252, 255)');
-        document.documentElement.style.setProperty('--on-tertiary-container', 'rgb(0, 30, 45)');
-
-        document.documentElement.style.setProperty('--error', 'rgb(184, 31, 33)');
-        document.documentElement.style.setProperty('--on-error', 'rgb(255, 255, 255)');
-        document.documentElement.style.setProperty('--error-container', 'rgb(255, 218, 214)');
-        document.documentElement.style.setProperty('--on-error-container', 'rgb(65, 0, 3)');
-
-        document.documentElement.style.setProperty('--surface-dim', 'rgb(204, 218, 249)');
-        document.documentElement.style.setProperty('--surface', 'rgb(249, 249, 255)');
-        document.documentElement.style.setProperty('--surface-bright', 'rgb(249, 249, 255)');
-
-        document.documentElement.style.setProperty('--surface-container-lowest', 'rgb(255, 255, 255)');
-        document.documentElement.style.setProperty('--surface-container-low', 'rgb(240, 243, 255)');
-        document.documentElement.style.setProperty('--surface-container', 'rgb(232, 238, 255)');
-        document.documentElement.style.setProperty('--surface-container-high', 'rgb(223, 232, 255)');
-        document.documentElement.style.setProperty('--surface-container-highest', 'rgb(214, 227, 255)');
-
-        document.documentElement.style.setProperty('--on-surface', 'rgb(13, 28, 50)');
-        document.documentElement.style.setProperty('--on-surface-variant', 'rgb(42, 72, 112)');
-        document.documentElement.style.setProperty('--outline', 'rgb(92, 120, 163)');
-        document.documentElement.style.setProperty('--outline-variant', 'rgb(171, 200, 247)');
-
-        document.documentElement.style.setProperty('--inverse-surface', 'rgb(35, 49, 72)');
-        document.documentElement.style.setProperty('--inverse-on-surface', 'rgb(236, 240, 255)');
-        document.documentElement.style.setProperty('--inverse-primary', 'rgb(55, 222, 187)');
-    }
-
     private setDarkTheme(): void {
         document.documentElement.style.setProperty('--primary', 'rgb(55, 222, 187)');
         document.documentElement.style.setProperty('--on-primary', 'rgb(0, 56, 45)');
@@ -176,23 +135,64 @@ export class ThemeService {
         document.documentElement.style.setProperty('--error-container', 'rgb(147, 0, 10)');
         document.documentElement.style.setProperty('--on-error-container', 'rgb(255, 218, 214)');
 
-        document.documentElement.style.setProperty('--surface-dim', 'rgb(5, 19, 41)');
-        document.documentElement.style.setProperty('--surface', 'rgb(5, 19, 41)');
-        document.documentElement.style.setProperty('--surface-bright', 'rgb(45, 57, 81)');
+        document.documentElement.style.setProperty('--surface-dim', 'rgb(0, 19, 46)');
+        document.documentElement.style.setProperty('--surface', 'rgb(0, 19, 46)');
+        document.documentElement.style.setProperty('--surface-bright', 'rgb(0, 56, 115)');
 
-        document.documentElement.style.setProperty('--surface-container-lowest', 'rgb(1, 14, 36)');
-        document.documentElement.style.setProperty('--surface-container-low', 'rgb(14, 27, 50)');
-        document.documentElement.style.setProperty('--surface-container', 'rgb(18, 32, 54)');
-        document.documentElement.style.setProperty('--surface-container-high', 'rgb(29, 42, 65)');
-        document.documentElement.style.setProperty('--surface-container-highest', 'rgb(40, 53, 77)');
+        document.documentElement.style.setProperty('--surface-container-lowest', 'rgb(0, 14, 37)');
+        document.documentElement.style.setProperty('--surface-container-low', 'rgb(0, 27, 61)');
+        document.documentElement.style.setProperty('--surface-container', 'rgb(0, 31, 69)');
+        document.documentElement.style.setProperty('--surface-container-high', 'rgb(0, 41, 87)');
+        document.documentElement.style.setProperty('--surface-container-highest', 'rgb(0, 52, 107)');
 
-        document.documentElement.style.setProperty('--on-surface', 'rgb(214, 227, 255)');
+        document.documentElement.style.setProperty('--on-surface', 'rgb(213, 227, 255)');
         document.documentElement.style.setProperty('--on-surface-variant', 'rgb(171, 200, 247)');
         document.documentElement.style.setProperty('--outline', 'rgb(118, 146, 191)');
         document.documentElement.style.setProperty('--outline-variant', 'rgb(42, 72, 112)');
 
         document.documentElement.style.setProperty('--inverse-surface', 'rgb(214, 227, 255)');
-        document.documentElement.style.setProperty('--inverse-on-surface', 'rgb(35, 49, 72)');
+        document.documentElement.style.setProperty('--inverse-on-surface', 'rgb(0, 48, 99)');
         document.documentElement.style.setProperty('--inverse-primary', 'rgb(0, 107, 88)');
+    }
+
+    private setLightTheme(): void {
+        document.documentElement.style.setProperty('--primary', 'rgb(0, 107, 88)');
+        document.documentElement.style.setProperty('--on-primary', 'rgb(255, 255, 255)');
+        document.documentElement.style.setProperty('--primary-container', 'rgb(243, 255, 249)');
+        document.documentElement.style.setProperty('--on-primary-container', 'rgb(0, 32, 25)');
+
+        document.documentElement.style.setProperty('--secondary', 'rgb(71, 100, 91)');
+        document.documentElement.style.setProperty('--on-secondary', 'rgb(255, 255, 255)');
+        document.documentElement.style.setProperty('--secondary-container', 'rgb(243, 255, 249)');
+        document.documentElement.style.setProperty('--on-secondary-container', 'rgb(3, 32, 25)');
+
+        document.documentElement.style.setProperty('--tertiary', 'rgb(59, 99, 122)');
+        document.documentElement.style.setProperty('--on-tertiary', 'rgb(255, 255, 255)');
+        document.documentElement.style.setProperty('--tertiary-container', 'rgb(251, 252, 255)');
+        document.documentElement.style.setProperty('--on-tertiary-container', 'rgb(0, 30, 45)');
+
+        document.documentElement.style.setProperty('--error', 'rgb(184, 31, 33)');
+        document.documentElement.style.setProperty('--on-error', 'rgb(255, 255, 255)');
+        document.documentElement.style.setProperty('--error-container', 'rgb(255, 218, 214)');
+        document.documentElement.style.setProperty('--on-error-container', 'rgb(65, 0, 3)');
+
+        document.documentElement.style.setProperty('--surface-dim', 'rgb(201, 218, 255)');
+        document.documentElement.style.setProperty('--surface', 'rgb(249, 249, 255)');
+        document.documentElement.style.setProperty('--surface-bright', 'rgb(249, 249, 255)');
+
+        document.documentElement.style.setProperty('--surface-container-lowest', 'rgb(255, 255, 255)');
+        document.documentElement.style.setProperty('--surface-container-low', 'rgb(240, 243, 255)');
+        document.documentElement.style.setProperty('--surface-container', 'rgb(232, 238, 255)');
+        document.documentElement.style.setProperty('--surface-container-high', 'rgb(223, 232, 255)');
+        document.documentElement.style.setProperty('--surface-container-highest', 'rgb(214, 227, 255)');
+
+        document.documentElement.style.setProperty('--on-surface', 'rgb(0, 27, 61)');
+        document.documentElement.style.setProperty('--on-surface-variant', 'rgb(42, 72, 112)');
+        document.documentElement.style.setProperty('--outline', 'rgb(92, 120, 163)');
+        document.documentElement.style.setProperty('--outline-variant', 'rgb(171, 200, 247)');
+
+        document.documentElement.style.setProperty('--inverse-surface', 'rgb(0, 48, 99)');
+        document.documentElement.style.setProperty('--inverse-on-surface', 'rgb(236, 240, 255)');
+        document.documentElement.style.setProperty('--inverse-primary', 'rgb(55, 222, 187)');
     }
 }

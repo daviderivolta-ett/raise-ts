@@ -23,7 +23,7 @@ button[is="app-bench-chip"] .info {
     border-radius: var(--border-radius-circle) 0  0 var(--border-radius-circle);
 
     &:hover {
-        background-color: var(--surface-container-lowest);
+        background-color: var(--surface-container-low);
     }
 }
 
@@ -52,7 +52,7 @@ button[is="app-bench-chip"] .icon {
     border-radius: 0 var(--border-radius-circle) var(--border-radius-circle) 0;
 
     &:hover {
-        background-color: var(--surface-container-lowest);
+        background-color: var(--surface-container-low);
     }
 }
 
