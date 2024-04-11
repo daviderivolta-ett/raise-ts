@@ -63,6 +63,8 @@ html,
 body {
     margin: 0;
     padding: 0;
+    scrollbar-width: thin;
+    scrollbar-color: var(--surface-container-high) var(--surface-container);
 }
 
 h1,

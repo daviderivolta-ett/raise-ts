@@ -15,3 +15,23 @@
     border-radius: var(--border-radius-l);
     box-sizing: border-box;
 }
+
+@media screen and (max-width: 768px) {
+    body {
+        scrollbar-width: thin;
+        scrollbar-color: var(--surface-container-high) transparent;
+    }
+
+    .page {
+        display: block;
+        height: auto;
+        min-height: 100vh;
+    }
+
+    .box {
+        padding: 4%;
+        max-width: 100vw;
+        width: 100vw;
+        min-height: 100vh;
+    }
+}
