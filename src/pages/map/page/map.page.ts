@@ -1,3 +1,4 @@
+import { SplashComponent } from '../../../components/splash/splash.component';
 import { Path } from '../../../models/path.model';
 import { DataService } from '../../../services/data.service';
 import { PositionService } from '../../../services/position.service';
@@ -22,6 +23,9 @@ export class MapPage extends HTMLElement {
     }
 
     public async connectedCallback(): Promise<void> {
+        const splash: SplashComponent = document.createElement('app-splash') as SplashComponent;
+        document.body.append(splash);
+
         await DataService.instance.getData();
         await ThemeService.instance.getMapThemes();
         await PositionService.instance.getUserPosition();
@@ -32,6 +36,7 @@ export class MapPage extends HTMLElement {
 
         this.render();
         this.setup();
+        setTimeout(() => splash.remove(), 500);
     }
 
     private render(): void {

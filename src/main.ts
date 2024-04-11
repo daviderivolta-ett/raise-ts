@@ -27,6 +27,7 @@ import './pages/map/custom-path-form/custom-path-form.component';
 import './pages/map/map-type-btn/map-type-btn.component';
 import './pages/map/map-controls/map-controls.component';
 import './pages/tags/tags-wall/tags-wall.component';
+import './components/splash/splash.component';
 
 // Classes
 import { Router } from './components/router.component';
