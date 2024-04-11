@@ -1,7 +1,7 @@
 {
     "name": "RAISE",
     "short_name": "RAISE",
-    "start_url": "/",
+    "start_url": "https://daviderivolta-ett.github.io/raise-ts/",
     "display": "standalone",
     "description": "Mappa che mostra dati forniti dal geoserver della città di Genova",
     "lang": "it",
@@ -31,12 +31,5 @@
             "description": "A screenshot of the home page"
         }
     ],
-    "prefer_related_applications": false,
-    "shortcuts": [
-        {
-            "name": "RAISE",
-            "url": "/raise",
-            "description": "Apre l'app"
-        }
-    ]
+    "prefer_related_applications": false
 }
