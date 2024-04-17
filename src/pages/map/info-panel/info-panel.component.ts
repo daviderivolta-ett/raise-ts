@@ -136,8 +136,8 @@ export class InfoPanelComponent extends HTMLElement {
         let info: HTMLDivElement = document.createElement('div');
         info.classList.add('info');
 
-        const moreInfoBtn: HTMLButtonElement = this.renderMoreInfoBtn();
-        info.appendChild(moreInfoBtn);
+        // const moreInfoBtn: HTMLButtonElement = this.renderMoreInfoBtn();
+        // info.appendChild(moreInfoBtn);
 
         const infoContent: HTMLDivElement = document.createElement('div');
         infoContent.classList.add('info-content');

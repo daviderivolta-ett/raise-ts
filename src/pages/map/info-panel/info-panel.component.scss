@@ -86,7 +86,7 @@ button {
 }
 
 .info-content {
-    display: none;
+    // display: none;
     overflow-y: auto;
     flex: 1;
     box-sizing: border-box;
@@ -95,9 +95,9 @@ button {
     scrollbar-color: var(--surface-container-high) transparent;
 }
 
-.visible {
-    display: block;
-}
+// .visible {
+//     display: block;
+// }
 
 .property {
     margin: 0 0 16px 0;
