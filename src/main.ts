@@ -45,6 +45,7 @@ router.addRoutes(routes);
 
 // Local Storage
 StorageService.instance.getTags();
-StorageService.instance.getCsvPaths(1);
+// StorageService.instance.getCsvPaths(1);
+StorageService.instance.getTsvPaths(1);
 StorageService.instance.getSavedLayers();
 StorageService.instance.getCustomPaths();

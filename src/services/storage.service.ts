@@ -87,7 +87,7 @@ export class StorageService {
     public getCsvPaths(fileNumber: number): void {
         let index = 0;
         while (index <= fileNumber) {
-            fetch(`./csv/custom-paths/${index}.csv`)
+            fetch(`./suggested-paths/${index}.csv`)
                 .then(res => res.text())
                 .then(data => {
                     const parsedCsv: Record<string, string>[] = this.parseCsvFile(data);
@@ -98,11 +98,26 @@ export class StorageService {
         }
     }
 
-    private parseCsvFile(text: any): Record<string, string>[] {
+    public getTsvPaths(fileNumber: number): void {
+        let index = 0;
+        while (index <= fileNumber) {
+            fetch(`./suggested-paths/${index}.tsv`)
+                .then(res => res.text())
+                .then(data => {
+                    const parsedTsv: Record<string, string>[] = this.parseCsvFile(data);
+                    this.parseCsvPath(parsedTsv);
+                })
+                .catch(error => console.error('Errore durante il recupero dei percorsi suggeriti', error))
+            index++;
+        }
+    }
+
+    private parseCsvFile(text: any): Record<string, string>[] {        
         const lines: string[] = text.split('\n');
 
         const data: Record<string, string>[] = lines.map((line: string) => {
-            const columns: string[] = line.split(',');
+            const columns: string[] = line.split('\t');
+            
             return {
                 path: columns[0],
                 layerName: columns[1],
@@ -118,17 +133,17 @@ export class StorageService {
         return data;
     }
 
-    private parseCsvPath(data: Record<string, string>[]): Path {
+    private parseCsvPath(data: Record<string, string>[]): Path {        
         let path: Path = Path.createEmpty();
 
-        path.name = data[0].path;
+        path.name = data[1].path;
         path.lastSelected = false;
 
         data.forEach((d: Record<string, string>, index) => {
             if (index === 0) return;
             path.pois.push(this.parseCsvPoi(d));
         });
-       
+        console.log(path);        
         return path;
     }
 

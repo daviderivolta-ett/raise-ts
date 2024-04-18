@@ -25,7 +25,8 @@ export class CustomPathDownloadBtnComponent extends HTMLButtonElement {
     }
 
     private createCsvContent(): string {
-        let csv: string = 'path,layer name,id,name,latitude,longitude,height,info\n';
+        // let csv: string = 'path,layer name,id,name,latitude,longitude,height,info\n';
+        let csv: string = 'path\tlayer name\tid\tname\tlatitude\tlongitude\theight\tinfo\n';
 
         Object.keys(this.path).forEach((key: any) => {
             if (key !== 'pois') return;
@@ -35,21 +36,32 @@ export class CustomPathDownloadBtnComponent extends HTMLButtonElement {
                 }).join('|');
 
                 const row: string =
-                    `${this.path.name},` +
-                    `${poi.layerName},` +
-                    `${poi.uuid},` +
-                    `${poi.name},` +
-                    `${Cesium.Math.toDegrees(poi.position.latitude)},` +
-                    `${Cesium.Math.toDegrees(poi.position.longitude)},` +
-                    `${Cesium.Math.toDegrees(poi.position.height)},` +
+                    `${this.path.name}\t` +
+                    `${poi.layerName}\t` +
+                    `${poi.uuid}\t` +
+                    `${poi.name}\t` +
+                    `${Cesium.Math.toDegrees(poi.position.latitude)}\t` +
+                    `${Cesium.Math.toDegrees(poi.position.longitude)}\t` +
+                    `${Cesium.Math.toDegrees(poi.position.height)}\t` +
                     `${info}` +
                     `\n`;
+                // const row: string =
+                //     `${this.path.name},` +
+                //     `${poi.layerName},` +
+                //     `${poi.uuid},` +
+                //     `${poi.name},` +
+                //     `${Cesium.Math.toDegrees(poi.position.latitude)},` +
+                //     `${Cesium.Math.toDegrees(poi.position.longitude)},` +
+                //     `${Cesium.Math.toDegrees(poi.position.height)},` +
+                //     `${info}` +
+                //     `\n`;
 
                 csv += row;
             });
         });
 
         if (csv.endsWith('\n')) csv = csv.slice(0, -1);
+        csv.trimEnd();
 
         return csv;
     }
@@ -57,6 +69,7 @@ export class CustomPathDownloadBtnComponent extends HTMLButtonElement {
     private downloadCsv(): void {
         let csvContent = 'data:text/csv;charset=utf-8,';
         csvContent += this.createCsvContent();
+        console.log(csvContent);        
         const encodingUri: string = encodeURI(csvContent);
         const link: HTMLAnchorElement = document.createElement('a');
         link.setAttribute('href', encodingUri);
