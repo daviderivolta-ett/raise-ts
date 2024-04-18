@@ -1,0 +1,57 @@
+import { Path } from '../../../models/path.model';
+import { StorageService } from '../../../services/storage.service';
+import { SuggestedPathCardComponent } from '../suggested-path-card/suggested-path-card.component';
+
+import style from './suggested-path-panel.component.scss?raw';
+
+export class SuggestedPathPanelComponent extends HTMLElement {
+    public shadowRoot: ShadowRoot;
+    private _paths: Path[] = [];
+
+    constructor() {
+        super();
+        this.shadowRoot = this.attachShadow({ mode: 'closed' });
+
+        const sheet: CSSStyleSheet = new CSSStyleSheet();
+        sheet.replaceSync(style);
+        this.shadowRoot.adoptedStyleSheets.push(sheet);
+    }
+
+    public get paths(): Path[] {
+        return this._paths;
+    }
+
+    public set paths(paths: Path[]) {
+        this._paths = paths;
+        this.update();
+    }
+
+    public connectedCallback(): void {
+        this.render();
+        this.paths = [...StorageService.instance.suggestedPaths];
+    }
+
+    private render(): void {
+        this.shadowRoot.innerHTML =
+            `
+            <div class="header">
+                <h4>Percorsi suggeriti</h4>
+            </div>
+            <div class="list"></div>
+            `
+            ;
+    }
+
+    private update(): void {
+        const list: HTMLDivElement | null = this.shadowRoot.querySelector('.list');
+        if (!list) return;
+        list.innerHTML = '';
+        this.paths.forEach((path: Path) => {
+            let card: SuggestedPathCardComponent = new SuggestedPathCardComponent();
+            card.path = path;
+            list.append(card);
+        })
+    }
+}
+
+customElements.define('app-suggested-path-panel', SuggestedPathPanelComponent);

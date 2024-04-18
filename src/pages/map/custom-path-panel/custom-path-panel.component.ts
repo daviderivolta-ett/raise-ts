@@ -7,9 +7,9 @@ import { StorageService } from '../../../services/storage.service';
 import { CustomPathCardComponent } from '../custom-path-card/custom-path-card.component';
 import { CustomPathDownloadBtnComponent } from '../custom-path-download-btn/custom-path-download-btn.component';
 
-import style from './custom-path-panel.scss?raw';
+import style from './custom-path-panel.component.scss?raw';
 
-export class CustomPathComponent extends HTMLElement {
+export class CustomPathPanelComponent extends HTMLElement {
     shadowRoot: ShadowRoot;
     private _path: Path = { ...StorageService.instance.selectedCustomPath };
 
@@ -97,4 +97,4 @@ export class CustomPathComponent extends HTMLElement {
     }
 }
 
-customElements.define('app-custom-path-panel', CustomPathComponent);
+customElements.define('app-custom-path-panel', CustomPathPanelComponent);

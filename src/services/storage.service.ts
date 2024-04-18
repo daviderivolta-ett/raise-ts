@@ -15,6 +15,7 @@ export class StorageService {
     private _tags: string[] = [];
     private _paths: Path[] = [];
     private _selectedCustomPath: Path = Path.createDefault();
+    private _suggestedPaths: Path[] = [Path.createEmpty()];
     private _layers: SavedLayers = { active: [], bench: [] };
     private _activeLayers: Layer[] = [];
     private _benchLayers: Layer[] = [];
@@ -55,6 +56,14 @@ export class StorageService {
         TabsObservable.instance.currentTab = Tab.CustomPath;
     }
 
+    public get suggestedPaths(): Path[] {
+        return this._suggestedPaths;
+    }
+
+    public set suggestedPaths(suggestedPaths: Path[]) {
+        this._suggestedPaths = suggestedPaths;
+    }
+
     public get layers(): SavedLayers {
         return this._layers;
     }
@@ -86,38 +95,30 @@ export class StorageService {
 
     public getCsvPaths(fileNumber: number): void {
         let index = 0;
+        const paths: Path[] = [];
+        const promises: Promise<any>[] = [];
+
         while (index <= fileNumber) {
-            fetch(`./suggested-paths/${index}.csv`)
+            const promise = fetch(`./suggested-paths/${index}.tsv`)
                 .then(res => res.text())
                 .then(data => {
                     const parsedCsv: Record<string, string>[] = this.parseCsvFile(data);
-                    this.parseCsvPath(parsedCsv);
+                    paths.push(this.parseCsvPath(parsedCsv));
                 })
                 .catch(error => console.error('Errore durante il recupero dei percorsi suggeriti', error))
+
+            promises.push(promise);
             index++;
-        }
+        }      
+        Promise.all(promises).then(() => this.suggestedPaths = [...paths]);
     }
 
-    public getTsvPaths(fileNumber: number): void {
-        let index = 0;
-        while (index <= fileNumber) {
-            fetch(`./suggested-paths/${index}.tsv`)
-                .then(res => res.text())
-                .then(data => {
-                    const parsedTsv: Record<string, string>[] = this.parseCsvFile(data);
-                    this.parseCsvPath(parsedTsv);
-                })
-                .catch(error => console.error('Errore durante il recupero dei percorsi suggeriti', error))
-            index++;
-        }
-    }
-
-    private parseCsvFile(text: any): Record<string, string>[] {        
+    private parseCsvFile(text: any): Record<string, string>[] {
         const lines: string[] = text.split('\n');
 
         const data: Record<string, string>[] = lines.map((line: string) => {
             const columns: string[] = line.split('\t');
-            
+
             return {
                 path: columns[0],
                 layerName: columns[1],
@@ -133,7 +134,7 @@ export class StorageService {
         return data;
     }
 
-    private parseCsvPath(data: Record<string, string>[]): Path {        
+    private parseCsvPath(data: Record<string, string>[]): Path {
         let path: Path = Path.createEmpty();
 
         path.name = data[1].path;
@@ -143,13 +144,13 @@ export class StorageService {
             if (index === 0) return;
             path.pois.push(this.parseCsvPoi(d));
         });
-        console.log(path);        
+
         return path;
     }
 
     private parseCsvPoi(data: Record<string, string>): PointOfInterest {
         let poi: PointOfInterest = PointOfInterest.createEmpty();
-        
+
         poi.layerName = data.layerName;
         poi.layer = Layer.createEmpty();
         poi.name = data.name;
@@ -163,7 +164,7 @@ export class StorageService {
 
     private parseCsvPoiProperties(data: string): PoiProperty[] {
         let properties: PoiProperty[] = [];
-        
+
         const props: string[] = data.split('|');
 
         props.forEach((prop: string) => {

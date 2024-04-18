@@ -29,6 +29,8 @@ import './pages/map/map-controls/map-controls.component';
 import './pages/tags/tags-wall/tags-wall.component';
 import './components/splash/splash.component';
 import './pages/map/custom-path-download-btn/custom-path-download-btn.component';
+import './pages/map/suggested-path-panel/suggested-path-panel.component';
+import './pages/map/suggested-path-card/suggested-path-card.component';
 
 // Classes
 import { Router } from './components/router.component';
@@ -45,7 +47,6 @@ router.addRoutes(routes);
 
 // Local Storage
 StorageService.instance.getTags();
-// StorageService.instance.getCsvPaths(1);
-StorageService.instance.getTsvPaths(1);
+StorageService.instance.getCsvPaths(1);
 StorageService.instance.getSavedLayers();
 StorageService.instance.getCustomPaths();

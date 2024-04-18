@@ -76,13 +76,13 @@ export class TabsComponent extends HTMLElement {
     private renderSuggestedRoutePanel(): void {
         if (!this.panel) return;
         this.panel.innerHTML = '';
-        this.panel.innerHTML = '';
+        this.panel.innerHTML = '<app-suggested-path-panel></app-suggested-path-panel>';
     }
 
     private renderCustomPathPanel(): void {
         if (!this.panel) return;
         this.panel.innerHTML = '';
-        this.panel.innerHTML = '<app-custom-path-panel></app-custom-path-panel>';
+        this.panel.innerHTML = '<app-custom-path-panel />';
     }
 
     private switchPanel(): void {
