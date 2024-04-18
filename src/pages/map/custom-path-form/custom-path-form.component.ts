@@ -250,9 +250,12 @@ export class CustomPathFormComponent extends HTMLElement {
         const form: HTMLFormElement | null = this.shadowRoot.querySelector('.form');
         if (!form) return;
         form.addEventListener('submit', () => {        
-            const data: FormData = new FormData(form);
+            const data: FormData = new FormData(form);            
             const selectedPath: FormDataEntryValue | null = data.get('saved-paths');
+            console.log('Selected path in local storage', selectedPath);
+
             if (selectedPath) StorageService.instance.loadPath(selectedPath.toString());
+            console.log(StorageService.instance.selectedCustomPath);            
         });
     }
 
@@ -263,11 +266,11 @@ export class CustomPathFormComponent extends HTMLElement {
         selection.classList.add('selection');
         radio.type = 'radio';
         radio.name = 'saved-paths';
-        radio.id = path.name.replace(' ', '');
-        radio.value = path.name.replace(' ', '');
+        radio.id = radio.id = path.name.replace(' ', '-').toLowerCase();
+        radio.value = path.name;
         if (path.name === StorageService.instance.selectedCustomPath.name) radio.checked = true;
         label.innerHTML = path.name;
-        label.setAttribute('for', path.name.replace(' ', ''));
+        label.setAttribute('for', radio.id = path.name.replace(' ', '-').toLowerCase());
         selection.appendChild(radio);
         selection.appendChild(label);
         return selection;

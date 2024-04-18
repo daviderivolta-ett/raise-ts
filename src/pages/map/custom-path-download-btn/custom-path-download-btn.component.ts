@@ -14,7 +14,6 @@ export class CustomPathDownloadBtnComponent extends HTMLButtonElement {
 
     public set path(path: Path) {
         this._path = path;
-        console.log(this.path);
     }
 
     public connectedCallback(): void {

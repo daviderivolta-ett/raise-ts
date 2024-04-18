@@ -128,7 +128,7 @@ export class StorageService {
             if (index === 0) return;
             path.pois.push(this.parseCsvPoi(d));
         });
-        console.log(path);        
+       
         return path;
     }
 
