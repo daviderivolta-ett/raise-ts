@@ -33,7 +33,7 @@ export class CustomPathDownloadBtnComponent extends HTMLButtonElement {
             this.path.pois.forEach(poi => {
                 const info: string = poi.props.map(prop => {
                     return `${prop.displayName}: ${prop.value}`;
-                }).join('|');               
+                }).join('|');
 
                 const row: string =
                     `${this.path.name},` +
@@ -48,15 +48,16 @@ export class CustomPathDownloadBtnComponent extends HTMLButtonElement {
 
                 csv += row;
             });
-        }
-        );
+        });
+
+        if (csv.endsWith('\n')) csv = csv.slice(0, -1);
 
         return csv;
     }
 
     private downloadCsv(): void {
         let csvContent = 'data:text/csv;charset=utf-8,';
-        csvContent += this.createCsvContent();   
+        csvContent += this.createCsvContent();
         const encodingUri: string = encodeURI(csvContent);
         const link: HTMLAnchorElement = document.createElement('a');
         link.setAttribute('href', encodingUri);

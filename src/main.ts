@@ -45,14 +45,6 @@ router.addRoutes(routes);
 
 // Local Storage
 StorageService.instance.getTags();
+StorageService.instance.getCsvPaths(1);
 StorageService.instance.getSavedLayers();
 StorageService.instance.getCustomPaths();
-
-let index = 0;
-while (index <= 1) {
-    fetch(`./csv/custom-paths/${index}.csv`)
-    .then(res => res.text())
-    // .then(data => console.log(data))
-    .catch(error => console.error('Errore durante il recupero dei percorsi suggeriti', error))
-    index++;
-}

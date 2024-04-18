@@ -84,6 +84,85 @@ export class StorageService {
         this.layers = { ...this.layers, bench: this.benchLayers };
     }
 
+    public getCsvPaths(fileNumber: number): void {
+        let index = 0;
+        while (index <= fileNumber) {
+            fetch(`./csv/custom-paths/${index}.csv`)
+                .then(res => res.text())
+                .then(data => {
+                    const parsedCsv: Record<string, string>[] = this.parseCsvFile(data);
+                    this.parseCsvPath(parsedCsv);
+                })
+                .catch(error => console.error('Errore durante il recupero dei percorsi suggeriti', error))
+            index++;
+        }
+    }
+
+    private parseCsvFile(text: any): Record<string, string>[] {
+        const lines: string[] = text.split('\n');
+
+        const data: Record<string, string>[] = lines.map((line: string) => {
+            const columns: string[] = line.split(',');
+            return {
+                path: columns[0],
+                layerName: columns[1],
+                id: columns[2],
+                name: columns[3],
+                latitude: columns[4],
+                longitude: columns[5],
+                height: columns[6],
+                info: columns[7],
+            }
+        });
+
+        return data;
+    }
+
+    private parseCsvPath(data: Record<string, string>[]): Path {
+        let path: Path = Path.createEmpty();
+
+        path.name = data[0].path;
+        path.lastSelected = false;
+
+        data.forEach((d: Record<string, string>, index) => {
+            if (index === 0) return;
+            path.pois.push(this.parseCsvPoi(d));
+        });
+        console.log(path);        
+        return path;
+    }
+
+    private parseCsvPoi(data: Record<string, string>): PointOfInterest {
+        let poi: PointOfInterest = PointOfInterest.createEmpty();
+        
+        poi.layerName = data.layerName;
+        poi.layer = Layer.createEmpty();
+        poi.name = data.name;
+        poi.position = Cesium.Cartographic.fromDegrees(parseFloat(data.longitude), parseFloat(data.latitude), parseFloat(data.height));
+        poi.type = PoiType.Point;
+        poi.uuid = data.id;
+        poi.props = this.parseCsvPoiProperties(data.info);
+
+        return poi;
+    }
+
+    private parseCsvPoiProperties(data: string): PoiProperty[] {
+        let properties: PoiProperty[] = [];
+        
+        const props: string[] = data.split('|');
+
+        props.forEach((prop: string) => {
+            let property: PoiProperty = PoiProperty.createEmpty();
+            property.displayName = prop.split(':')[0];
+            property.value = prop.split(':')[1].trim();
+            property.type = PropertyType.String;
+
+            properties.push(property);
+        });
+
+        return properties;
+    }
+
     public setTags(tags: string[]): void {
         localStorage.setItem('tags', JSON.stringify(tags));
         this.tags = tags;
@@ -138,6 +217,7 @@ export class StorageService {
         let p: PointOfInterest = PointOfInterest.createEmpty();
 
         p.layer = this.parseLayer(poi.layer);
+        p.layerName = poi.layerName;
         p.name = poi.name;
         p.position = new Cesium.Cartographic(poi.position.longitude, poi.position.latitude, poi.position.height);
         p.props = poi.props.map((prop: any) => this.parsePoiProperty(prop));
