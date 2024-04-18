@@ -6,6 +6,7 @@ import { Tab } from '../models/tab.model';
 
 import { EventObservable } from '../observables/event.observable';
 import { TabsObservable } from '../observables/tabs.observable';
+import { DataService } from './data.service';
 
 export class PoiService {
     private static _instance: PoiService;
@@ -46,7 +47,16 @@ export class PoiService {
                         break;
 
                     case 'layer':
-                        poi.layer = (propertyBag[name] as Cesium.ConstantProperty).valueOf() as Layer;
+                        const layerObj: Layer = propertyBag[name].valueOf();
+                        poi.layer = layerObj;
+                        poi.layerName = layerObj.layer;
+                        break;
+
+                    case 'layerName':
+                        const layerName: string = propertyBag[name].valueOf();
+                        poi.layerName = layerName;
+                        const layer: Layer | undefined = DataService.instance.filterLayersByLayerName(layerName);
+                        if (layer) poi.layer = layer;
                         break;
 
                     case 'name':
@@ -54,7 +64,7 @@ export class PoiService {
                         break;
 
                     default:
-                        let rawProp: any = (propertyBag[name] as Cesium.ConstantProperty).valueOf();                     
+                        let rawProp: any = (propertyBag[name] as Cesium.ConstantProperty).valueOf();
                         poi.props.push(this.parsePoiProperty(rawProp));
                         break;
                 }
@@ -81,7 +91,7 @@ export class PoiService {
         }
 
         if (entity.polygon && entity.polygon.hierarchy) {
-            let pos: Cesium.Cartesian3 | undefined = entity.polygon.hierarchy.getValue(Cesium.JulianDate.now()).positions[0]; 
+            let pos: Cesium.Cartesian3 | undefined = entity.polygon.hierarchy.getValue(Cesium.JulianDate.now()).positions[0];
             if (pos) position = Cesium.Cartographic.fromCartesian(pos);
         }
 

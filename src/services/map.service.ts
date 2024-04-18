@@ -20,9 +20,9 @@ export class MapService {
     public async createGeoJson(layer: Layer): Promise<any> {
         const url = `${layer.url}?service=WFS&typeName=${layer.layer}&outputFormat=application/json&request=GetFeature&srsname=EPSG:4326`;
         const res: Response = await fetch(url);
-        let geoJson: any = await res.json();
+        let geoJson: any = await res.json();    
         let geoJsonNewProp: any = this.substituteRelevantProperties(geoJson, layer);
-        let geoJsonAddProp = this.createFeatureAdditionalProperties(geoJsonNewProp, layer);
+        let geoJsonAddProp = this.createFeatureAdditionalProperties(geoJsonNewProp, layer);   
         return geoJsonAddProp;
     }
 
@@ -129,10 +129,11 @@ export class MapService {
         return array;
     }
 
-    private createFeatureAdditionalProperties(geoJson: any, layer: Layer): any {
+    private createFeatureAdditionalProperties(geoJson: any, layer: Layer): any {     
         geoJson.features = geoJson.features.map((f: Feature, i: number) => {
             f.properties.name = layer.name + ' ' + i;
-            f.properties.layer = layer;
+            // f.properties.layer = layer;
+            f.properties.layerName = layer.layer;
 
             switch (f.geometry.type) {
                 case FeatureGeometryType.Point:
@@ -151,6 +152,8 @@ export class MapService {
                     f.properties.uuid = layer.layer + (f.geometry.coordinates as number[][][])[0][0][1] + (f.geometry.coordinates as number[][][])[0][0][0];
                     break;
             }
+            
+            f.properties.uuid = f.id; // TESTING
 
             return f;
         });

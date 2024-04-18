@@ -288,10 +288,10 @@ export class MapComponent extends HTMLElement {
 
     public async addLayerToMap(layer: Layer): Promise<void> {
         try {
-            const geoJson: any = MapService.instance.createGeoJson(layer);
+            const geoJson: any = MapService.instance.createGeoJson(layer);          
             const dataSource: Cesium.DataSource = await Cesium.GeoJsonDataSource.load(geoJson);
             dataSource.name = layer.layer;
-            this.viewer.dataSources.add(dataSource);
+            this.viewer.dataSources.add(dataSource);         
             MapService.instance.styleFeature(dataSource, layer.style);
         } catch (error) {
             throw error;

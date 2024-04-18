@@ -5,12 +5,13 @@ import { EventObservable } from '../../../observables/event.observable';
 import { DialogService } from '../../../services/dialog.service';
 import { StorageService } from '../../../services/storage.service';
 import { CustomPathCardComponent } from '../custom-path-card/custom-path-card.component';
+import { CustomPathDownloadBtnComponent } from '../custom-path-download-btn/custom-path-download-btn.component';
 
 import style from './custom-path-panel.scss?raw';
 
 export class CustomPathComponent extends HTMLElement {
     shadowRoot: ShadowRoot;
-    private _path: Path = {...StorageService.instance.selectedCustomPath};
+    private _path: Path = { ...StorageService.instance.selectedCustomPath };
 
     constructor() {
         super();
@@ -41,7 +42,10 @@ export class CustomPathComponent extends HTMLElement {
     private render(): void {
         this.shadowRoot.innerHTML =
             `
-            <div class="header"><h4>Percorso selezionato: ${this.path.name}</h4></div>
+            <div class="header">
+                <h4>Percorso selezionato: ${this.path.name}</h4>
+                <button is="app-custom-path-download-btn">Download</button>
+            </div>
             <div class="list"></div>
             <div class="custom-path-tools">
                 <button type="button" title="Riordina punti di interesse" class="tool-btn sort-btn"><span class="material-symbols-outlined">sort</span></button>
@@ -60,19 +64,21 @@ export class CustomPathComponent extends HTMLElement {
         const addBtn: HTMLButtonElement | null = this.shadowRoot.querySelector('.add-btn');
         const bookmarkBtn: HTMLButtonElement | null = this.shadowRoot.querySelector('.bookmark-btn');
         const loadBtn: HTMLButtonElement | null = this.shadowRoot.querySelector('.load-btn');
+        const csvDownloadBtn: CustomPathDownloadBtnComponent | null = this.shadowRoot.querySelector('button[is="app-custom-path-download-btn"]');
 
         if (sortBtn) sortBtn.addEventListener('click', () => DialogService.instance.createFormDialog(DialogType.SortPois));
         if (editBtn) editBtn.addEventListener('click', () => DialogService.instance.createFormDialog(DialogType.EditPath));
         if (addBtn) addBtn.addEventListener('click', () => DialogService.instance.createFormDialog(DialogType.AddPath));
         if (bookmarkBtn) bookmarkBtn.addEventListener('click', () => DialogService.instance.createFormDialog(DialogType.BookmarkPath));
         if (loadBtn) loadBtn.addEventListener('click', () => DialogService.instance.createFormDialog(DialogType.LoadPath));
+        if (csvDownloadBtn) csvDownloadBtn.path = { ...this.path };
 
         EventObservable.instance.subscribe('selected-custom-path-updated', (path: Path) => {
             this.path = path;
         });
     }
 
-    private update(): void {            
+    private update(): void {
         const list: HTMLDivElement | null = this.shadowRoot.querySelector('.list');
         if (!list) return;
         list.innerHTML = '';

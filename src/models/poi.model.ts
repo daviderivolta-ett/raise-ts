@@ -7,6 +7,7 @@ export class PointOfInterest {
     position: Cesium.Cartographic;
     type: PoiType;
     layer: Layer;
+    layerName: string;
     props: PoiProperty[];
 
     constructor(
@@ -15,6 +16,7 @@ export class PointOfInterest {
         position: Cesium.Cartographic,
         type: PoiType,
         layer: Layer,
+        layerName: string,
         props: PoiProperty[]
     ) {
         this.uuid = uuid;
@@ -22,6 +24,7 @@ export class PointOfInterest {
         this.position = position;
         this.type = type;
         this.layer = layer;
+        this.layerName = layerName;
         this.props = props;
     }
 
@@ -32,6 +35,7 @@ export class PointOfInterest {
             Cesium.Cartographic.ZERO,
             PoiType.Point,
             Layer.createEmpty(),
+            '',
             []
         );
     }

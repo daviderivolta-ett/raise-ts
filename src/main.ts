@@ -28,6 +28,7 @@ import './pages/map/map-type-btn/map-type-btn.component';
 import './pages/map/map-controls/map-controls.component';
 import './pages/tags/tags-wall/tags-wall.component';
 import './components/splash/splash.component';
+import './pages/map/custom-path-download-btn/custom-path-download-btn.component';
 
 // Classes
 import { Router } from './components/router.component';
@@ -46,3 +47,12 @@ router.addRoutes(routes);
 StorageService.instance.getTags();
 StorageService.instance.getSavedLayers();
 StorageService.instance.getCustomPaths();
+
+let index = 0;
+while (index <= 1) {
+    fetch(`./csv/custom-paths/${index}.csv`)
+    .then(res => res.text())
+    // .then(data => console.log(data))
+    .catch(error => console.error('Errore durante il recupero dei percorsi suggeriti', error))
+    index++;
+}

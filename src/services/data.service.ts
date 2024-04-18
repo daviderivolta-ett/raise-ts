@@ -150,6 +150,21 @@ export class DataService {
         return layers;
     }
 
+    public filterLayersByLayerName(value: string): Layer | undefined {
+        let foundLayer: Layer | undefined;
+    
+        this.data.categories.find((category: LayerCategory) => {
+            return category.groups.find((group: LayerGroup | string) => {
+                if (typeof group === 'string') return false;
+                foundLayer = group.layers.find((layer: Layer) => layer.layer.includes(value));
+                return foundLayer !== undefined;
+            });
+        });
+    
+        return foundLayer;
+    }
+    
+
     public getAllTags(data: Data): string[] {
         let tags: string[] = [];
 
