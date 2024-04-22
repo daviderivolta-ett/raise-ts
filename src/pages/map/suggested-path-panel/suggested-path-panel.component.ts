@@ -1,4 +1,5 @@
 import { Path } from '../../../models/path.model';
+import { EventObservable } from '../../../observables/event.observable';
 import { StorageService } from '../../../services/storage.service';
 import { SuggestedPathCardComponent } from '../suggested-path-card/suggested-path-card.component';
 
@@ -28,7 +29,8 @@ export class SuggestedPathPanelComponent extends HTMLElement {
 
     public connectedCallback(): void {
         this.render();
-        this.paths = [...StorageService.instance.suggestedPaths];
+        this.setup();
+        this.paths = StorageService.instance.getSuggestedPaths();
     }
 
     private render(): void {
@@ -42,15 +44,24 @@ export class SuggestedPathPanelComponent extends HTMLElement {
             ;
     }
 
+    private setup(): void {
+        EventObservable.instance.subscribe('active-layers-updated', () => {
+            this.paths = StorageService.instance.getSuggestedPaths();
+        });
+    }
+
     private update(): void {
         const list: HTMLDivElement | null = this.shadowRoot.querySelector('.list');
         if (!list) return;
-        list.innerHTML = '';
+
+        list.innerHTML = '';        
         this.paths.forEach((path: Path) => {
             let card: SuggestedPathCardComponent = new SuggestedPathCardComponent();
             card.path = path;
             list.append(card);
-        })
+        });
+
+        if (this.paths.length === 0) list.innerHTML = '<p class="empty-msg">Nessun percorso suggerito per i layer correnti</p>';
     }
 }
 

@@ -31,6 +31,8 @@ import './components/splash/splash.component';
 import './pages/map/custom-path-download-btn/custom-path-download-btn.component';
 import './pages/map/suggested-path-panel/suggested-path-panel.component';
 import './pages/map/suggested-path-card/suggested-path-card.component';
+import './pages/map/selected-suggested-path-panel/selected-suggested-path-panel.component';
+import './pages/map/selected-suggested-path-card/selected-suggested-path-card.component';
 
 // Classes
 import { Router } from './components/router.component';

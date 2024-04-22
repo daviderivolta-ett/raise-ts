@@ -4,10 +4,18 @@
     padding: 16px;
     background-color: var(--surface-container-high);
     border-radius: var(--border-radius-m);
-    border: 1px solid transparent;
-    box-sizing: border-box;
 }
 
-h4 {
-    color: red;
+h4,
+p {
+    margin: 0;
+}
+
+.path-title {
+    margin: 0 0 4px 0;
+}
+
+.path-steps {
+    display: flex;
+    color: var(--on-surface-variant);
 }

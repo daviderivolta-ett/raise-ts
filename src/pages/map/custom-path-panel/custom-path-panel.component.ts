@@ -44,15 +44,17 @@ export class CustomPathPanelComponent extends HTMLElement {
             `
             <div class="header">
                 <h4>Percorso selezionato: ${this.path.name}</h4>
-                <button is="app-custom-path-download-btn">Download</button>
+                <button is="app-custom-path-download-btn" class="btn">
+                    <span class="material-symbols-outlined action-icon">download</span>
+                </button>
             </div>
             <div class="list"></div>
             <div class="custom-path-tools">
-                <button type="button" title="Riordina punti di interesse" class="tool-btn sort-btn"><span class="material-symbols-outlined">sort</span></button>
-                <button type="button" title="Modifica percorso" class="tool-btn edit-btn"><span class="material-symbols-outlined">more_horiz</span></button>
-                <button type="button" title="Crea nuovo percorso" class="tool-btn add-btn"><span class="material-symbols-outlined">add</span></button>
-                <button type="button" title="Salva percorso" class="tool-btn bookmark-btn"><span class="material-symbols-outlined">bookmark</span></button>
-                <button type="button" title="Carica percorsi salvati" class="tool-btn load-btn"><span class="material-symbols-outlined">bookmarks</span></button>
+                <button type="button" title="Riordina punti di interesse" class="tool-btn sort-btn"><span class="material-symbols-outlined tool-icon">sort</span></button>
+                <button type="button" title="Modifica percorso" class="tool-btn edit-btn"><span class="material-symbols-outlined tool-icon">more_horiz</span></button>
+                <button type="button" title="Crea nuovo percorso" class="tool-btn add-btn"><span class="material-symbols-outlined tool-icon">add</span></button>
+                <button type="button" title="Salva percorso" class="tool-btn bookmark-btn"><span class="material-symbols-outlined tool-icon">bookmark</span></button>
+                <button type="button" title="Carica percorsi salvati" class="tool-btn load-btn"><span class="material-symbols-outlined tool-icon">bookmarks</span></button>
             </div>
             `
             ;

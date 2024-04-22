@@ -1,5 +1,6 @@
 import { Tab } from '../../../models/tab.model';
 import { EventObservable } from '../../../observables/event.observable';
+import { TabsObservable } from '../../../observables/tabs.observable';
 
 import style from './tabs.component.scss?raw';
 
@@ -57,10 +58,14 @@ export class TabsComponent extends HTMLElement {
 
     private setup(): void {
         if (this.infoTab) this.infoTab.addEventListener('click', () => this.currentTab = Tab.Info);
-        if (this.suggestedRouteTab) this.suggestedRouteTab.addEventListener('click', () => this.currentTab = Tab.SuggestedPath);
+        if (this.suggestedRouteTab) {
+            this.suggestedRouteTab.addEventListener('click', () => {
+                TabsObservable.instance.isSuggestedPathSelected ? this.currentTab = Tab.SelectedSuggestedPath : this.currentTab = Tab.SuggestedPath;
+            });
+        }
         if (this.customRouteTab) this.customRouteTab.addEventListener('click', () => this.currentTab = Tab.CustomPath);
 
-        EventObservable.instance.subscribe('current-tab-updated', (tab: Tab) => this.currentTab = tab);     
+        EventObservable.instance.subscribe('current-tab-updated', (tab: Tab) => this.currentTab = tab);
     }
 
     public disconnectedCallback(): void {
@@ -70,13 +75,19 @@ export class TabsComponent extends HTMLElement {
     private renderInfoPanel(): void {
         if (!this.panel) return;
         this.panel.innerHTML = '';
-        this.panel.innerHTML = '<app-info-panel></app-info-panel>';
+        this.panel.innerHTML = '<app-info-panel />';
     }
 
     private renderSuggestedRoutePanel(): void {
         if (!this.panel) return;
         this.panel.innerHTML = '';
-        this.panel.innerHTML = '<app-suggested-path-panel></app-suggested-path-panel>';
+        this.panel.innerHTML = '<app-suggested-path-panel />';
+    }
+
+    private renderSelectedSuggestedRoutePanel(): void {
+        if (!this.panel) return;
+        this.panel.innerHTML = '';
+        this.panel.innerHTML = '<app-selected-suggested-path-panel />'
     }
 
     private renderCustomPathPanel(): void {
@@ -93,6 +104,10 @@ export class TabsComponent extends HTMLElement {
 
             case Tab.SuggestedPath:
                 this.renderSuggestedRoutePanel();
+                break;
+
+            case Tab.SelectedSuggestedPath:
+                this.renderSelectedSuggestedRoutePanel();
                 break;
 
             default:
@@ -112,6 +127,10 @@ export class TabsComponent extends HTMLElement {
                 break;
 
             case Tab.SuggestedPath:
+                this.suggestedRouteTab.classList.add('selected');
+                break;
+
+            case Tab.SelectedSuggestedPath:
                 this.suggestedRouteTab.classList.add('selected');
                 break;
 

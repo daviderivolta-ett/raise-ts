@@ -4,6 +4,7 @@ import { EventObservable } from './event.observable';
 export class TabsObservable {
     private static _instance: TabsObservable;
     private _currentTab: Tab = Tab.Info;
+    private _isSuggestedPathSelected: boolean = false;
 
     private constructor() {
         if (TabsObservable._instance) return TabsObservable._instance;
@@ -22,5 +23,13 @@ export class TabsObservable {
     public set currentTab(currentTab: Tab) {
         this._currentTab = currentTab;
         EventObservable.instance.publish('current-tab-updated', this.currentTab);
+    }
+
+    public get isSuggestedPathSelected(): boolean {
+        return this._isSuggestedPathSelected;
+    }
+
+    public set isSuggestedPathSelected(isSuggestedPathSelected: boolean) {
+        this._isSuggestedPathSelected = isSuggestedPathSelected;
     }
 }

@@ -11,6 +11,7 @@ p {
 }
 
 .header {
+    position: relative;
     padding: 24px 24px 0 24px;
     box-sizing: border-box;
     color: var(--on-surface);
@@ -44,15 +45,36 @@ p {
     border: none;
     color: var(--on-surface);
     background-color: var(--surface-container-high);
-    
+
     &:hover {
         color: var(--on-surface-variant);
         // opacity: .8;
     }
-    
+
     &:disabled {
         cursor: not-allowed;
         opacity: .25;
+    }
+}
+
+.btn {
+    cursor: pointer;
+    position: absolute;
+    right: -10px;
+    top: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    border: none;
+    background-color: transparent;
+    color: var(--on-surface);
+    width: 40px;
+    height: 40px;
+    transform: translate(-50%, -50%);
+
+    &:hover {
+        color: var(--on-surface-variant);
     }
 }
 
@@ -61,6 +83,14 @@ p {
     font-variation-settings:
         'FILL' 0,
         'wght' 400,
-        'GRAD' 0,
+        'GRAD' -25,
         'opsz' 24;
+}
+
+.action-icon {
+    font-size: 1.5rem;
+}
+
+.tool-icon {
+    font-size: 1rem;
 }

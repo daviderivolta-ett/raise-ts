@@ -4,7 +4,7 @@ import { PoiProperty, PointOfInterest } from '../../../models/poi.model';
 import { PoiService } from '../../../services/poi.service';
 import { StorageService } from '../../../services/storage.service';
 
-import stye from './custom-path-card.component.scss?raw';
+import style from './custom-path-card.component.scss?raw';
 
 enum Movement {
     Up = 'up',
@@ -21,7 +21,7 @@ export class CustomPathCardComponent extends HTMLElement {
         this.shadowRoot = this.attachShadow({ mode: 'closed' });
 
         let sheet: CSSStyleSheet = new CSSStyleSheet();
-        sheet.replaceSync(stye);
+        sheet.replaceSync(style);
         this.shadowRoot.adoptedStyleSheets.push(sheet);
     }
 

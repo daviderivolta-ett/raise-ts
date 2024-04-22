@@ -16,6 +16,7 @@ export class StorageService {
     private _paths: Path[] = [];
     private _selectedCustomPath: Path = Path.createDefault();
     private _suggestedPaths: Path[] = [Path.createEmpty()];
+    private _selectedSuggestedPath: Path = Path.createEmpty();
     private _layers: SavedLayers = { active: [], bench: [] };
     private _activeLayers: Layer[] = [];
     private _benchLayers: Layer[] = [];
@@ -64,6 +65,16 @@ export class StorageService {
         this._suggestedPaths = suggestedPaths;
     }
 
+    public get selectedSuggestedPath(): Path {
+        return this._selectedSuggestedPath;
+    }
+
+    public set selectedSuggestedPath(selectedSuggestedPath: Path) {
+        this._selectedSuggestedPath = selectedSuggestedPath;
+        EventObservable.instance.publish('selected-suggested-path-updated', this.selectedSuggestedPath);
+        TabsObservable.instance.currentTab = Tab.SelectedSuggestedPath;
+    }
+
     public get layers(): SavedLayers {
         return this._layers;
     }
@@ -109,7 +120,7 @@ export class StorageService {
 
             promises.push(promise);
             index++;
-        }      
+        }
         Promise.all(promises).then(() => this.suggestedPaths = [...paths]);
     }
 
@@ -177,6 +188,25 @@ export class StorageService {
         });
 
         return properties;
+    }
+
+    public getSuggestedPaths(): Path[] {
+        let paths: Path[] = [];
+        this.suggestedPaths.forEach((path: Path) => {
+            path.pois.forEach((poi: PointOfInterest) => {
+                this.activeLayers.forEach((layer: Layer) => {
+                    if (poi.layerName === layer.layer) paths.push(path);
+                });
+            });
+        });
+        return [...new Set(paths)];
+    }
+
+    public isPoiInLayers(poi: PointOfInterest): boolean {
+        return this.activeLayers.some((layer: Layer) => {
+            if (layer.layer === poi.layerName) return true;
+            return false;
+        });
     }
 
     public setTags(tags: string[]): void {
