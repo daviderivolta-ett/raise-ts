@@ -28,13 +28,13 @@ export class SelectedSuggestedPathPanelComponent extends HTMLElement {
 
     public set path(path: Path) {
         this._path = path;
-        this.connectedCallback();
     }
 
     public connectedCallback(): void {
         this.render();
         this.setup();
         this.update()
+        EventObservable.instance.publish('load-custom-path', this.path);
     }
 
     public render(): void {
