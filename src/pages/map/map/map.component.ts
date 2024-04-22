@@ -101,6 +101,7 @@ export class MapComponent extends HTMLElement {
         EventObservable.instance.subscribe('unbench-layer', (layer: Layer) => this.unbenchLayer(layer));
         EventObservable.instance.subscribe('remove-layer-from-bench', (layer: Layer) => this.removeLayerFromBench(layer));
         EventObservable.instance.subscribe('bench-layer', (layer: Layer) => this.benchLayer(layer));
+        EventObservable.instance.subscribe('bench-all-layers', () => this.benchAllLayers());
         EventObservable.instance.subscribe('load-custom-path', (path: Path) => {
             let geojson: any = MapService.instance.createGeojsonFeatureCollectionFromPois(path.pois);
             this.loadCustomDataSource(geojson, 'custom-path');
@@ -124,6 +125,7 @@ export class MapComponent extends HTMLElement {
         EventObservable.instance.unsubscribeAll('unbench-layer');
         EventObservable.instance.unsubscribeAll('remove-layer-from-bench');
         EventObservable.instance.unsubscribeAll('bench-layer');
+        EventObservable.instance.unsubscribeAll('bench-all-layers');
         EventObservable.instance.unsubscribeAll('load-custom-path');
         EventObservable.instance.unsubscribeAll('selected-poi');
     }
@@ -288,10 +290,10 @@ export class MapComponent extends HTMLElement {
 
     public async addLayerToMap(layer: Layer): Promise<void> {
         try {
-            const geoJson: any = MapService.instance.createGeoJson(layer);          
+            const geoJson: any = MapService.instance.createGeoJson(layer);
             const dataSource: Cesium.DataSource = await Cesium.GeoJsonDataSource.load(geoJson);
             dataSource.name = layer.layer;
-            this.viewer.dataSources.add(dataSource);         
+            this.viewer.dataSources.add(dataSource);
             MapService.instance.styleFeature(dataSource, layer.style);
         } catch (error) {
             throw error;
@@ -369,6 +371,14 @@ export class MapComponent extends HTMLElement {
         this.removeLayerFromMap(layer);
         this.removeLayerFromActiveLayers(layer);
         this.addLayerToBench(layer);
+    }
+
+    public benchAllLayers(): void {    
+        StorageService.instance.activeLayers.forEach((layer: Layer) => {      
+            this.removeLayerFromMap(layer);
+            this.removeLayerFromActiveLayers(layer);
+            this.addLayerToBench(layer);
+        });
     }
 
     public async unbenchLayer(layer: Layer): Promise<void> {

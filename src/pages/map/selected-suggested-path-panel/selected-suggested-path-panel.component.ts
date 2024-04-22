@@ -6,6 +6,8 @@ import { StorageService } from '../../../services/storage.service';
 import { SelectedSuggestedPathCardComponent } from '../selected-suggested-path-card/selected-suggested-path-card.component';
 
 import style from '../custom-path-panel/custom-path-panel.component.scss?raw';
+import { Layer } from '../../../models/layer.model';
+import { EventObservable } from '../../../observables/event.observable';
 
 export class SelectedSuggestedPathPanelComponent extends HTMLElement {
     public shadowRoot: ShadowRoot;
@@ -39,10 +41,11 @@ export class SelectedSuggestedPathPanelComponent extends HTMLElement {
         this.shadowRoot.innerHTML =
             `
             <div class="header">
-                <h4>${this.path.name}</h4>
                 <button class="btn back-btn">
                     <span class="material-symbols-outlined action-icon">chevron_left</span>
                 </button>
+                <h4>${this.path.name}</h4>
+                <button class="load-layers-btn">Mostra solo layer presenti</button>
             </div>
             <div class="list"></div>
             `
@@ -55,6 +58,13 @@ export class SelectedSuggestedPathPanelComponent extends HTMLElement {
             TabsObservable.instance.isSuggestedPathSelected = false;
             TabsObservable.instance.currentTab = Tab.SuggestedPath;
         });
+
+        const loadLayersBtn: HTMLButtonElement | null = this.shadowRoot.querySelector('.load-layers-btn');
+        if (loadLayersBtn) loadLayersBtn.addEventListener('click', () => {
+            const layers: Layer[] = this.getLayersInPath();
+            EventObservable.instance.publish('bench-all-layers', null);
+            layers.forEach((layer: Layer) => EventObservable.instance.publish('add-layer', layer));
+        });
     }
 
     private update(): void {
@@ -66,6 +76,12 @@ export class SelectedSuggestedPathPanelComponent extends HTMLElement {
             card.poi = poi;
             list.appendChild(card);
         })
+    }
+
+    private getLayersInPath(): Layer[] {
+        let layers: Layer[] = [];
+        this.path.pois.forEach((poi: PointOfInterest) => layers.push(poi.layer));
+        return [...new Set(layers)];
     }
 }
 
