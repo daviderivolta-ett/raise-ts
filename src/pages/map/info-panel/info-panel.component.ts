@@ -151,13 +151,13 @@ export class InfoPanelComponent extends HTMLElement {
         return info;
     }
 
-    private renderMoreInfoBtn(): HTMLButtonElement {
-        const button: HTMLButtonElement = document.createElement('button');
-        button.innerHTML = 'Leggi info';
-        button.classList.add('toggle-info');
-        button.addEventListener('click', () => this.isInfoOpen = !this.isInfoOpen);
-        return button;
-    }
+    // private renderMoreInfoBtn(): HTMLButtonElement {
+    //     const button: HTMLButtonElement = document.createElement('button');
+    //     button.innerHTML = 'Leggi info';
+    //     button.classList.add('toggle-info');
+    //     button.addEventListener('click', () => this.isInfoOpen = !this.isInfoOpen);
+    //     return button;
+    // }
 
     private toggleInfo(): void {
         const infoContent: HTMLDivElement | null = this.shadowRoot.querySelector('.info-content');
