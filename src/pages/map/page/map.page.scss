@@ -103,6 +103,7 @@ app-bench {
     .header {
        flex-direction: column;
        gap: 8px;
+       padding: 4%;
     }
 
     .search {
@@ -111,12 +112,14 @@ app-bench {
 
     app-search-result {
         top: 120px;
+        left: 4%;
+        width: calc(100% - 8%);
     }
 
     app-bench {
         top: inherit;
         right: inherit;
-        bottom: 24px;
+        bottom: 4%;
         left: -360px;
     }
 

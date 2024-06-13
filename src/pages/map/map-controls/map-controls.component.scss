@@ -62,23 +62,27 @@
 }
 
 @media screen and (max-width: 768px) {
+    :host {
+        right: 4%;
+    }
+
     @keyframes slideIn {
         from {
-            bottom: 24px;
+            bottom: 4%;
         }
 
         to {
-            bottom: calc(24px + 360px);
+            bottom: calc(4% + 360px);
         }
     }
 
     @keyframes slideOut {
         from {
-            bottom: calc(24px + 360px);
+            bottom: calc(4% + 360px);
         }
 
         to {
-            bottom: 24px;
+            bottom: 4%;
         }
     }
 }

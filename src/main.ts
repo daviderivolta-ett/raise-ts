@@ -1,4 +1,4 @@
-// Web components polyfills
+// Web components polyfills for Safari
 import '@ungap/custom-elements';
 
 // Models
