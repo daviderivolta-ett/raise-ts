@@ -1,3 +1,6 @@
+// Web components polyfills
+import '@ungap/custom-elements';
+
 // Models
 import { Route, RouteType } from './models/route.model';
 
