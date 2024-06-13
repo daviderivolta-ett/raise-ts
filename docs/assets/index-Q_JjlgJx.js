@@ -1659,6 +1659,7 @@ app-bench {\r
     .header {\r
        flex-direction: column;\r
        gap: 8px;\r
+       padding: 4%;\r
     }\r
 \r
     .search {\r
@@ -1667,12 +1668,14 @@ app-bench {\r
 \r
     app-search-result {\r
         top: 120px;\r
+        left: 4%;\r
+        width: calc(100% - 8%);\r
     }\r
 \r
     app-bench {\r
         top: inherit;\r
         right: inherit;\r
-        bottom: 24px;\r
+        bottom: 4%;\r
         left: -360px;\r
     }\r
 \r
@@ -1740,7 +1743,7 @@ app-bench {\r
     gap: 8px;\r
     max-height: 192px;\r
     overflow-y: auto;\r
-    padding: 24px 16px;\r
+    padding: 16px;\r
     color: var(--on-surface);\r
     background-color: var(--surface-container);\r
     border-radius: var(--border-radius-m);\r
@@ -1977,7 +1980,6 @@ button[is="app-carousel-chip"] .icon {\r
     display: flex;\r
     flex-direction: column;\r
     gap: 8px;\r
-    padding: 0 24px;\r
     box-sizing: border-box;\r
     max-height: 400px;\r
     overflow-y: auto;\r
@@ -1994,7 +1996,7 @@ button[is="app-carousel-chip"] .icon {\r
     }\r
 \r
     to {\r
-        right: 0;\r
+        right: 24px;\r
     }\r
 }\r
 \r
@@ -2012,6 +2014,7 @@ button[is="app-carousel-chip"] .icon {\r
     :host {\r
         transform: translateY(0);\r
         max-height: calc(100% - 144px);\r
+        max-width: calc(100% - 96px);\r
     }\r
 \r
     @keyframes slideIn {\r
@@ -2020,7 +2023,7 @@ button[is="app-carousel-chip"] .icon {\r
         }\r
 \r
         to {\r
-            left: 0;\r
+            left: 4%;\r
         }\r
     }\r
 \r
@@ -2752,23 +2755,27 @@ p {\r
 }\r
 \r
 @media screen and (max-width: 768px) {\r
+    :host {\r
+        right: 4%;\r
+    }\r
+\r
     @keyframes slideIn {\r
         from {\r
-            bottom: 24px;\r
+            bottom: 4%;\r
         }\r
 \r
         to {\r
-            bottom: calc(24px + 360px);\r
+            bottom: calc(4% + 360px);\r
         }\r
     }\r
 \r
     @keyframes slideOut {\r
         from {\r
-            bottom: calc(24px + 360px);\r
+            bottom: calc(4% + 360px);\r
         }\r
 \r
         to {\r
-            bottom: 24px;\r
+            bottom: 4%;\r
         }\r
     }\r
 }`;class It extends HTMLElement{constructor(){super();i(this,"shadowRoot");i(this,"_isOpen",!1);this.shadowRoot=this.attachShadow({mode:"closed"});let e=new CSSStyleSheet;e.replaceSync(Rt),this.shadowRoot.adoptedStyleSheets.push(e)}get isOpen(){return this._isOpen}set isOpen(e){this._isOpen=e,this.isOpen===!0?this.classList.add("open"):this.classList.remove("open")}connectedCallback(){this.render(),this.setup()}render(){this.shadowRoot.innerHTML=`
