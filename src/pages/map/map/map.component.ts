@@ -89,6 +89,7 @@ export class MapComponent extends HTMLElement {
             this.checkUserPin(PositionService.instance.position);
         } else {
             this.setCameraToPosition(null);
+            SnackbarService.instance.createSnackbar(SnackbarType.Error, 'error', 'Nessuna posizione');
         }
 
         EventObservable.instance.subscribe('toggle-tabs', (isOpen: boolean) => this.isOpen = isOpen);

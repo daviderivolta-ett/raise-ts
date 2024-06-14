@@ -65,7 +65,7 @@ export class MapPage extends HTMLElement {
                         </button>
                         <button class="fa-button tags-page-link">
                             <span class="icon">
-                                <span class="material-symbols-outlined">apps</span>
+                                <span class="material-symbols-outlined">label</span>
                             </span>
                         </button>
                     </div>
