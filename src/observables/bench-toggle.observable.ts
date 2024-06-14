@@ -1,4 +1,6 @@
+import { SidenavStatus } from "../models/sidenav.model";
 import { EventObservable } from "./event.observable";
+import { TabsToggleObservable } from "./tabs-toggle.observable";
 
 export class BenchToggleObservable {
     private static _instance: BenchToggleObservable;
@@ -21,6 +23,6 @@ export class BenchToggleObservable {
     set isOpen(isOpen) {
         this._isOpen = isOpen;
         EventObservable.instance.publish('toggle-bench', this.isOpen);
-        if (this.isOpen) EventObservable.instance.publish('toggle-tabs', false);
+        if (this.isOpen) TabsToggleObservable.instance.status = SidenavStatus.Close;
     }
 }

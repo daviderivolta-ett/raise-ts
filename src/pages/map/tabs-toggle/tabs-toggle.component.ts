@@ -1,3 +1,4 @@
+import { SidenavStatus } from '../../../models/sidenav.model';
 import { EventObservable } from '../../../observables/event.observable';
 import { TabsToggleObservable } from '../../../observables/tabs-toggle.observable';
 
@@ -24,12 +25,12 @@ export class TabsToggleComponent extends HTMLButtonElement {
     }
 
     private setup(): void {
-        this.addEventListener('click', () => {
-            TabsToggleObservable.instance.isOpen = !this.isOpen;
+        this.addEventListener('click', () => {                 
+            TabsToggleObservable.instance.status !== 0 ? TabsToggleObservable.instance.status = 0 : TabsToggleObservable.instance.status = 1;
         });
 
-        EventObservable.instance.subscribe('toggle-tabs', (isOpen: boolean) => {
-            this.isOpen = isOpen;
+        EventObservable.instance.subscribe('sidenav-status-change', (status: SidenavStatus) => {
+            status === 0 ? this.isOpen = false : this.isOpen = true;
         });
     }
 
@@ -38,7 +39,7 @@ export class TabsToggleComponent extends HTMLButtonElement {
     }
 
     public disconnectedCallback(): void {
-        EventObservable.instance.unsubscribeAll('toggle-tabs');
+        EventObservable.instance.unsubscribeAll('sidenav-status-change');
     }
 }
 

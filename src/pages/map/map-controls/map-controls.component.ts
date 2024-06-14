@@ -1,3 +1,4 @@
+import { SidenavStatus } from '../../../models/sidenav.model';
 import { EventObservable } from '../../../observables/event.observable';
 
 import style from './map-controls.component.scss?raw';
@@ -53,11 +54,13 @@ export class MapControlsComponent extends HTMLElement {
     }
 
     private setup(): void {
-        EventObservable.instance.subscribe('toggle-tabs', (isOpen: boolean) => this.isOpen = isOpen);
+        EventObservable.instance.subscribe('sidenav-status-change', (status: SidenavStatus) => {
+            status === 0 ? this.isOpen = false : this.isOpen = true;
+        });
     }
 
     public disconnectedCallback(): void {
-        EventObservable.instance.unsubscribeAll('toggle-tabs');
+        EventObservable.instance.unsubscribeAll('sidenav-status-change');
     }
 }
 

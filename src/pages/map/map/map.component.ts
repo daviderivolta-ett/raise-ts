@@ -18,6 +18,7 @@ import { SnackbarService } from '../../../services/snackbar.service';
 
 import style from './map.component.scss?raw';
 import cesiumStyle from 'cesium/Build/Cesium/Widgets/widgets.css?raw';
+import { SidenavStatus } from '../../../models/sidenav.model';
 
 export class MapComponent extends HTMLElement {
     public shadowRoot: ShadowRoot;
@@ -93,6 +94,7 @@ export class MapComponent extends HTMLElement {
         }
 
         EventObservable.instance.subscribe('toggle-tabs', (isOpen: boolean) => this.isOpen = isOpen);
+        EventObservable.instance.subscribe('sidenav-status-change', (status: SidenavStatus) => status === SidenavStatus.Close ? this.isOpen = false : this.isOpen = true);
         EventObservable.instance.subscribe('change-theme', (data: { isPhysicalMap: boolean, theme: MapTheme }) => this.changeTheme(data.isPhysicalMap, data.theme));
         EventObservable.instance.subscribe('change-map-mode', () => this.changeMapMode());
         EventObservable.instance.subscribe('toggle-physical-map', (data: { isPhysicalMap: boolean, currentTheme: MapTheme }) => this.togglePhysicalMap(data.isPhysicalMap, data.currentTheme));
@@ -117,6 +119,7 @@ export class MapComponent extends HTMLElement {
 
     public disconnectedCallback(): void {
         EventObservable.instance.unsubscribeAll('toggle-tabs');
+        EventObservable.instance.unsubscribeAll('sidenav-status-change');
         EventObservable.instance.unsubscribeAll('change-theme');
         EventObservable.instance.unsubscribeAll('change-map-mode');
         EventObservable.instance.unsubscribeAll('toggle-physical-map');
@@ -145,7 +148,8 @@ export class MapComponent extends HTMLElement {
         const pickedObject: any = this.viewer.scene.pick(windowPosition);
 
         if (!pickedObject || !pickedObject.id) {
-            TabsToggleObservable.instance.isOpen = false;
+            // TabsToggleObservable.instance.isOpen = false;
+            TabsToggleObservable.instance.status = SidenavStatus.Close;
             BenchToggleObservable.instance.isOpen = false;
             PoiService.instance.selectedPoi = null;
             this.removeCustomDataSource('selected-feature');
@@ -173,7 +177,8 @@ export class MapComponent extends HTMLElement {
         }
 
         BenchToggleObservable.instance.isOpen = false;
-        TabsToggleObservable.instance.isOpen = true;
+        // TabsToggleObservable.instance.isOpen = true;
+        TabsToggleObservable.instance.status = SidenavStatus.Open;
 
         const selectedPoiGeojson: any = MapService.instance.createGeoJsonFromEntity(entity);
         this.loadCustomDataSource(selectedPoiGeojson, 'selected-feature');

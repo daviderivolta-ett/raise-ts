@@ -1,11 +1,14 @@
 :host {
+    position: fixed;
+    top: 0;
+    right: -360px;
     width: 360px;
     height: 100vh;
     background-color: var(--surface-container);
     animation: slideOut .3s ease-in-out forwards;
 }
 
-:host(.visible) {
+:host(.open) {
     animation: slideIn .3s ease-in-out forwards;
 }
 
@@ -17,11 +20,17 @@
     height: 32px;
 }
 
-.close {
+.dragger {
     height: 3px;
     width: 40px;
     background-color: var(--on-surface);
     border-radius: var(--border-radius-circle);
+    transition: .1s ease-in-out;
+    
+    &.dragging {
+        width: 20px;
+        transition: .1s ease-in-out;
+    }
 }
 
 @keyframes slideIn {
@@ -46,8 +55,16 @@
 
 @media screen and (max-width: 768px) {
     :host {
+        top: inherit;
+        right: inherit;
+        bottom: 0;
+        left: 0;
         width: 100%;
         height: 360px;
+    }
+
+    :host(.full) {
+        animation: expand .3s ease-in-out forwards;
     }
 
     @keyframes slideIn {
@@ -67,6 +84,18 @@
     
         to {
             bottom: -360px;
+        }
+    }
+
+    @keyframes expand {
+        to {
+            height: 100dvh;
+        }
+    }
+
+    @keyframes shrink {
+        to {
+            height: 360px;
         }
     }
 }
