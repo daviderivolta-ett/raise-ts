@@ -26,6 +26,7 @@ export class MapComponent extends HTMLElement {
     public viewer!: Cesium.Viewer;
     public imageryLayers: Record<string, Cesium.ImageryLayer> = {};
     private _isOpen: boolean = false;
+    private isFirstLoad: boolean = true;
 
     constructor() {
         super();
@@ -85,14 +86,6 @@ export class MapComponent extends HTMLElement {
             this.clickOnMap(movement);
         }, Cesium.ScreenSpaceEventType.LEFT_CLICK);
 
-        // if (PositionService.instance.position) {
-        //     this.setCameraToPosition(PositionService.instance.position);
-        //     this.checkUserPin(PositionService.instance.position);
-        // } else {
-        //     this.setCameraToPosition(null);
-        //     SnackbarService.instance.createSnackbar(SnackbarType.Error, 'error', 'Impossibile rilevare la posizione del dispositivo.');
-        // }
-
         EventObservable.instance.subscribe('toggle-tabs', (isOpen: boolean) => this.isOpen = isOpen);
         EventObservable.instance.subscribe('sidenav-status-change', (status: SidenavStatus) => status === SidenavStatus.Close ? this.isOpen = false : this.isOpen = true);
         EventObservable.instance.subscribe('change-theme', (data: { isPhysicalMap: boolean, theme: MapTheme }) => this.changeTheme(data.isPhysicalMap, data.theme));
@@ -114,8 +107,16 @@ export class MapComponent extends HTMLElement {
             this.setCameraToPosition(poi.position);
             this.loadCustomDataSource(geojson, 'selected-feature');
         });
-        EventObservable.instance.subscribe('set-position', (position: GeolocationPosition | null) => {
-            position ? this.checkUserPin(position) : SnackbarService.instance.createSnackbar(SnackbarType.Error, 'error', 'Impossibile rilevare la posizione del dispositivo.');
+        EventObservable.instance.subscribe('set-position', (position: GeolocationPosition | null) => {          
+            if (position) {
+                this.checkUserPin(position);
+                if (this.isFirstLoad) {
+                    this.setCameraToPosition(position);
+                    this.isFirstLoad = false;
+                }
+            } else {
+                SnackbarService.instance.createSnackbar(SnackbarType.Error, 'error', 'Impossibile rilevare la posizione del dispositivo.');
+            }
         });
         EventObservable.instance.subscribe('set-camera', (position: GeolocationPosition | null) => {
             position ? this.setCameraToPosition(position) : SnackbarService.instance.createSnackbar(SnackbarType.Error, 'error', 'Impossibile rilevare la posizione del dispositivo.');
@@ -128,7 +129,6 @@ export class MapComponent extends HTMLElement {
         EventObservable.instance.unsubscribeAll('change-theme');
         EventObservable.instance.unsubscribeAll('change-map-mode');
         EventObservable.instance.unsubscribeAll('toggle-physical-map');
-        EventObservable.instance.unsubscribeAll('set-camera');
         EventObservable.instance.unsubscribeAll('check-user-position');
         EventObservable.instance.unsubscribeAll('add-layer');
         EventObservable.instance.unsubscribeAll('unbench-layer');
@@ -138,6 +138,7 @@ export class MapComponent extends HTMLElement {
         EventObservable.instance.unsubscribeAll('load-custom-path');
         EventObservable.instance.unsubscribeAll('selected-poi');
         EventObservable.instance.unsubscribeAll('set-position');
+        EventObservable.instance.unsubscribeAll('set-camera');
     }
 
     private mouseOver(movement: Cesium.ScreenSpaceEventHandler.MotionEvent): void {
@@ -275,11 +276,30 @@ export class MapComponent extends HTMLElement {
         });
     }
 
-    public updateUserPin(pin: Cesium.Entity, position: GeolocationPosition): void {
-        const getPosition = () => {
-            return Cesium.Cartesian3.fromDegrees(position.coords.longitude, position.coords.latitude, 0.0);
-        };
-        pin.position = new Cesium.ConstantPositionProperty(getPosition());
+    public updateUserPin(pin: Cesium.Entity, finalPosition: GeolocationPosition): void {        
+        // const getPosition = () => {
+        //     return Cesium.Cartesian3.fromDegrees(finalPosition.coords.longitude, finalPosition.coords.latitude, 0.0);
+        // };
+        // pin.position = new Cesium.ConstantPositionProperty(getPosition());
+
+        if (!pin.position) return;
+        const initialPosition: Cesium.Cartesian3 | undefined = pin.position.getValue(Cesium.JulianDate.now(), new Cesium.Cartesian3());
+        if (!initialPosition) return;
+        const endingPosition: Cesium.Cartesian3 = new Cesium.Cartesian3(finalPosition.coords.longitude, finalPosition.coords.latitude, finalPosition.coords.altitude ? finalPosition.coords.altitude : 0.0);
+
+        const initialTime: Cesium.JulianDate = Cesium.JulianDate.now();
+        const endingTime: Cesium.JulianDate = Cesium.JulianDate.addSeconds(initialTime, 10, new Cesium.JulianDate());
+
+        const sampledPosition: Cesium.SampledPositionProperty = new Cesium.SampledPositionProperty();
+        sampledPosition.addSample(initialTime, initialPosition);
+        sampledPosition.addSample(endingTime, endingPosition);
+
+        pin.position = sampledPosition;
+        this.viewer.clock.startTime = initialTime.clone();
+        this.viewer.clock.stopTime = endingTime.clone();
+        this.viewer.clock.currentTime = initialTime.clone();
+        this.viewer.clock.clockRange = Cesium.ClockRange.LOOP_STOP;
+        this.viewer.clock.multiplier = 1;
     }
 
     public async loadCustomDataSource(geojson: any, name: string): Promise<void> {
