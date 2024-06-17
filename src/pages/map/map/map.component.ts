@@ -107,7 +107,7 @@ export class MapComponent extends HTMLElement {
             this.setCameraToPosition(poi.position);
             this.loadCustomDataSource(geojson, 'selected-feature');
         });
-        EventObservable.instance.subscribe('set-position', (position: GeolocationPosition | null) => {          
+        EventObservable.instance.subscribe('set-position', (position: GeolocationPosition | null) => {
             if (position) {
                 this.checkUserPin(position);
                 if (this.isFirstLoad) {
@@ -276,30 +276,11 @@ export class MapComponent extends HTMLElement {
         });
     }
 
-    public updateUserPin(pin: Cesium.Entity, finalPosition: GeolocationPosition): void {        
-        // const getPosition = () => {
-        //     return Cesium.Cartesian3.fromDegrees(finalPosition.coords.longitude, finalPosition.coords.latitude, 0.0);
-        // };
-        // pin.position = new Cesium.ConstantPositionProperty(getPosition());
-
-        if (!pin.position) return;
-        const initialPosition: Cesium.Cartesian3 | undefined = pin.position.getValue(Cesium.JulianDate.now(), new Cesium.Cartesian3());
-        if (!initialPosition) return;
-        const endingPosition: Cesium.Cartesian3 = new Cesium.Cartesian3(finalPosition.coords.longitude, finalPosition.coords.latitude, finalPosition.coords.altitude ? finalPosition.coords.altitude : 0.0);
-
-        const initialTime: Cesium.JulianDate = Cesium.JulianDate.now();
-        const endingTime: Cesium.JulianDate = Cesium.JulianDate.addSeconds(initialTime, 10, new Cesium.JulianDate());
-
-        const sampledPosition: Cesium.SampledPositionProperty = new Cesium.SampledPositionProperty();
-        sampledPosition.addSample(initialTime, initialPosition);
-        sampledPosition.addSample(endingTime, endingPosition);
-
-        pin.position = sampledPosition;
-        this.viewer.clock.startTime = initialTime.clone();
-        this.viewer.clock.stopTime = endingTime.clone();
-        this.viewer.clock.currentTime = initialTime.clone();
-        this.viewer.clock.clockRange = Cesium.ClockRange.LOOP_STOP;
-        this.viewer.clock.multiplier = 1;
+    public updateUserPin(pin: Cesium.Entity, finalPosition: GeolocationPosition): void {
+        const getPosition = () => {
+            return Cesium.Cartesian3.fromDegrees(finalPosition.coords.longitude, finalPosition.coords.latitude, finalPosition.coords.altitude || 0.0);
+        };
+        pin.position = new Cesium.ConstantPositionProperty(getPosition());
     }
 
     public async loadCustomDataSource(geojson: any, name: string): Promise<void> {

@@ -34,16 +34,18 @@ export class TagsWallComponent extends HTMLElement {
 
     private render(): void {
         this.shadowRoot.innerHTML =
-            `          
-            <div class="header">
+            `
+            <div class="logo-wrapper">           
                 <img src="./images/RAISE_pictogram_no_bg.svg" alt="Raise logo" class="logo">
-                <h1>Ecco alcuni dati che potrebbero interessarti</h1>
+            </div>
+            <div class="header">
+                <h1>Cosa vorresti vedere?</h1>
+                <p class="desc">Scegli le categorie di dati che vorresti visualizzare in mappa</p>
             </div>
             <form>
                 <div class="tags-wall"></div>
                 <button type="submit" class="submit-btn">Continua</button>
             </form>
-
             `
             ;
 

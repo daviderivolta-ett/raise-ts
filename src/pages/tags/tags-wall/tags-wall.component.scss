@@ -1,32 +1,60 @@
-.header {
+:host {
+    height: 100%;
+    display: flex;
+    overflow: hidden;
+    flex-direction: column;
+}
+
+.logo-wrapper {
     text-align: center;
 }
 
 .logo {
-    width: 40px;
+    width: 48px;
+    height: auto;
+}
+
+.header {
+    text-align: center;
+    margin: 0 0 24px 0;
 }
 
 h1 {
     color: var(--on-surface);
-    font-size: 1.5rem;
-    margin: 16px 0 0 0;
+}
+
+.desc {
+    color: var(--on-surface-variant);
 }
 
 form {
+    position: relative;
+    display: flex;
+    flex-direction: column;
     overflow: hidden;
+    height: 100%;
 }
 
 .tags-wall {
     display: flex;
-    justify-content: flex-start;
+    flex-direction: row;
     flex-wrap: wrap;
     gap: 8px;
-    margin: 24px 0;
+    overflow: auto;
+    margin: 0 0 24px 0;
+    // flex: 1;
+    scrollbar-width: none;
+    
+    &::-webkit-scrollbar {
+        width: 0;
+    }
 }
 
 .chip {
     position: relative;
     white-space: nowrap;
+    text-align: center;
+    flex: 1;
 }
 
 input[type="checkbox"] {
@@ -42,32 +70,32 @@ label {
     color: var(--on-surface);
     background-color: var(--surface-container);
     border: 1px solid var(--outline);
-    padding: 4px 8px;
-    border-radius: var( --border-radius-circle);
+    border-radius: var(--border-radius-circle);
+    padding: 8px 24px;
 }
 
-input[type="checkbox"]:checked + label {
-    background-color:  var(--surface-container-highest); 
-    border-color: var(--primary);  
+input[type="checkbox"]:checked+label {
+    background-color: var(--surface-container-highest);
+    border-color: var(--primary);
 }
 
 button {
     cursor: pointer;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    font-family: 'Inter', Arial, Helvetica, sans-serif;
+    font-size: 1rem;
+    font-weight: 500;
     width: 100%;
-    border: none;
     border-radius: var(--border-radius-circle);
     color: var(--on-primary);
     background-color: var(--primary);
-    padding: 8px 0;
+    padding: 12px;
     border: 1px solid transparent;
     box-sizing: border-box;
 
     &:hover {
-        opacity: .8;
+        opacity: 0.8;
     }
-}
-
-button.submit-btn {
-    color: var(--on-primary);
-    background-color: var(--primary);
 }
