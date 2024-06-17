@@ -11,7 +11,7 @@ import { BenchToggleObservable } from '../../../observables/bench-toggle.observa
 import { EventObservable } from '../../../observables/event.observable';
 import { ThemeService } from '../../../services/theme.service';
 import { StorageService } from '../../../services/storage.service';
-import { PositionService } from '../../../services/position.service';
+// import { PositionService } from '../../../services/position.service';
 import { MapService } from '../../../services/map.service';
 import { PoiService } from '../../../services/poi.service';
 import { SnackbarService } from '../../../services/snackbar.service';

@@ -52,7 +52,9 @@ export class PositionService {
         try {
             this.watchId = navigator.geolocation.watchPosition(
                 position => this.position = position as GeolocationPosition,
-                error => this.position = null
+                error => {
+                    throw error;
+                }
                 ,
                 {
                     enableHighAccuracy: true,
@@ -61,7 +63,7 @@ export class PositionService {
                 }
             )
         } catch (error) {
-
+            this.position = null;
         }
     }
 
