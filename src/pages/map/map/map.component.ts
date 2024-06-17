@@ -85,20 +85,19 @@ export class MapComponent extends HTMLElement {
             this.clickOnMap(movement);
         }, Cesium.ScreenSpaceEventType.LEFT_CLICK);
 
-        if (PositionService.instance.position) {
-            this.setCameraToPosition(PositionService.instance.position);
-            this.checkUserPin(PositionService.instance.position);
-        } else {
-            this.setCameraToPosition(null);
-            SnackbarService.instance.createSnackbar(SnackbarType.Error, 'error', 'Nessuna posizione');
-        }
+        // if (PositionService.instance.position) {
+        //     this.setCameraToPosition(PositionService.instance.position);
+        //     this.checkUserPin(PositionService.instance.position);
+        // } else {
+        //     this.setCameraToPosition(null);
+        //     SnackbarService.instance.createSnackbar(SnackbarType.Error, 'error', 'Impossibile rilevare la posizione del dispositivo.');
+        // }
 
         EventObservable.instance.subscribe('toggle-tabs', (isOpen: boolean) => this.isOpen = isOpen);
         EventObservable.instance.subscribe('sidenav-status-change', (status: SidenavStatus) => status === SidenavStatus.Close ? this.isOpen = false : this.isOpen = true);
         EventObservable.instance.subscribe('change-theme', (data: { isPhysicalMap: boolean, theme: MapTheme }) => this.changeTheme(data.isPhysicalMap, data.theme));
         EventObservable.instance.subscribe('change-map-mode', () => this.changeMapMode());
         EventObservable.instance.subscribe('toggle-physical-map', (data: { isPhysicalMap: boolean, currentTheme: MapTheme }) => this.togglePhysicalMap(data.isPhysicalMap, data.currentTheme));
-        EventObservable.instance.subscribe('set-camera', (position: GeolocationPosition) => this.setCameraToPosition(position));
         EventObservable.instance.subscribe('check-user-position', (position: GeolocationPosition) => this.checkUserPin(position));
         EventObservable.instance.subscribe('add-layer', (layer: Layer) => this.addLayer(layer));
         EventObservable.instance.subscribe('unbench-layer', (layer: Layer) => this.unbenchLayer(layer));
@@ -114,6 +113,12 @@ export class MapComponent extends HTMLElement {
             let geojson: any = MapService.instance.createGeojsonFeatureCollectionFromPois([poi]);
             this.setCameraToPosition(poi.position);
             this.loadCustomDataSource(geojson, 'selected-feature');
+        });
+        EventObservable.instance.subscribe('set-position', (position: GeolocationPosition | null) => {
+            position ? this.checkUserPin(position) : SnackbarService.instance.createSnackbar(SnackbarType.Error, 'error', 'Impossibile rilevare la posizione del dispositivo.');
+        });
+        EventObservable.instance.subscribe('set-camera', (position: GeolocationPosition | null) => {
+            position ? this.setCameraToPosition(position) : SnackbarService.instance.createSnackbar(SnackbarType.Error, 'error', 'Impossibile rilevare la posizione del dispositivo.');
         });
     }
 
@@ -132,6 +137,7 @@ export class MapComponent extends HTMLElement {
         EventObservable.instance.unsubscribeAll('bench-all-layers');
         EventObservable.instance.unsubscribeAll('load-custom-path');
         EventObservable.instance.unsubscribeAll('selected-poi');
+        EventObservable.instance.unsubscribeAll('set-position');
     }
 
     private mouseOver(movement: Cesium.ScreenSpaceEventHandler.MotionEvent): void {
@@ -238,7 +244,6 @@ export class MapComponent extends HTMLElement {
         if (position && position instanceof Cesium.Cartographic) {
             initialPosition = Cesium.Cartesian3.fromRadians(position.longitude, position.latitude, currentCameraPosition.height);
         }
-
 
         this.viewer.camera.flyTo({
             destination: initialPosition,
@@ -379,8 +384,8 @@ export class MapComponent extends HTMLElement {
         this.addLayerToBench(layer);
     }
 
-    public benchAllLayers(): void {    
-        StorageService.instance.activeLayers.forEach((layer: Layer) => {      
+    public benchAllLayers(): void {
+        StorageService.instance.activeLayers.forEach((layer: Layer) => {
             this.removeLayerFromMap(layer);
             this.removeLayerFromActiveLayers(layer);
             this.addLayerToBench(layer);

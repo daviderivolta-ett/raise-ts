@@ -1,8 +1,10 @@
 import * as Cesium from 'cesium';
+import { EventObservable } from '../observables/event.observable';
 
 export class PositionService {
     private static _instance: PositionService;
     private _position: GeolocationPosition | null = null;
+    private _watchId: number | null = null;
 
     constructor() {
         if (PositionService._instance) return PositionService._instance;
@@ -15,6 +17,15 @@ export class PositionService {
 
     public set position(position: GeolocationPosition | null) {
         this._position = position;
+        EventObservable.instance.publish('set-position', this.position);
+    }
+
+    public get watchId(): number | null {
+        return this._watchId;
+    }
+
+    public set watchId(watchId: number | null) {
+        this._watchId = watchId;
     }
 
     static get instance(): PositionService {
@@ -22,23 +33,42 @@ export class PositionService {
         return PositionService._instance;
     }
 
-    public async getUserPosition(): Promise<void> {
+    public async getPosition(): Promise<GeolocationPosition | null> {        
         try {
             const position: GeolocationPosition = await new Promise<GeolocationPosition>((resolve, reject) => {
                 navigator.geolocation.getCurrentPosition(
-                    position => {                        
-                        resolve(position as GeolocationPosition);
-                    },
-                    error => {
-                        reject(error);
-                    }
-                );
-            });          
-            this._position = position;
-
+                    position => resolve(position as GeolocationPosition),
+                    error => reject(error)
+                )
+            });
+            
+            return position;
         } catch (error) {
-            this._position = null;
+            return null;
         }
+    }
+
+    public async startWatchingUserPosition(): Promise<void> {
+        try {
+            this.watchId = navigator.geolocation.watchPosition(
+                position => this.position = position as GeolocationPosition,
+                error => this.position = null
+                ,
+                {
+                    enableHighAccuracy: true,
+                    timeout: 5000,
+                    maximumAge: 0
+                }
+            )
+        } catch (error) {
+
+        }
+    }
+
+    public stopWatchingPosition(): void {
+        if (!this.watchId) return;
+        navigator.geolocation.clearWatch(this.watchId);
+        this.watchId = null;
     }
 
     public static geolocationToCartographic(geolocationPosition: GeolocationPosition): Cesium.Cartographic {

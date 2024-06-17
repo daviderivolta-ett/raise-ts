@@ -22,19 +22,13 @@ export class CenterPositionBtn extends HTMLButtonElement {
     }
 
     private setup(): void {
-        this.addEventListener('click', async () => {         
-            await PositionService.instance.getUserPosition();           
-            if (PositionService.instance.position) {
-                EventObservable.instance.publish('set-camera', PositionService.instance.position);
-                EventObservable.instance.publish('check-user-position', PositionService.instance.position);
-            } else {
-                EventObservable.instance.publish('set-camera', null);
-            }
+        this.addEventListener('click', async () => {
+            EventObservable.instance.publish('set-camera', PositionService.instance.position);
         });
 
         EventObservable.instance.subscribe('toggle-tabs', (isOpen: boolean) => {
             this.isOpen = isOpen;
-        })
+        });
     }
 
     public disconnectedCallback(): void {

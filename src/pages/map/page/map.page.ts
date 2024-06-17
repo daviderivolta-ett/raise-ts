@@ -28,7 +28,7 @@ export class MapPage extends HTMLElement {
 
         await DataService.instance.getData();
         await ThemeService.instance.getMapThemes();
-        await PositionService.instance.getUserPosition();
+        await PositionService.instance.startWatchingUserPosition();
 
         if (!StorageService.instance.paths.some((path: Path) => path.name === 'default')) StorageService.instance.saveNewPath('default');
         const selectedPath: Path | undefined = StorageService.instance.paths.find((path: Path) => path.lastSelected === true);

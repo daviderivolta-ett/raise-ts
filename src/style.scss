@@ -89,6 +89,7 @@ p {
     display: flex;
     flex-direction: column;
     gap: 16px;
+    width: 400px;
 }
 
 dialog[is="app-dialog"] {
@@ -125,4 +126,10 @@ dialog[is="app-dialog"] .close .material-symbols-outlined {
 dialog[is="app-dialog"]::backdrop {
     background-color: rgba(1, 14, 36, .5);
     backdrop-filter: blur(4px);
+}
+
+@media screen and (max-width: 768px) {
+    .snackbar-container{
+        width: calc(100vw - 8%);
+    }
 }

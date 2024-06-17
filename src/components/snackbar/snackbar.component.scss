@@ -1,7 +1,6 @@
 :host {
     position: relative;
-    width: calc(100vw - 48px);
-    max-width: 400px;
+    width: 100%;
     background-color: white;
     z-index: 999;
     display: flex;
@@ -15,7 +14,7 @@
 .message {
     width: 100%;
     margin: 0;
-    padding: 24px;
+    padding: 16px 0 16px 16px;
     color: var(--on-primary-container);
 }
 
@@ -106,12 +105,5 @@
 @keyframes reducingBar {
     to {
         transform: scaleX(0);
-    }
-}
-
-@media screen and (max-width: 768px) {
-    :host {
-        width: calc(100vw - 48px);
-        max-width: inherit;
     }
 }
