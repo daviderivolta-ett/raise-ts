@@ -53,6 +53,7 @@ export class MapComponent extends HTMLElement {
         this.addBaseLayers(ThemeService.instance.mapThemes);
         this.setup();
         this.addSavedPath();
+        this.changeTheme(false, ThemeService.instance.chooseMapTheme(ThemeService.instance.currentTheme));
     }
 
     private render(): void {
@@ -209,7 +210,7 @@ export class MapComponent extends HTMLElement {
         this.loadCustomDataSource(geojson, 'custom-path');
     }
 
-    public changeTheme(isPhysicalMap: boolean, theme: MapTheme): void {
+    public changeTheme(isPhysicalMap: boolean, theme: MapTheme): void {       
         if (isPhysicalMap) return;
         const index: number = this.viewer.imageryLayers.indexOf(this.imageryLayers[theme.layer]);
         let choosenTheme: Cesium.ImageryLayer = this.viewer.imageryLayers.get(index);

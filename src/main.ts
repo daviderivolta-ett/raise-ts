@@ -40,6 +40,7 @@ import './pages/map/selected-suggested-path-card/selected-suggested-path-card.co
 // Classes
 import { Router } from './components/router.component';
 import { StorageService } from './services/storage.service';
+import { ThemeService } from './services/theme.service';
 
 // Routing
 const router: Router = document.querySelector('app-router') as Router;
@@ -49,6 +50,9 @@ const notFoundRoute: Route = new Route('404', RouteType.NotFound, () => '<div>40
 
 const routes: Route[] = [indexRoute, mapRoute, notFoundRoute];
 router.addRoutes(routes);
+
+// Set theme
+ThemeService.instance.getMapThemes().then(() => ThemeService.instance.getPreferColorScheme());
 
 // Local Storage
 StorageService.instance.getTags();

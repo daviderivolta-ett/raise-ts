@@ -4,7 +4,6 @@
 :root {
     font-family: 'Inter', Arial, Helvetica, sans-serif;
     font-size: 14px;
-    color: var(--on-surface);
 
     --snackbar-duration: 1s;
 
@@ -14,6 +13,36 @@
     --border-radius-circle: 96px;
 
     --font-size-s: .85rem;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    margin: 0;
+    padding: 0;
+    scrollbar-width: thin;
+    scrollbar-color: var(--surface-container-high) var(--surface-container);
+    background-color: var(--surface-container);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    margin: 0;
+}
+
+p {
+    margin: 0;
+}
+
+.dark {
+    color: var(--on-surface);
 
     --primary: rgb(55, 222, 187);
     --on-primary: rgb(0, 56, 45);
@@ -55,30 +84,47 @@
     --inverse-primary: rgb(0, 107, 88);
 }
 
-* {
-    box-sizing: border-box;
-}
+.light {
+    color: var(--on-surface);
 
-html,
-body {
-    margin: 0;
-    padding: 0;
-    scrollbar-width: thin;
-    scrollbar-color: var(--surface-container-high) var(--surface-container);
-    background-color: var(--surface-container);
-}
+    --primary: rgb(0, 107, 88);
+    --on-primary: rgb(255, 255, 255);
+    --primary-container: rgb(243, 255, 249);
+    --on-primary-container: rgb(0, 32, 25);
 
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-    margin: 0;
-}
+    --secondary: rgb(71, 100, 91);
+    --on-secondary: rgb(255, 255, 255);
+    --secondary-container: rgb(243, 255, 249);
+    --on-secondary-container: rgb(3, 32, 25);
 
-p {
-    margin: 0;
+    --tertiary: rgb(59, 99, 122);
+    --on-tertiary: rgb(255, 255, 255);
+    --tertiary-container: rgb(251, 252, 255);
+    --on-tertiary-container: rgb(0, 30, 45);
+
+    --error: rgb(184, 31, 33);
+    --on-error: rgb(255, 255, 255);
+    --error-container: rgb(255, 218, 214);
+    --on-error-container: rgb(65, 0, 3);
+
+    --surface-dim: rgb(201, 218, 255);
+    --surface: rgb(249, 249, 255);
+    --surface-bright: rgb(249, 249, 255);
+
+    --surface-container-lowest: rgb(255, 255, 255);
+    --surface-container-low: rgb(240, 243, 255);
+    --surface-container: rgb(232, 238, 255);
+    --surface-container-high: rgb(223, 232, 255);
+    --surface-container-highest: rgb(214, 227, 255);
+
+    --on-surface: rgb(0, 27, 61);
+    --on-surface-variant: rgb(42, 72, 112);
+    --outline: rgb(92, 120, 163);
+    --outline-variant: rgb(171, 200, 247);
+
+    --inverse-surface: rgb(0, 48, 99);
+    --inverse-on-surface: rgb(236, 240, 255);
+    --inverse-primary: rgb(55, 222, 187);
 }
 
 .snackbar-container {
@@ -129,7 +175,7 @@ dialog[is="app-dialog"]::backdrop {
 }
 
 @media screen and (max-width: 768px) {
-    .snackbar-container{
+    .snackbar-container {
         width: calc(100vw - 8%);
     }
 }
