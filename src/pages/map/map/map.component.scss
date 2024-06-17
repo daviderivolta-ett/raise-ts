@@ -1,5 +1,5 @@
 .map {
-    height: 100%;
+    height: 100dvh;
     width: 100%;
     animation: grow .3s ease-in-out forwards;
 }
@@ -14,13 +14,13 @@
     }
 
     to {
-        width: calc(100% - 360px);
+        width: calc(100dvh - 360px);
     }
 }
 
 @keyframes grow {
     from  {
-        width: calc(100% - 360px);
+        width: calc(100dvh - 360px);
     }
 
     to {
@@ -31,21 +31,21 @@
 @media screen and (max-width: 768px) {
     @keyframes shrink {
         from {
-            height: 100%;
+            height: 100dvh;
         }
     
         to {
-            height: calc(100% - 360px);
+            height: calc(100dvh - 360px);
         }
     }
     
     @keyframes grow {
         from  {
-            height: calc(100% - 360px);
+            height: calc(100dvh - 360px);
         }
     
         to {
-            height: 100%;
+            height: 100dvh;
         }
     }
 }
