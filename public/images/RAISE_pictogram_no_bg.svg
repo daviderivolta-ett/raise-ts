@@ -6,12 +6,12 @@
         fill: #dc281e;
       }
 
-      .cls-1, .cls-2 {
-        stroke-width: 0px;
-      }
-
       .cls-2 {
         fill: #fff;
+      }
+
+      .cls-1, .cls-2 {
+        stroke-width: 0px;
       }
     </style>
   </defs>
