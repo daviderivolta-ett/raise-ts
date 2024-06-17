@@ -22,11 +22,9 @@ export class TagsPage extends HTMLElement {
     private render(): void {
         this.shadowRoot.innerHTML =
             `
-            <div class="page">
                 <div class="box">
                     <app-tags-wall></app-tags-wall>
                 </div>
-            </div>
             `
             ;
     }
