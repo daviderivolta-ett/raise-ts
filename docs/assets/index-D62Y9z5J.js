@@ -2718,7 +2718,7 @@ p {\r
     font-variation-settings:\r
         'FILL' 0,\r
         'wght' 400,\r
-        'GRAD' -25,\r
+        'GRAD' 0,\r
         'opsz' 24;\r
 }\r
 \r
@@ -2727,7 +2727,7 @@ p {\r
 }\r
 \r
 .tool-icon {\r
-    font-size: 1rem;\r
+    font-size: 1.25rem;\r
 }`;class Mt extends HTMLElement{constructor(){super();i(this,"shadowRoot");i(this,"_path",{...h.instance.selectedCustomPath});this.shadowRoot=this.attachShadow({mode:"closed"});let e=new CSSStyleSheet;e.replaceSync(Ln),this.shadowRoot.adoptedStyleSheets.push(e)}get path(){return this._path}set path(e){this._path=e,l.instance.publish("load-custom-path",this.path)}connectedCallback(){this.render(),this.setup(),this.update()}render(){this.shadowRoot.innerHTML=`
             <div class="header">
                 <h4>Percorso selezionato: ${this.path.name}</h4>
