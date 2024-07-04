@@ -44,7 +44,7 @@ export class CarouselComponent extends HTMLElement {
     }
 
     private render(): void {
-        this.layers = StorageService.instance.activeLayers;
+        this.layers = StorageService.instance.activeLayers;     
     }
 
     private setup(): void {

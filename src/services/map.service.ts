@@ -118,13 +118,21 @@ export class MapService {
         return type;
     }
 
-    public createGeoJSONLayerSpecification(id: string, type: 'circle' | 'line' | 'fill', source: string): CircleLayerSpecification | LineLayerSpecification | FillLayerSpecification {
+    public createGeoJSONLayerSpecification(id: string, type: 'circle' | 'line' | 'fill', style: LayerStyle): CircleLayerSpecification | LineLayerSpecification | FillLayerSpecification {
         switch (type) {
             case 'circle':
                 const circleLayerSpec: CircleLayerSpecification = {
                     id,
                     type,
-                    source
+                    source: id,
+                    paint: {
+                        "circle-radius": 8,
+                        "circle-color": style.color,
+                        "circle-opacity": .5,
+                        "circle-stroke-color": style.color,
+                        "circle-stroke-opacity": 1,
+                        "circle-stroke-width": 2
+                    }
                 }
                 return circleLayerSpec;
 
@@ -132,7 +140,11 @@ export class MapService {
                 const lineLayerSpec: LineLayerSpecification = {
                     id,
                     type,
-                    source
+                    source: id,
+                    paint: {
+                        "line-color": style.color,
+                        "line-width": 4
+                    }
                 }
                 return lineLayerSpec;
                 
@@ -140,7 +152,12 @@ export class MapService {
                 const fillLayerSpec: FillLayerSpecification = {
                     id,
                     type,
-                    source
+                    source: id,
+                    paint: {
+                        "fill-color": style.color,
+                        "fill-opacity": .5,
+                        "fill-outline-color": style.color
+                    }
                 }
                 return fillLayerSpec;
         }
