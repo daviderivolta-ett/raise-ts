@@ -9,6 +9,7 @@ import './components/router.component';
 import './pages/tags/page/tags.page';
 import './pages/map/page/map.page';
 import './pages/map/map/map.component';
+import './pages/map/maplibre/maplibre.component';
 import './pages/map/map-mode-btn/map-mode-btn.component';
 import './pages/map/map-theme-btn/map-theme-btn.component';
 import './pages/map/center-position-btn/center-position-btn.component';

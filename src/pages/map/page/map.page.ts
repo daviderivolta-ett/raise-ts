@@ -42,7 +42,7 @@ export class MapPage extends HTMLElement {
         this.shadowRoot.innerHTML =
             `
             <div class="page">
-                <app-map></app-map>
+                <app-maplibre></app-maplibre>
                 <div class="header">
                     <div class="search">
                         <button is="app-tabs-toggle" class="fa-button">

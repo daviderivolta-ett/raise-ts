@@ -3,6 +3,7 @@ import * as Cesium from 'cesium';
 import { Layer, LayerProperty, LayerStyle } from '../models/layer.model';
 import { Feature, FeatureGeometryType } from '../models/feature.model';
 import { PointOfInterest } from '../models/poi.model';
+import { CircleLayerSpecification, FillLayerSpecification, LineLayerSpecification } from 'maplibre-gl';
 
 export class MapService {
     private static _instance: MapService;
@@ -20,17 +21,137 @@ export class MapService {
     public async createGeoJson(layer: Layer): Promise<any> {
         const url = `${layer.url}?service=WFS&typeName=${layer.layer}&outputFormat=application/json&request=GetFeature&srsname=EPSG:4326`;
         const res: Response = await fetch(url);
-        let geoJson: any = await res.json();    
+        let geoJson: any = await res.json();
         let geoJsonNewProp: any = this.substituteRelevantProperties(geoJson, layer);
-        let geoJsonAddProp = this.createFeatureAdditionalProperties(geoJsonNewProp, layer);   
+        let geoJsonAddProp = this.createFeatureAdditionalProperties(geoJsonNewProp, layer);
         return geoJsonAddProp;
+    }
+
+    public async createGeoJSONs(layer: Layer): Promise<any[]> {
+        let geoJSONs: any[] = [];
+        try {
+            const url: string = `${layer.url}?service=WFS&typeName=${layer.layer}&outputFormat=application/json&request=GetFeature&srsname=EPSG:4326`;
+            const res: Response = await fetch(url);
+            let data: any = await res.json();
+
+            if (this.checkGeoJSON(data)) {
+                geoJSONs = [...this.splitGeoJSON(data)];
+            }
+
+            return geoJSONs;
+        } catch (error) {
+            throw new Error('Errore nella creazione del GeoJSON');
+        }
+    }
+
+    private checkGeoJSON(obj: any): boolean {
+        if (!obj || typeof obj !== 'object' || !obj.type) {
+            return false;
+        }
+
+        if (obj.type === 'Feature') {
+            return !!obj.geometry;
+        }
+
+        if (obj.type === 'FeatureCollection') {
+            if (!Array.isArray(obj.features)) {
+                return false;
+            }
+
+            for (const feature of obj.features) {
+                if (!feature.geometry) {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        return false;
+    }
+
+    private splitGeoJSON(obj: any): any[] {
+        const geoJSONs: any[] = [];
+        const geometryTypesMap: { [geometryType: string]: any } = {};
+
+        if (obj.type === 'Feature') geoJSONs.push(obj);
+        if (obj.type === 'FeatureCollection') {
+            obj.features.forEach((feature: Feature) => {
+                const geometryType: FeatureGeometryType = feature.geometry.type;
+                if (!geometryTypesMap[geometryType]) {
+                    geometryTypesMap[geometryType] = {
+                        type: 'FeatureCollection',
+                        features: []
+                    }
+                }
+
+                geometryTypesMap[geometryType].features.push(feature);
+
+            });
+
+            Object.keys(geometryTypesMap).forEach((geometryType) => {
+                geoJSONs.push(geometryTypesMap[geometryType]);
+            });
+        }
+
+        return geoJSONs;
+    }
+
+    public getGeoJSONLayerSpecificationType(geometryType: FeatureGeometryType): 'circle' | 'line' | 'fill' {
+        let type: 'circle' | 'line' | 'fill' = 'fill';
+
+        switch (geometryType) {
+            case 'Point':
+            case 'MultiPoint':
+                type = 'circle';
+                break;
+            case 'LineString':
+            case 'MultiLineString':
+                type = 'line';
+                break;
+            case 'Polygon':
+            case 'MultiPolygon':
+                type = 'fill';
+                break;
+        }
+
+        return type;
+    }
+
+    public createGeoJSONLayerSpecification(id: string, type: 'circle' | 'line' | 'fill', source: string): CircleLayerSpecification | LineLayerSpecification | FillLayerSpecification {
+        switch (type) {
+            case 'circle':
+                const circleLayerSpec: CircleLayerSpecification = {
+                    id,
+                    type,
+                    source
+                }
+                return circleLayerSpec;
+
+            case 'line':
+                const lineLayerSpec: LineLayerSpecification = {
+                    id,
+                    type,
+                    source
+                }
+                return lineLayerSpec;
+                
+            case 'fill':
+                const fillLayerSpec: FillLayerSpecification = {
+                    id,
+                    type,
+                    source
+                }
+                return fillLayerSpec;
+        }
+
     }
 
     public async createGeoJsonFromEntity(entity: Cesium.Entity): Promise<any> {
         let geojson: any = {
-            type: "Feature",
+            type: 'Feature',
             geometry: {
-                type: "Point",
+                type: 'Point',
                 coordinates: []
             },
             properties: {}
@@ -47,7 +168,7 @@ export class MapService {
             geojson.geometry.coordinates = this.createGeojsonPolylineCoordinates(entity);
         }
 
-        if (entity.polygon && entity.polygon.hierarchy) {            
+        if (entity.polygon && entity.polygon.hierarchy) {
             geojson.geometry.type = 'Polygon';
             geojson.geometry.coordinates = this.createGeojsonPolygonCoordinates(entity)
         }
@@ -57,9 +178,9 @@ export class MapService {
 
     private createGeojsonFeatureFromPoi(poi: PointOfInterest): any {
         return {
-            type: "Feature",
+            type: 'Feature',
             geometry: {
-                type: "Point",
+                type: 'Point',
                 coordinates: [Cesium.Math.toDegrees(poi.position.longitude), Cesium.Math.toDegrees(poi.position.latitude)]
             },
             properties: {}
@@ -68,7 +189,7 @@ export class MapService {
 
     public createGeojsonFeatureCollectionFromPois(pois: PointOfInterest[]): any {
         let geoJson: any = {
-            type: "FeatureCollection",
+            type: 'FeatureCollection',
             features: []
         }
 
@@ -129,7 +250,7 @@ export class MapService {
         return array;
     }
 
-    private createFeatureAdditionalProperties(geoJson: any, layer: Layer): any {     
+    private createFeatureAdditionalProperties(geoJson: any, layer: Layer): any {
         geoJson.features = geoJson.features.map((f: Feature, i: number) => {
             f.properties.name = layer.name + ' ' + i;
             // f.properties.layer = layer;
@@ -152,7 +273,7 @@ export class MapService {
                     f.properties.uuid = layer.layer + (f.geometry.coordinates as number[][][])[0][0][1] + (f.geometry.coordinates as number[][][])[0][0][0];
                     break;
             }
-            
+
             f.properties.uuid = f.id; // TESTING
 
             return f;
@@ -160,8 +281,8 @@ export class MapService {
         return geoJson;
     }
 
-    private substituteRelevantProperties(geoJson: any, layer: Layer) {
-        geoJson.features.forEach((feature: any) => {
+    private substituteRelevantProperties(geoJsonObj: any, layer: Layer) {
+        geoJsonObj.features.forEach((feature: any) => {
             const newProperties: any = {};
 
             for (const key in feature.properties) {
@@ -178,11 +299,11 @@ export class MapService {
             feature.properties = newProperties;
         });
 
-        return geoJson;
+        return geoJsonObj;
     }
 
     public styleFeature(dataSource: Cesium.DataSource, style: LayerStyle): void {
-        dataSource.entities.values.forEach((entity: Cesium.Entity) => {  
+        dataSource.entities.values.forEach((entity: Cesium.Entity) => {
             if (entity.billboard) {
                 switch (dataSource.name) {
                     case 'custom-path':
