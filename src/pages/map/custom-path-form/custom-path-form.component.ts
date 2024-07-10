@@ -4,7 +4,6 @@ import { PointOfInterest } from '../../../models/poi.model';
 import { PositionService } from '../../../services/position.service';
 import { StorageService } from '../../../services/storage.service';
 import { TspService } from '../../../services/tsp.service';
-import * as Cesium from 'cesium';
 
 import style from './custom-path-form.component.scss?raw';
 import { LngLat } from 'maplibre-gl';
@@ -110,7 +109,7 @@ export class CustomPathFormComponent extends HTMLElement {
             const position: GeolocationPosition | null = PositionService.instance.position;
             if (!position) return;
 
-            const cartographic: Cesium.Cartographic = PositionService.geolocationToCartographic(position);
+            // const cartographic: Cesium.Cartographic = PositionService.geolocationToCartographic(position);
             const pois: PointOfInterest[] = TspService.instance.nearestInsertion(StorageService.instance.selectedCustomPath.pois, LngLat.convert([position.coords.latitude, position.coords.longitude]));
             const path: Path = StorageService.instance.selectedCustomPath;
             path.pois = pois;

@@ -1,6 +1,6 @@
 import * as Cesium from 'cesium';
 
-import { PoiType, PointOfInterest } from '../../../models/poi.model';
+import { PointOfInterest } from '../../../models/poi.model';
 import { Path } from '../../../models/path.model';
 import { MapTheme } from '../../../models/theme.model';
 import { Layer, LayerStyle } from '../../../models/layer.model';
@@ -102,12 +102,12 @@ export class MapComponent extends HTMLElement {
             let geojson: any = MapService.instance.createGeojsonFeatureCollectionFromPois(path.pois);
             this.loadCustomDataSource(geojson, 'custom-path');
         });
-        EventObservable.instance.subscribe('selected-poi', (poi: PointOfInterest | null) => {
-            if (!poi || poi.type !== PoiType.Point) return;
-            let geojson: any = MapService.instance.createGeojsonFeatureCollectionFromPois([poi]);
-            this.setCameraToPosition(poi.position);
-            this.loadCustomDataSource(geojson, 'selected-feature');
-        });
+        // EventObservable.instance.subscribe('selected-poi', (poi: PointOfInterest | null) => {
+        //     if (!poi || poi.type !== PoiType.Point) return;
+        //     let geojson: any = MapService.instance.createGeojsonFeatureCollectionFromPois([poi]);
+        //     this.setCameraToPosition(poi.position);
+        //     this.loadCustomDataSource(geojson, 'selected-feature');
+        // });
         EventObservable.instance.subscribe('set-position', (position: GeolocationPosition | null) => {
             if (position) {
                 this.checkUserPin(position);
@@ -193,7 +193,7 @@ export class MapComponent extends HTMLElement {
 
         const poi: PointOfInterest = PoiService.instance.parsePoi(entity);
         PoiService.instance.selectedPoi = poi;
-        this.setCameraToPosition(poi.position);
+        // this.setCameraToPosition(poi.position);
     }
 
     private addBaseLayers(themes: MapTheme[]): void {

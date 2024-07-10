@@ -1,5 +1,5 @@
 import { MyColor } from '../../../models/color.model';
-import { Poi, PoiProperty, PoiType, PointOfInterest } from '../../../models/poi.model';
+import { PoiProperty, PoiType, PointOfInterest } from '../../../models/poi.model';
 import { EventObservable } from '../../../observables/event.observable';
 import { MapService } from '../../../services/map.service';
 import { PoiService } from '../../../services/poi.service';

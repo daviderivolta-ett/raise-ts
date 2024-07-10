@@ -3,7 +3,7 @@ import * as Cesium from 'cesium';
 import { Layer, LayerProperty, LayerStyle } from '../models/layer.model';
 import { Feature, FeatureGeometryType } from '../models/feature.model';
 import { PointOfInterest } from '../models/poi.model';
-import { CircleLayerSpecification, FillLayerSpecification, LineLayerSpecification, LngLat, MapGeoJSONFeature } from 'maplibre-gl';
+import { CircleLayerSpecification, FillLayerSpecification, LineLayerSpecification, LngLat } from 'maplibre-gl';
 
 export class MapService {
     private static _instance: MapService;

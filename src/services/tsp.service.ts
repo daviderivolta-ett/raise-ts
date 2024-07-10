@@ -1,6 +1,4 @@
-import * as Cesium from 'cesium';
-
-import { Poi, PointOfInterest } from '../models/poi.model';
+import { PointOfInterest } from '../models/poi.model';
 import { LngLat } from 'maplibre-gl';
 
 export class TspService {

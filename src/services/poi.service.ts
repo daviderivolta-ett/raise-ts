@@ -1,6 +1,6 @@
 import * as Cesium from 'cesium';
 
-import { Poi, PoiProperty, PoiType, PointOfInterest } from '../models/poi.model';
+import { PoiProperty, PoiType, PointOfInterest } from '../models/poi.model';
 import { Layer } from '../models/layer.model';
 import { Tab } from '../models/tab.model';
 
@@ -168,26 +168,26 @@ export class PoiService {
         return poi;
     }
 
-    private parsePoiPosition(entity: Cesium.Entity): Cesium.Cartographic {
-        let position: Cesium.Cartographic = Cesium.Cartographic.ZERO;
+    // private parsePoiPosition(entity: Cesium.Entity): Cesium.Cartographic {
+    //     let position: Cesium.Cartographic = Cesium.Cartographic.ZERO;
 
-        if (entity.point && entity.position) {
-            let pos: Cesium.Cartesian3 | undefined = entity.position.getValue(Cesium.JulianDate.now());
-            if (pos) position = Cesium.Cartographic.fromCartesian(pos);
-        }
+    //     if (entity.point && entity.position) {
+    //         let pos: Cesium.Cartesian3 | undefined = entity.position.getValue(Cesium.JulianDate.now());
+    //         if (pos) position = Cesium.Cartographic.fromCartesian(pos);
+    //     }
 
-        if (entity.polyline && entity.polyline.positions) {
-            let pos: Cesium.Cartesian3 | undefined = entity.polyline.positions.getValue(Cesium.JulianDate.now())[0];
-            if (pos) position = Cesium.Cartographic.fromCartesian(pos);
-        }
+    //     if (entity.polyline && entity.polyline.positions) {
+    //         let pos: Cesium.Cartesian3 | undefined = entity.polyline.positions.getValue(Cesium.JulianDate.now())[0];
+    //         if (pos) position = Cesium.Cartographic.fromCartesian(pos);
+    //     }
 
-        if (entity.polygon && entity.polygon.hierarchy) {
-            let pos: Cesium.Cartesian3 | undefined = entity.polygon.hierarchy.getValue(Cesium.JulianDate.now()).positions[0];
-            if (pos) position = Cesium.Cartographic.fromCartesian(pos);
-        }
+    //     if (entity.polygon && entity.polygon.hierarchy) {
+    //         let pos: Cesium.Cartesian3 | undefined = entity.polygon.hierarchy.getValue(Cesium.JulianDate.now()).positions[0];
+    //         if (pos) position = Cesium.Cartographic.fromCartesian(pos);
+    //     }
 
-        return position;
-    }
+    //     return position;
+    // }
 
     private parsePoiProperty(rawProp: any): PoiProperty {
         let prop: PoiProperty = PoiProperty.createEmpty();

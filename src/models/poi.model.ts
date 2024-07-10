@@ -1,46 +1,5 @@
-import * as Cesium from 'cesium';
 import { Layer, PropertyType } from './layer.model';
 import { LngLat } from 'maplibre-gl';
-
-export class Poi {
-    uuid: string;
-    name: string;
-    position: number[];
-    type: PoiType;
-    layer: Layer;
-    layerName: string;
-    props: PoiProperty[];
-
-    constructor(
-        uuid: string,
-        name: string,
-        position: number[],
-        type: PoiType,
-        layer: Layer,
-        layerName: string,
-        props: PoiProperty[]
-    ) {
-        this.uuid = uuid;
-        this.name = name;
-        this.position = position;
-        this.type = type;
-        this.layer = layer;
-        this.layerName = layerName;
-        this.props = props;
-    }
-
-    static createEmpty(): Poi {
-        return new Poi(
-            '',
-            '',
-            [],
-            PoiType.Point,
-            Layer.createEmpty(),
-            '',
-            []
-        );
-    }
-}
 
 export class PointOfInterest {
     uuid: string;
