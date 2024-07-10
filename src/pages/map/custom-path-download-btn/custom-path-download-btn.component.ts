@@ -1,5 +1,5 @@
-import * as Cesium from 'cesium';
 import { Path } from '../../../models/path.model';
+import { PointOfInterest } from '../../../models/poi.model';
 
 export class CustomPathDownloadBtnComponent extends HTMLButtonElement {
     private _path: Path = Path.createEmpty();
@@ -30,7 +30,7 @@ export class CustomPathDownloadBtnComponent extends HTMLButtonElement {
 
         Object.keys(this.path).forEach((key: any) => {
             if (key !== 'pois') return;
-            this.path.pois.forEach(poi => {
+            this.path.pois.forEach((poi: PointOfInterest) => {
                 const info: string = poi.props.map(prop => {
                     return `${prop.displayName}: ${prop.value}`;
                 }).join('|');
@@ -40,22 +40,11 @@ export class CustomPathDownloadBtnComponent extends HTMLButtonElement {
                     `${poi.layerName}\t` +
                     `${poi.uuid}\t` +
                     `${poi.name}\t` +
-                    `${Cesium.Math.toDegrees(poi.position.latitude)}\t` +
-                    `${Cesium.Math.toDegrees(poi.position.longitude)}\t` +
-                    `${Cesium.Math.toDegrees(poi.position.height)}\t` +
+                    `${poi.position.lat}\t` +
+                    `${poi.position.lng}\t` +
+                    `${0}\t` +
                     `${info}` +
                     `\n`;
-                // const row: string =
-                //     `${this.path.name},` +
-                //     `${poi.layerName},` +
-                //     `${poi.uuid},` +
-                //     `${poi.name},` +
-                //     `${Cesium.Math.toDegrees(poi.position.latitude)},` +
-                //     `${Cesium.Math.toDegrees(poi.position.longitude)},` +
-                //     `${Cesium.Math.toDegrees(poi.position.height)},` +
-                //     `${info}` +
-                //     `\n`;
-
                 csv += row;
             });
         });

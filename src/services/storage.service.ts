@@ -1,5 +1,3 @@
-import * as Cesium from 'cesium';
-
 import { Layer, LayerProperty, LayerStyle, PropertyType, SavedLayers } from '../models/layer.model';
 import { PoiProperty, PoiType, PointOfInterest } from '../models/poi.model';
 import { Path } from '../models/path.model';
@@ -9,6 +7,7 @@ import { EventObservable } from '../observables/event.observable';
 import { TabsObservable } from '../observables/tabs.observable';
 import { SnackbarService } from './snackbar.service';
 import { SnackbarType } from '../models/snackbar-type.model';
+import { LngLat } from 'maplibre-gl';
 
 export class StorageService {
     private static _instance: StorageService;
@@ -62,7 +61,7 @@ export class StorageService {
     }
 
     public set suggestedPaths(suggestedPaths: Path[]) {
-        this._suggestedPaths = suggestedPaths;
+        this._suggestedPaths = suggestedPaths;      
     }
 
     public get selectedSuggestedPath(): Path {
@@ -165,7 +164,7 @@ export class StorageService {
         poi.layerName = data.layerName;
         poi.layer = Layer.createEmpty();
         poi.name = data.name;
-        poi.position = Cesium.Cartographic.fromDegrees(parseFloat(data.longitude), parseFloat(data.latitude), parseFloat(data.height));
+        poi.position = LngLat.convert([parseFloat(data.longitude), parseFloat(data.latitude)]);
         poi.type = PoiType.Point;
         poi.uuid = data.id;
         poi.props = this.parseCsvPoiProperties(data.info);
@@ -265,7 +264,7 @@ export class StorageService {
         p.layer = this.parseLayer(poi.layer);
         p.layerName = poi.layerName;
         p.name = poi.name;
-        p.position = new Cesium.Cartographic(poi.position.longitude, poi.position.latitude, poi.position.height);
+        p.position = poi.position;
         p.props = poi.props.map((prop: any) => this.parsePoiProperty(prop));
         p.type = this.parsePoiType(poi.type);
         p.uuid = poi.uuid;

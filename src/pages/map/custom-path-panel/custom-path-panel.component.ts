@@ -1,8 +1,11 @@
 import { DialogType } from '../../../models/dialog-type.model';
 import { Path } from '../../../models/path.model';
 import { PointOfInterest } from '../../../models/poi.model';
+import { SnackbarType } from '../../../models/snackbar-type.model';
 import { EventObservable } from '../../../observables/event.observable';
 import { DialogService } from '../../../services/dialog.service';
+import { PositionService } from '../../../services/position.service';
+import { SnackbarService } from '../../../services/snackbar.service';
 import { StorageService } from '../../../services/storage.service';
 import { CustomPathCardComponent } from '../custom-path-card/custom-path-card.component';
 import { CustomPathDownloadBtnComponent } from '../custom-path-download-btn/custom-path-download-btn.component';
@@ -33,10 +36,11 @@ export class CustomPathPanelComponent extends HTMLElement {
         EventObservable.instance.publish('load-custom-path', this.path);
     }
 
-    public connectedCallback(): void {
+    public connectedCallback(): void {        
         this.render();
         this.setup();
         this.update();
+        EventObservable.instance.publish('load-custom-path', this.path);
     }
 
     private render(): void {
@@ -68,7 +72,9 @@ export class CustomPathPanelComponent extends HTMLElement {
         const loadBtn: HTMLButtonElement | null = this.shadowRoot.querySelector('.load-btn');
         const csvDownloadBtn: CustomPathDownloadBtnComponent | null = this.shadowRoot.querySelector('button[is="app-custom-path-download-btn"]');
 
-        if (sortBtn) sortBtn.addEventListener('click', () => DialogService.instance.createFormDialog(DialogType.SortPois));
+        if (sortBtn) sortBtn.addEventListener('click', () => {
+            PositionService.instance.position ? DialogService.instance.createFormDialog(DialogType.SortPois) : SnackbarService.instance.createSnackbar(SnackbarType.Error, '', 'Attivare la geolocalizzazione per riordinare i punti di interesse.');
+        });
         if (editBtn) editBtn.addEventListener('click', () => DialogService.instance.createFormDialog(DialogType.EditPath));
         if (addBtn) addBtn.addEventListener('click', () => DialogService.instance.createFormDialog(DialogType.AddPath));
         if (bookmarkBtn) bookmarkBtn.addEventListener('click', () => DialogService.instance.createFormDialog(DialogType.BookmarkPath));

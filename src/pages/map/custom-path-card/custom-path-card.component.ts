@@ -1,6 +1,6 @@
 import { MyColor } from '../../../models/color.model';
 import { Path } from '../../../models/path.model';
-import { PoiProperty, PointOfInterest } from '../../../models/poi.model';
+import { Poi, PoiProperty, PointOfInterest } from '../../../models/poi.model';
 import { PoiService } from '../../../services/poi.service';
 import { StorageService } from '../../../services/storage.service';
 

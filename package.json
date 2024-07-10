@@ -9,7 +9,6 @@
     "preview": "vite preview"
   },
   "devDependencies": {
-    "@types/geojson": "^7946.0.14",
     "sass": "^1.72.0",
     "typescript": "^5.2.2",
     "vite": "^5.1.6",

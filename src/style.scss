@@ -136,6 +136,7 @@ p {
     flex-direction: column;
     gap: 16px;
     width: 400px;
+    z-index: 999;
 }
 
 dialog[is="app-dialog"] {

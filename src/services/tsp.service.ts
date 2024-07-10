@@ -1,6 +1,7 @@
 import * as Cesium from 'cesium';
 
-import { PointOfInterest } from '../models/poi.model';
+import { Poi, PointOfInterest } from '../models/poi.model';
+import { LngLat } from 'maplibre-gl';
 
 export class TspService {
     private static _instance: TspService;
@@ -16,13 +17,13 @@ export class TspService {
         return TspService._instance;
     }
 
-    private calculateDistance(firstPosition: Cesium.Cartographic, secondPosition: Cesium.Cartographic) {
-        const dx: number = firstPosition.longitude - secondPosition.longitude;
-        const dy: number = firstPosition.latitude - secondPosition.latitude;
+    private calculateDistance(firstPosition: LngLat, secondPosition: LngLat) {
+        const dx: number = firstPosition.lng - secondPosition.lng;
+        const dy: number = firstPosition.lat - secondPosition.lat;
         return Math.sqrt(dx * dx + dy * dy);
     }
 
-    public nearestInsertion(pois: PointOfInterest[], initialPosition: Cesium.Cartographic) {
+    public nearestInsertion(pois: PointOfInterest[], initialPosition: LngLat) {
         const remainingPois: PointOfInterest[] = [...pois];
 
         let currentIndex: number = 0;

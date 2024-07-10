@@ -26,7 +26,7 @@ export class MapPage extends HTMLElement {
         document.body.append(splash);
 
         await DataService.instance.getData();
-        await PositionService.instance.startWatchingUserPosition();
+        // await PositionService.instance.startWatchingUserPosition();
 
         if (!StorageService.instance.paths.some((path: Path) => path.name === 'default')) StorageService.instance.saveNewPath('default');
         const selectedPath: Path | undefined = StorageService.instance.paths.find((path: Path) => path.lastSelected === true);
@@ -70,7 +70,6 @@ export class MapPage extends HTMLElement {
                     <app-carousel></app-carousel>
                 </div>
                 <app-search-result></app-search-result>
-                <app-map-controls></app-map-controls>
                 <app-tabs-sidenav></app-tabs-sidenav>
                 <app-bench></app-bench>
             </div>

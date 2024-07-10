@@ -1,0 +1,89 @@
+:host(.reduce) #maplibre {
+    animation: shrink .3s ease-in-out forwards;   
+}
+
+:host(.reduce) .maplibregl-ctrl-bottom-right {
+    animation: slideIn .3s ease-in-out forwards;
+}
+
+#maplibre {
+    height: 100dvh;
+    animation: grow .3s ease-in-out forwards;
+}
+
+.maplibregl-ctrl-bottom-right {
+    bottom: 24px !important;
+    right: 24px !important;
+    animation: slideOut .3s ease-in-out forwards;
+}
+
+.maplibregl-ctrl-group {
+    margin: 0 !important;
+}
+
+button.maplibregl-ctrl-geolocate {
+    width: 40px;
+    height: 40px;
+}
+
+@keyframes shrink {
+    from {
+        width: 100%;
+    }
+
+    to {
+        width: calc(100% - 360px);
+    }
+}
+
+@keyframes grow {
+    from  {
+        width: calc(100% - 360px);
+    }
+
+    to {
+        width: 100%;
+    }
+}
+
+@keyframes slideIn {
+    from {
+        right: 24px;
+    }
+
+    to {
+        right: calc(24px + 360px);
+    }
+}
+
+@keyframes slideOut {
+    from {
+        right: calc(24px + 360px);
+    }
+
+    to {
+        right: 24px;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    @keyframes shrink {
+        from {
+            height: 100dvh;
+        }
+    
+        to {
+            height: calc(100dvh - 360px);
+        }
+    }
+    
+    @keyframes grow {
+        from  {
+            height: calc(100dvh - 360px);
+        }
+    
+        to {
+            height: 100dvh;
+        }
+    }
+}

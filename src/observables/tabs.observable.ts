@@ -21,7 +21,7 @@ export class TabsObservable {
     }
 
     public set currentTab(currentTab: Tab) {
-        this._currentTab = currentTab;
+        this._currentTab = currentTab;        
         EventObservable.instance.publish('current-tab-updated', this.currentTab);
     }
 

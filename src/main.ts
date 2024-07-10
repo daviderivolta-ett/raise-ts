@@ -1,5 +1,5 @@
 // Web components polyfills for Safari
-import '@ungap/custom-elements';
+// import '@ungap/custom-elements';
 
 // Models
 import { Route, RouteType } from './models/route.model';
@@ -57,6 +57,6 @@ ThemeService.instance.getMapThemes().then(() => ThemeService.instance.getPreferC
 
 // Local Storage
 StorageService.instance.getTags();
-StorageService.instance.getCsvPaths(1);
+StorageService.instance.getCsvPaths(2);
 StorageService.instance.getSavedLayers();
 StorageService.instance.getCustomPaths();

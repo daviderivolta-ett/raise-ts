@@ -6,6 +6,7 @@
     height: 100dvh;
     background-color: var(--surface-container);
     animation: slideOut .3s ease-in-out forwards;
+    z-index: 999;
 }
 
 :host(.open) {

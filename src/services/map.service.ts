@@ -3,7 +3,7 @@ import * as Cesium from 'cesium';
 import { Layer, LayerProperty, LayerStyle } from '../models/layer.model';
 import { Feature, FeatureGeometryType } from '../models/feature.model';
 import { PointOfInterest } from '../models/poi.model';
-import { CircleLayerSpecification, FillLayerSpecification, LineLayerSpecification } from 'maplibre-gl';
+import { CircleLayerSpecification, FillLayerSpecification, LineLayerSpecification, LngLat, MapGeoJSONFeature } from 'maplibre-gl';
 
 export class MapService {
     private static _instance: MapService;
@@ -18,7 +18,7 @@ export class MapService {
         return MapService._instance;
     }
 
-    public async createGeoJson(layer: Layer): Promise<any> {
+    public async createGeoJsonFromLayer(layer: Layer): Promise<any> {
         const url = `${layer.url}?service=WFS&typeName=${layer.layer}&outputFormat=application/json&request=GetFeature&srsname=EPSG:4326`;
         const res: Response = await fetch(url);
         let geoJson: any = await res.json();
@@ -198,7 +198,7 @@ export class MapService {
             type: 'Feature',
             geometry: {
                 type: 'Point',
-                coordinates: [Cesium.Math.toDegrees(poi.position.longitude), Cesium.Math.toDegrees(poi.position.latitude)]
+                coordinates: [poi.position.lng, poi.position.lat]
             },
             properties: {}
         }
@@ -386,8 +386,8 @@ export class MapService {
         return entity;
     }
 
-    public openGoogleMaps(position: Cesium.Cartographic): void {
-        const url: string = `https://www.google.it/maps/dir/?api=1&destination=${Cesium.Math.toDegrees(position.latitude)},${Cesium.Math.toDegrees(position.longitude)}`;
+    public openGoogleMaps(position: LngLat): void {        
+        const url: string = `https://www.google.it/maps/dir/?api=1&destination=${position.lat},${position.lng}`;
         window.open(url, '_blank');
     }
 }

@@ -5,5 +5,8 @@ export default defineConfig({
     plugins: [cesium()],
     build: {
         outDir: 'docs'
+    },
+    optimizeDeps: {
+        exclude: ['cesium.js', 'vue-demi', '@vite/client', '@vite/env']
     }
 });
