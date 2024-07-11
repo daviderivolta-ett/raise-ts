@@ -42,21 +42,27 @@ import './pages/map/selected-suggested-path-card/selected-suggested-path-card.co
 import { Router } from './components/router.component';
 import { StorageService } from './services/storage.service';
 import { ThemeService } from './services/theme.service';
+import { MAP_COLORS_URLs } from './models/theme.model';
 
-// Routing
-const router: Router = document.querySelector('app-router') as Router;
-const indexRoute: Route = new Route('map', RouteType.Page, () => '<page-map></page-map>');
-const mapRoute: Route = new Route('index', RouteType.Default, () => '<page-tags></page-tags>');
-const notFoundRoute: Route = new Route('404', RouteType.NotFound, () => '<div>404</div>');
+async function main(): Promise<void> {
+    // Set theme
+    await ThemeService.instance.fetchMapColors(MAP_COLORS_URLs);
+    ThemeService.instance.getPreferColorScheme();
 
-const routes: Route[] = [indexRoute, mapRoute, notFoundRoute];
-router.addRoutes(routes);
+    // Local Storage
+    StorageService.instance.getTags();
+    StorageService.instance.getCsvPaths(2);
+    StorageService.instance.getSavedLayers();
+    StorageService.instance.getCustomPaths();
 
-// Set theme
-ThemeService.instance.getMapThemes().then(() => ThemeService.instance.getPreferColorScheme());
+    // Routing
+    const router: Router = document.querySelector('app-router') as Router;
+    const indexRoute: Route = new Route('map', RouteType.Page, () => '<page-map></page-map>');
+    const mapRoute: Route = new Route('index', RouteType.Default, () => '<page-tags></page-tags>');
+    const notFoundRoute: Route = new Route('404', RouteType.NotFound, () => '<div>404</div>');
 
-// Local Storage
-StorageService.instance.getTags();
-StorageService.instance.getCsvPaths(2);
-StorageService.instance.getSavedLayers();
-StorageService.instance.getCustomPaths();
+    const routes: Route[] = [indexRoute, mapRoute, notFoundRoute];
+    router.addRoutes(routes);
+}
+
+main();

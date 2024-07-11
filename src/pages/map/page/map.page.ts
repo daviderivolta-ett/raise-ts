@@ -1,7 +1,6 @@
 import { SplashComponent } from '../../../components/splash/splash.component';
 import { Path } from '../../../models/path.model';
 import { DataService } from '../../../services/data.service';
-import { PositionService } from '../../../services/position.service';
 import { StorageService } from '../../../services/storage.service';
 import { MapComponent } from '../map/map.component';
 
@@ -26,7 +25,6 @@ export class MapPage extends HTMLElement {
         document.body.append(splash);
 
         await DataService.instance.getData();
-        // await PositionService.instance.startWatchingUserPosition();
 
         if (!StorageService.instance.paths.some((path: Path) => path.name === 'default')) StorageService.instance.saveNewPath('default');
         const selectedPath: Path | undefined = StorageService.instance.paths.find((path: Path) => path.lastSelected === true);
@@ -83,10 +81,6 @@ export class MapPage extends HTMLElement {
         const link: HTMLButtonElement | null = this.shadowRoot.querySelector('.tags-page-link');
         if (!link) return;
         link.addEventListener('click', () => window.location.hash = '/');
-    }
-
-    public async disconnectedCallback(): Promise<void> {
-        PositionService.instance.stopWatchingPosition();
     }
 }
 

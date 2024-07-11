@@ -1,4 +1,4 @@
-import { Map, MapMouseEvent, MapGeoJSONFeature, Marker, GeolocateControl, LngLat, AttributionControl } from 'maplibre-gl';
+import { Map, MapMouseEvent, MapGeoJSONFeature, Marker, GeolocateControl, LngLat, AttributionControl, LayerSpecification } from 'maplibre-gl';
 import { EventObservable } from '../../../observables/event.observable';
 import { Layer } from '../../../models/layer.model';
 import { MapService } from '../../../services/map.service';
@@ -14,6 +14,7 @@ import { Path } from '../../../models/path.model';
 import { PositionService } from '../../../services/position.service';
 import MaplibreStyle from 'maplibre-gl/dist/maplibre-gl.css?raw';
 import style from './maplibre.component.scss?raw';
+import { ThemeService } from '../../../services/theme.service';
 
 export class MaplibreComponent extends HTMLElement {
     public shadowRoot: ShadowRoot;
@@ -49,7 +50,8 @@ export class MaplibreComponent extends HTMLElement {
 
         this.map = new Map({
             container: this.container,
-            style: './settings/map-style-new.json',
+            // style: './settings/map-dark.json',
+            style: ThemeService.instance.chooseMapColor(ThemeService.instance.currentTheme),
             center: [8.934080815653985, 44.40753207658791],
             zoom: 15,
             attributionControl: false
@@ -99,6 +101,7 @@ export class MaplibreComponent extends HTMLElement {
 
         EventObservable.instance.subscribe('toggle-tabs', (isOpen: boolean) => this.isOpen = isOpen);
         EventObservable.instance.subscribe('sidenav-status-change', (status: SidenavStatus) => status === SidenavStatus.Close ? this.isOpen = false : this.isOpen = true);
+        EventObservable.instance.subscribe('change-theme', (data: { isPhysicalMap: boolean, theme: any }) => this.changeTheme(data.theme));
         EventObservable.instance.subscribe('add-layer', (layer: Layer) => this.addLayer(layer));
         EventObservable.instance.subscribe('bench-layer', (layer: Layer) => this.benchLayer(layer));
         EventObservable.instance.subscribe('bench-all-layers', () => this.benchAllLayers());
@@ -148,11 +151,11 @@ export class MaplibreComponent extends HTMLElement {
 
         const feature: MapGeoJSONFeature = features[0];
         this.createCustomLayerFromFeature(feature);
-        const selectedPoi: PointOfInterest = PoiService.instance.createPoiFromFeature(feature);       
-        
+        const selectedPoi: PointOfInterest = PoiService.instance.createPoiFromFeature(feature);
+
         TabsToggleObservable.instance.status = SidenavStatus.Open;
         BenchToggleObservable.instance.isOpen = false;
-        
+
         this.setCameraToPosition(selectedPoi.position);
 
         PoiService.instance.selectedPoi = selectedPoi;
@@ -202,7 +205,7 @@ export class MaplibreComponent extends HTMLElement {
         });
     }
 
-    private async createCustomLayerFromFeature(feature: MapGeoJSONFeature) {               
+    private async createCustomLayerFromFeature(feature: MapGeoJSONFeature) {
         if (feature.geometry.type === 'Point') {
             const marker = await this.createCustomMarker('selected-feature', '#EA4335', '#B31412');
             if (marker) {
@@ -514,6 +517,7 @@ export class MaplibreComponent extends HTMLElement {
     public disconnectedCallback(): void {
         EventObservable.instance.unsubscribeAll('toggle-tabs');
         EventObservable.instance.unsubscribeAll('sidenav-status-change');
+        EventObservable.instance.unsubscribeAll('change-theme');
         EventObservable.instance.unsubscribeAll('add-layer');
         EventObservable.instance.unsubscribeAll('bench-layer');
         EventObservable.instance.unsubscribeAll('bench-all-layers');
@@ -562,6 +566,24 @@ export class MaplibreComponent extends HTMLElement {
                     (Math.sqrt(1 - Math.pow(-2 * t + 2, 2)) + 1) / 2;
             },
             essential: true
+        });
+    }
+
+    private changeTheme(theme: any): void {
+        const currentThemeLayers: LayerSpecification[] = this.map.getStyle().layers;
+
+        theme.layers.forEach((newLayer: any) => {
+            if (newLayer.id) {
+                const currentLayer: LayerSpecification | undefined = currentThemeLayers.find((currentLayer: LayerSpecification) => currentLayer.id === newLayer.id);
+                if (currentLayer && currentLayer.paint) {
+                    Object.keys(newLayer.paint || {}).forEach((paintProperty: string) => {
+                        const paintValue: any = newLayer.paint[paintProperty];
+                        if (paintValue !== undefined) {
+                            this.map.setPaintProperty(newLayer.id, paintProperty, paintValue);
+                        }
+                    });
+                }
+            }
         });
     }
 }

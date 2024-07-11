@@ -1,13 +1,13 @@
+import { Layer } from '../../../models/layer.model';
 import { Path } from '../../../models/path.model';
 import { PointOfInterest } from '../../../models/poi.model';
 import { Tab } from '../../../models/tab.model';
 import { TabsObservable } from '../../../observables/tabs.observable';
+import { EventObservable } from '../../../observables/event.observable';
 import { StorageService } from '../../../services/storage.service';
 import { SelectedSuggestedPathCardComponent } from '../selected-suggested-path-card/selected-suggested-path-card.component';
 
 import style from '../custom-path-panel/custom-path-panel.component.scss?raw';
-import { Layer } from '../../../models/layer.model';
-import { EventObservable } from '../../../observables/event.observable';
 
 export class SelectedSuggestedPathPanelComponent extends HTMLElement {
     public shadowRoot: ShadowRoot;

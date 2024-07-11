@@ -1,4 +1,3 @@
-import * as Cesium from 'cesium';
 import { EventObservable } from '../observables/event.observable';
 
 export class PositionService {
@@ -33,51 +32,51 @@ export class PositionService {
         return PositionService._instance;
     }
 
-    public async getPosition(): Promise<GeolocationPosition | null> {        
-        try {
-            const position: GeolocationPosition = await new Promise<GeolocationPosition>((resolve, reject) => {
-                navigator.geolocation.getCurrentPosition(
-                    position => resolve(position as GeolocationPosition),
-                    error => reject(error)
-                )
-            });
+    // public async getPosition(): Promise<GeolocationPosition | null> {        
+    //     try {
+    //         const position: GeolocationPosition = await new Promise<GeolocationPosition>((resolve, reject) => {
+    //             navigator.geolocation.getCurrentPosition(
+    //                 position => resolve(position as GeolocationPosition),
+    //                 error => reject(error)
+    //             )
+    //         });
             
-            return position;
-        } catch (error) {
-            return null;
-        }
-    }
+    //         return position;
+    //     } catch (error) {
+    //         return null;
+    //     }
+    // }
 
-    public async startWatchingUserPosition(): Promise<void> {
-        try {
-            this.watchId = navigator.geolocation.watchPosition(
-                position => this.position = position as GeolocationPosition,
-                error => {
-                    throw error;
-                }
-                ,
-                {
-                    enableHighAccuracy: true,
-                    timeout: 5000,
-                    maximumAge: 0
-                }
-            )
-        } catch (error) {
-            this.position = null;
-        }
-    }
+    // public async startWatchingUserPosition(): Promise<void> {
+    //     try {
+    //         this.watchId = navigator.geolocation.watchPosition(
+    //             position => this.position = position as GeolocationPosition,
+    //             error => {
+    //                 throw error;
+    //             }
+    //             ,
+    //             {
+    //                 enableHighAccuracy: true,
+    //                 timeout: 5000,
+    //                 maximumAge: 0
+    //             }
+    //         )
+    //     } catch (error) {
+    //         this.position = null;
+    //     }
+    // }
 
-    public stopWatchingPosition(): void {
-        if (!this.watchId) return;
-        navigator.geolocation.clearWatch(this.watchId);
-        this.watchId = null;
-    }
+    // public stopWatchingPosition(): void {
+    //     if (!this.watchId) return;
+    //     navigator.geolocation.clearWatch(this.watchId);
+    //     this.watchId = null;
+    // }
 
-    public static geolocationToCartographic(geolocationPosition: GeolocationPosition): Cesium.Cartographic {
-        return new Cesium.Cartographic(
-            geolocationPosition.coords.longitude,
-            geolocationPosition.coords.latitude,
-            geolocationPosition.coords.altitude || 0,
-        )
-    }
+    // public static geolocationToCartographic(geolocationPosition: GeolocationPosition): Cesium.Cartographic {
+    //     return new Cesium.Cartographic(
+    //         geolocationPosition.coords.longitude,
+    //         geolocationPosition.coords.latitude,
+    //         geolocationPosition.coords.altitude || 0,
+    //     )
+    // }
 }

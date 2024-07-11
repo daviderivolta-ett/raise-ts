@@ -1,5 +1,3 @@
-import * as Cesium from 'cesium';
-
 import { PoiProperty, PoiType, PointOfInterest } from '../models/poi.model';
 import { Layer } from '../models/layer.model';
 import { Tab } from '../models/tab.model';
@@ -123,50 +121,50 @@ export class PoiService {
         return new LngLat(avgLng, avgLat);
     }
 
-    public parsePoi(entity: Cesium.Entity): PointOfInterest {
-        let poi: PointOfInterest = PointOfInterest.createEmpty();
-        if (!entity.properties) return poi;
+    // public parsePoi(entity: Cesium.Entity): PointOfInterest {
+    //     let poi: PointOfInterest = PointOfInterest.createEmpty();
+    //     if (!entity.properties) return poi;
 
-        let propertyBag: Cesium.PropertyBag = entity.properties;
-        let propertyNames: string[] = entity.properties.propertyNames;
+    //     let propertyBag: Cesium.PropertyBag = entity.properties;
+    //     let propertyNames: string[] = entity.properties.propertyNames;
 
-        propertyNames.forEach((name: string) => {
-            if (propertyBag.hasProperty(name)) {
-                switch (name) {
-                    case 'uuid':
-                        poi.uuid = (propertyBag[name] as Cesium.ConstantProperty).valueOf();
-                        break;
+    //     propertyNames.forEach((name: string) => {
+    //         if (propertyBag.hasProperty(name)) {
+    //             switch (name) {
+    //                 case 'uuid':
+    //                     poi.uuid = (propertyBag[name] as Cesium.ConstantProperty).valueOf();
+    //                     break;
 
-                    case 'layer':
-                        const layerObj: Layer = propertyBag[name].valueOf();
-                        poi.layer = layerObj;
-                        poi.layerName = layerObj.layer;
-                        break;
+    //                 case 'layer':
+    //                     const layerObj: Layer = propertyBag[name].valueOf();
+    //                     poi.layer = layerObj;
+    //                     poi.layerName = layerObj.layer;
+    //                     break;
 
-                    case 'layerName':
-                        const layerName: string = propertyBag[name].valueOf();
-                        poi.layerName = layerName;
-                        const layer: Layer | undefined = DataService.instance.filterLayersByLayerName(layerName);
-                        if (layer) poi.layer = layer;
-                        break;
+    //                 case 'layerName':
+    //                     const layerName: string = propertyBag[name].valueOf();
+    //                     poi.layerName = layerName;
+    //                     const layer: Layer | undefined = DataService.instance.filterLayersByLayerName(layerName);
+    //                     if (layer) poi.layer = layer;
+    //                     break;
 
-                    case 'name':
-                        poi.name = (propertyBag[name] as Cesium.ConstantProperty).valueOf();
-                        break;
+    //                 case 'name':
+    //                     poi.name = (propertyBag[name] as Cesium.ConstantProperty).valueOf();
+    //                     break;
 
-                    default:
-                        let rawProp: any = (propertyBag[name] as Cesium.ConstantProperty).valueOf();
-                        poi.props.push(this.parsePoiProperty(rawProp));
-                        break;
-                }
-            }
-        });
+    //                 default:
+    //                     let rawProp: any = (propertyBag[name] as Cesium.ConstantProperty).valueOf();
+    //                     poi.props.push(this.parsePoiProperty(rawProp));
+    //                     break;
+    //             }
+    //         }
+    //     });
 
-        // poi.position = this.parsePoiPosition(entity);
-        poi.type = this.parsePoiType(entity);
+    //     poi.position = this.parsePoiPosition(entity);
+    //     poi.type = this.parsePoiType(entity);
 
-        return poi;
-    }
+    //     return poi;
+    // }
 
     // private parsePoiPosition(entity: Cesium.Entity): Cesium.Cartographic {
     //     let position: Cesium.Cartographic = Cesium.Cartographic.ZERO;
@@ -197,11 +195,11 @@ export class PoiService {
         return prop;
     }
 
-    private parsePoiType(entity: Cesium.Entity): PoiType {
-        if (entity.polyline) return PoiType.Polyline;
-        if (entity.polygon) return PoiType.Polygon;
-        return PoiType.Point;
-    }
+    // private parsePoiType(entity: Cesium.Entity): PoiType {
+    //     if (entity.polyline) return PoiType.Polyline;
+    //     if (entity.polygon) return PoiType.Polygon;
+    //     return PoiType.Point;
+    // }
 
     private getPoiType(feature: MapGeoJSONFeature): PoiType {
         if (feature.geometry.type === 'LineString' || feature.geometry.type === 'MultiLineString') return PoiType.Polyline;

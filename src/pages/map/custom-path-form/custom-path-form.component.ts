@@ -1,3 +1,4 @@
+import { LngLat } from 'maplibre-gl';
 import { DialogType } from '../../../models/dialog-type.model';
 import { Path } from '../../../models/path.model';
 import { PointOfInterest } from '../../../models/poi.model';
@@ -6,7 +7,6 @@ import { StorageService } from '../../../services/storage.service';
 import { TspService } from '../../../services/tsp.service';
 
 import style from './custom-path-form.component.scss?raw';
-import { LngLat } from 'maplibre-gl';
 
 export class CustomPathFormComponent extends HTMLElement {
     public shadowRoot: ShadowRoot;

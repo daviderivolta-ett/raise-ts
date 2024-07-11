@@ -1,9 +1,8 @@
 import * as Cesium from 'cesium';
 
-import { PointOfInterest } from '../../../models/poi.model';
 import { Path } from '../../../models/path.model';
 import { MapTheme } from '../../../models/theme.model';
-import { Layer, LayerStyle } from '../../../models/layer.model';
+import { Layer } from '../../../models/layer.model';
 import { SnackbarType } from '../../../models/snackbar-type.model';
 
 import { TabsToggleObservable } from '../../../observables/tabs-toggle.observable';
@@ -50,7 +49,7 @@ export class MapComponent extends HTMLElement {
 
     public connectedCallback(): void {
         this.render();
-        this.addBaseLayers(ThemeService.instance.mapThemes);
+        // this.addBaseLayers(ThemeService.instance.mapThemes);
         this.setup();
         this.addSavedPath();
         this.changeTheme(false, ThemeService.instance.chooseMapTheme(ThemeService.instance.currentTheme));
@@ -188,21 +187,21 @@ export class MapComponent extends HTMLElement {
         // TabsToggleObservable.instance.isOpen = true;
         TabsToggleObservable.instance.status = SidenavStatus.Open;
 
-        const selectedPoiGeojson: any = MapService.instance.createGeoJsonFromEntity(entity);
-        this.loadCustomDataSource(selectedPoiGeojson, 'selected-feature');
+        // const selectedPoiGeojson: any = MapService.instance.createGeoJsonFromEntity(entity);
+        // this.loadCustomDataSource(selectedPoiGeojson, 'selected-feature');
 
-        const poi: PointOfInterest = PoiService.instance.parsePoi(entity);
-        PoiService.instance.selectedPoi = poi;
+        // const poi: PointOfInterest = PoiService.instance.parsePoi(entity);
+        // PoiService.instance.selectedPoi = poi;
         // this.setCameraToPosition(poi.position);
     }
 
-    private addBaseLayers(themes: MapTheme[]): void {
-        themes.forEach((theme: MapTheme) => {
-            const imagerylayer: Cesium.ImageryLayer = new Cesium.ImageryLayer(ThemeService.instance.createImageryProvider(theme));
-            this.viewer.imageryLayers.add(imagerylayer);
-            this.imageryLayers[theme.layer] = imagerylayer;
-        });
-    }
+    // private addBaseLayers(themes: MapTheme[]): void {
+    //     themes.forEach((theme: MapTheme) => {
+    //         const imagerylayer: Cesium.ImageryLayer = new Cesium.ImageryLayer(ThemeService.instance.createImageryProvider(theme));
+    //         this.viewer.imageryLayers.add(imagerylayer);
+    //         this.imageryLayers[theme.layer] = imagerylayer;
+    //     });
+    // }
 
     private addSavedPath(): void {
         StorageService.instance.activeLayers.forEach((layer: Layer) => this.addLayerToMap(layer));
@@ -290,7 +289,7 @@ export class MapComponent extends HTMLElement {
         existingDataSources.forEach((dataSource: Cesium.DataSource) => this.viewer.dataSources.remove(dataSource));
 
         dataSource.name = name;
-        MapService.instance.styleFeature(dataSource, LayerStyle.createEmpty());
+        // MapService.instance.styleFeature(dataSource, LayerStyle.createEmpty());
         await this.viewer.dataSources.add(dataSource);
         dataSource.entities.values.forEach((entity: Cesium.Entity, index: number) => entity.name = `${name}-${index}`);
         this.viewer.dataSources.lowerToBottom(dataSource);
@@ -307,7 +306,7 @@ export class MapComponent extends HTMLElement {
             const dataSource: Cesium.DataSource = await Cesium.GeoJsonDataSource.load(geoJson);
             dataSource.name = layer.layer;
             this.viewer.dataSources.add(dataSource);
-            MapService.instance.styleFeature(dataSource, layer.style);
+            // MapService.instance.styleFeature(dataSource, layer.style);
         } catch (error) {
             throw error;
         }

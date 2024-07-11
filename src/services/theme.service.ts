@@ -1,5 +1,3 @@
-import * as Cesium from 'cesium';
-
 import { MapTheme, Theme } from '../models/theme.model';
 import { EventObservable } from '../observables/event.observable';
 
@@ -9,6 +7,7 @@ export class ThemeService {
     private _currentTheme: Theme = Theme.Dark;
     private _isPhysicalMap: boolean = false;
     public mapThemes: MapTheme[] = [];
+    public mapColors: any[] = [];
 
     constructor() {
         if (ThemeService._instance) return ThemeService._instance;
@@ -27,7 +26,8 @@ export class ThemeService {
     public set currentTheme(currentTheme: Theme) {
         this._currentTheme = currentTheme;
         this.changeColors(this.currentTheme);
-        EventObservable.instance.publish('change-theme', { isPhysicalMap: this.isPhysicalMap, theme: this.chooseMapTheme(this.currentTheme) });
+        // EventObservable.instance.publish('change-theme', { isPhysicalMap: this.isPhysicalMap, theme: this.chooseMapTheme(this.currentTheme) });
+        EventObservable.instance.publish('change-theme', { isPhysicalMap: this.isPhysicalMap, theme: this.chooseMapColor(this.currentTheme) });
     }
 
     public get isPhysicalMap(): boolean {
@@ -60,6 +60,23 @@ export class ThemeService {
         return mapThemes;
     }
 
+    public async fetchMapColors(urls: Record<Theme, string>): Promise<void> {
+        let mapThemes: any[] = [];
+
+        for (const key in urls) {
+            if (Object.prototype.hasOwnProperty.call(urls, key)) {
+                const url: string = urls[key as keyof typeof urls];
+                try {
+                    mapThemes.push(await fetch(url).then((res: Response) => res.json()));
+                } catch (error) {
+                    console.error(error);
+                }
+            }
+        }
+
+        this.mapColors = [...mapThemes];
+    }
+
     private parseMapTheme(theme: any): MapTheme {
         return new MapTheme(
             theme.url,
@@ -68,19 +85,19 @@ export class ThemeService {
         );
     }
 
-    public createImageryProvider(theme: MapTheme): Cesium.WebMapTileServiceImageryProvider {
-        return new Cesium.WebMapTileServiceImageryProvider(
-            {
-                url: theme.url,
-                layer: theme.layer,
-                credit: new Cesium.Credit(theme.credit),
-                tileMatrixSetID: 'default',
-                style: 'default',
-                format: 'image/jpeg',
-                maximumLevel: 19,
-            }
-        );
-    }
+    // public createImageryProvider(theme: MapTheme): Cesium.WebMapTileServiceImageryProvider {
+    //     return new Cesium.WebMapTileServiceImageryProvider(
+    //         {
+    //             url: theme.url,
+    //             layer: theme.layer,
+    //             credit: new Cesium.Credit(theme.credit),
+    //             tileMatrixSetID: 'default',
+    //             style: 'default',
+    //             format: 'image/jpeg',
+    //             maximumLevel: 19,
+    //         }
+    //     );
+    // }
 
     public toggleTheme(): void {
         this.currentTheme === Theme.Light ? this.currentTheme = Theme.Dark : this.currentTheme = Theme.Light;
@@ -90,16 +107,23 @@ export class ThemeService {
         this.isPhysicalMap === true ? this.isPhysicalMap = false : this.isPhysicalMap = true;
     }
 
-    public chooseMapTheme(theme: Theme): MapTheme {       
+    public chooseMapTheme(theme: Theme): MapTheme {
         const mapTheme: MapTheme | undefined = theme === Theme.Dark ?
             this.mapThemes.find((theme: MapTheme) => theme.layer === 'carto-dark') :
             this.mapThemes.find((theme: MapTheme) => theme.layer === 'carto-light');
-      
+
         if (mapTheme !== undefined) {
             return mapTheme;
         } else {
             throw new Error("Impossibile trovare il tema della mappa desiderato.");
         }
+    }
+
+    public chooseMapColor(theme: Theme): any {        
+        const color = this.mapColors.find((color: any) => {
+            return color.id === theme;
+        });
+        return color;
     }
 
     private changeColors(theme: Theme): void {
