@@ -1,5 +1,5 @@
 :host(.reduce) #maplibre {
-    animation: shrink .3s ease-in-out forwards;   
+    animation: shrink .3s ease-in-out forwards;
 }
 
 :host(.reduce) .maplibregl-ctrl-bottom-right {
@@ -19,11 +19,46 @@
 
 .maplibregl-ctrl-group {
     margin: 0 !important;
+    background-color: var(--surface-container) !important;
 }
 
 button.maplibregl-ctrl-geolocate {
     width: 40px;
     height: 40px;
+    border-radius: var(--border-radius-l);
+}
+
+button.maplibregl-ctrl-geolocate .maplibregl-ctrl-icon {
+    background-color: var(--on-surface);
+    background-image: none !important;
+    mask-image: url('./images/my_location_24dp_E8EAED_FILL1_wght400_GRAD0_opsz24.svg');
+    mask-repeat: no-repeat;
+    mask-position: center;
+    -webkit-mask-image: url('./images/my_location_24dp_E8EAED_FILL1_wght400_GRAD0_opsz24.svg');
+    -webkit-mask-repeat: no-repeat;
+    -webkit-mask-position: center;
+}
+
+button.maplibregl-ctrl-geolocate-active .maplibregl-ctrl-icon {
+    background-color: var(--primary);
+    background-image: none !important;
+    mask-image: url('./images/my_location_24dp_E8EAED_FILL1_wght400_GRAD0_opsz24.svg');
+    mask-repeat: no-repeat;
+    mask-position: center;
+    -webkit-mask-image: url('./images/my_location_24dp_E8EAED_FILL1_wght400_GRAD0_opsz24.svg');
+    -webkit-mask-repeat: no-repeat;
+    -webkit-mask-position: center;
+}
+
+button.maplibregl-ctrl-geolocate-background .maplibregl-ctrl-icon {
+    background-color: var(--primary);
+    background-image: none !important;
+    mask-image: url('./images/location_searching_24dp_E8EAED_FILL1_wght400_GRAD0_opsz24.svg');
+    mask-repeat: no-repeat;
+    mask-position: center;
+    -webkit-mask-image: url('./images/location_searching_24dp_E8EAED_FILL1_wght400_GRAD0_opsz24.svg');
+    -webkit-mask-repeat: no-repeat;
+    -webkit-mask-position: center;
 }
 
 @keyframes shrink {
@@ -37,7 +72,7 @@ button.maplibregl-ctrl-geolocate {
 }
 
 @keyframes grow {
-    from  {
+    from {
         width: calc(100% - 360px);
     }
 
@@ -71,17 +106,17 @@ button.maplibregl-ctrl-geolocate {
         from {
             height: 100dvh;
         }
-    
+
         to {
             height: calc(100dvh - 360px);
         }
     }
-    
+
     @keyframes grow {
-        from  {
+        from {
             height: calc(100dvh - 360px);
         }
-    
+
         to {
             height: 100dvh;
         }
