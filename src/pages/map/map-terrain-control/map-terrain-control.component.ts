@@ -9,7 +9,7 @@ export class MapTerrainControl implements IControl {
         this.container.classList.add('maplibregl-ctrl', 'maplibregl-ctrl-group');
 
         const button: HTMLButtonElement = document.createElement('button');
-        button.innerHTML = `<span class="material-symbols-outlined">altitude</span>`;
+        button.innerHTML = `<span class="material-symbols-outlined">3d_rotation</span>`;
         button.addEventListener('click', () => {
             this.isTerrainActive = !this.isTerrainActive;
             this.isTerrainActive ? button.classList.add('active') : button.classList.remove('active');
@@ -45,6 +45,7 @@ export class MapTerrainControl implements IControl {
                 },
                 essential: true
             });
+            map.setLayoutProperty('3d-buildings', 'visibility', 'visible');
             // setTimeout(() => map.setTerrain({ source: 'terrain', exaggeration: 2 }), duration * 2);
         } else {
             map.dragRotate.disable();
@@ -59,6 +60,7 @@ export class MapTerrainControl implements IControl {
                 },
                 essential: true
             });
+            map.setLayoutProperty('3d-buildings', 'visibility', 'none');
             // setTimeout(() => map.setTerrain({ source: 'terrain', exaggeration: 0 }), duration * 2);
         }
     }

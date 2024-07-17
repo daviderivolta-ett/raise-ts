@@ -82,12 +82,6 @@ export class MaplibreComponent extends HTMLElement {
         const terrain: MapTerrainControl = new MapTerrainControl();
         this.map.addControl(terrain, 'bottom-right');
 
-        // const terrain: TerrainControl = new TerrainControl({
-        //     source: 'terrain',
-        //     exaggeration: 2
-        // });
-        // this.map.addControl(terrain, 'bottom-right');
-
         geolocate.on('geolocate', (e: GeolocationPosition) => {
             PositionService.instance.position = e;
         });

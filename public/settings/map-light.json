@@ -1601,6 +1601,9 @@
       "source": "protomaps",
       "source-layer": "buildings",
       "minzoom": 15,
+      "layout": {
+        "visibility": "none"
+      },
       "paint": {
         "fill-extrusion-color": [
           "interpolate",
