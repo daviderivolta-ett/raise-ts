@@ -6,6 +6,7 @@ export class ThemeService {
     private MAP_THEMES_URL: string = './json/themes.json';
     private _currentTheme: Theme = Theme.Dark;
     private _isPhysicalMap: boolean = false;
+    private _isTerrainActive: boolean = false;
     public mapThemes: MapTheme[] = [];
     public mapColors: any[] = [];
 
@@ -27,7 +28,7 @@ export class ThemeService {
         this._currentTheme = currentTheme;
         this.changeColors(this.currentTheme);
         // EventObservable.instance.publish('change-theme', { isPhysicalMap: this.isPhysicalMap, theme: this.chooseMapTheme(this.currentTheme) });
-        EventObservable.instance.publish('change-theme', { isPhysicalMap: this.isPhysicalMap, theme: this.chooseMapColor(this.currentTheme) });
+        EventObservable.instance.publish('change-theme', this.chooseMapColor(this.currentTheme));
     }
 
     public get isPhysicalMap(): boolean {
@@ -37,6 +38,15 @@ export class ThemeService {
     public set isPhysicalMap(isPhysicalMap: boolean) {
         this._isPhysicalMap = isPhysicalMap;
         EventObservable.instance.publish('toggle-physical-map', { isPhysicalMap: this.isPhysicalMap, currentTheme: this.chooseMapTheme(this.currentTheme) });
+    }
+
+    public get isTerrainActive(): boolean {
+        return this._isTerrainActive;
+    }
+
+    public set isTerrainActive(terrainActive: boolean) {
+        this._isTerrainActive = terrainActive;
+        EventObservable.instance.publish('toggle-terrain', this.isTerrainActive);
     }
 
     public async getMapThemes(): Promise<MapTheme[]> {
@@ -107,6 +117,10 @@ export class ThemeService {
         this.isPhysicalMap === true ? this.isPhysicalMap = false : this.isPhysicalMap = true;
     }
 
+    public toggleTerrain(): void {
+        this.isTerrainActive ? this.isTerrainActive = false : this.isTerrainActive = true;
+    }
+
     public chooseMapTheme(theme: Theme): MapTheme {
         const mapTheme: MapTheme | undefined = theme === Theme.Dark ?
             this.mapThemes.find((theme: MapTheme) => theme.layer === 'carto-dark') :
@@ -119,7 +133,7 @@ export class ThemeService {
         }
     }
 
-    public chooseMapColor(theme: Theme): any {        
+    public chooseMapColor(theme: Theme): any {
         const color = this.mapColors.find((color: any) => {
             return color.id === theme;
         });

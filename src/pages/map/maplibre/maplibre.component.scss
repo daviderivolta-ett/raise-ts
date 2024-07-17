@@ -12,6 +12,9 @@
 }
 
 .maplibregl-ctrl-bottom-right {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
     bottom: 24px !important;
     right: 24px !important;
     animation: slideOut .3s ease-in-out forwards;
@@ -22,10 +25,17 @@
     background-color: var(--surface-container) !important;
 }
 
-button.maplibregl-ctrl-geolocate {
+.maplibregl-ctrl-group button {
+    font-family: 'Material Symbols Outlined';
+    font-size: 1.5rem;
     width: 40px;
     height: 40px;
     border-radius: var(--border-radius-l);
+    color: var(--on-surface);
+}
+
+.maplibregl-ctrl-group button.active {
+    color: var(--primary)
 }
 
 button.maplibregl-ctrl-geolocate .maplibregl-ctrl-icon {

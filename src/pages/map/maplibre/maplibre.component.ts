@@ -1,4 +1,4 @@
-import { Map, MapMouseEvent, MapGeoJSONFeature, Marker, GeolocateControl, LngLat, AttributionControl, LayerSpecification } from 'maplibre-gl';
+import maplibregl, { Map, MapMouseEvent, MapGeoJSONFeature, Marker, GeolocateControl, LngLat, AttributionControl, LayerSpecification, NavigationControl, TerrainControl } from 'maplibre-gl';
 import { EventObservable } from '../../../observables/event.observable';
 import { Layer } from '../../../models/layer.model';
 import { MapService } from '../../../services/map.service';
@@ -15,6 +15,8 @@ import { PositionService } from '../../../services/position.service';
 import MaplibreStyle from 'maplibre-gl/dist/maplibre-gl.css?raw';
 import style from './maplibre.component.scss?raw';
 import { ThemeService } from '../../../services/theme.service';
+import { Header, PMTiles, Protocol } from 'pmtiles';
+import { MapTerrainControl } from '../map-terrain-control/map-terrain-control.component';
 
 export class MaplibreComponent extends HTMLElement {
     public shadowRoot: ShadowRoot;
@@ -50,15 +52,14 @@ export class MaplibreComponent extends HTMLElement {
 
         this.map = new Map({
             container: this.container,
-            // style: './settings/map-dark.json',
             style: ThemeService.instance.chooseMapColor(ThemeService.instance.currentTheme),
             center: [8.934080815653985, 44.40753207658791],
             zoom: 15,
-            attributionControl: false
+            attributionControl: false,
+            dragRotate: false
         });
 
         const attribution = new AttributionControl();
-
         this.map.addControl(attribution, 'bottom-left');
 
         const geolocate: GeolocateControl = new GeolocateControl({
@@ -69,8 +70,23 @@ export class MaplibreComponent extends HTMLElement {
             showAccuracyCircle: false,
             showUserLocation: true
         });
-
         this.map.addControl(geolocate, 'bottom-right');
+
+        const navigation: NavigationControl = new NavigationControl({
+            visualizePitch: true,
+            showCompass: true,
+            showZoom: false
+        });
+        this.map.addControl(navigation, 'bottom-right');
+
+        const terrain: MapTerrainControl = new MapTerrainControl();
+        this.map.addControl(terrain, 'bottom-right');
+
+        // const terrain: TerrainControl = new TerrainControl({
+        //     source: 'terrain',
+        //     exaggeration: 2
+        // });
+        // this.map.addControl(terrain, 'bottom-right');
 
         geolocate.on('geolocate', (e: GeolocationPosition) => {
             PositionService.instance.position = e;
@@ -86,6 +102,7 @@ export class MaplibreComponent extends HTMLElement {
 
     private setup(): void {
         this.map.on('load', () => StorageService.instance.activeLayers.forEach((layer: Layer) => this.addLayerToMap(layer)));
+        this.map.on('load', () => this.addTerrainLayer());
         this.map.on('click', (e: MapMouseEvent) => {
             this.handleClick(e);
         });
@@ -101,7 +118,8 @@ export class MaplibreComponent extends HTMLElement {
 
         EventObservable.instance.subscribe('toggle-tabs', (isOpen: boolean) => this.isOpen = isOpen);
         EventObservable.instance.subscribe('sidenav-status-change', (status: SidenavStatus) => status === SidenavStatus.Close ? this.isOpen = false : this.isOpen = true);
-        EventObservable.instance.subscribe('change-theme', (data: { isPhysicalMap: boolean, theme: any }) => this.changeTheme(data.theme));
+        EventObservable.instance.subscribe('change-theme', (theme: any) => this.changeTheme(theme));
+        EventObservable.instance.subscribe('toggle-terrain', (isTerrainActive: boolean) => this.toggleTerrainLayer(isTerrainActive));
         EventObservable.instance.subscribe('add-layer', (layer: Layer) => this.addLayer(layer));
         EventObservable.instance.subscribe('bench-layer', (layer: Layer) => this.benchLayer(layer));
         EventObservable.instance.subscribe('bench-all-layers', () => this.benchAllLayers());
@@ -131,6 +149,77 @@ export class MaplibreComponent extends HTMLElement {
 
             this.setCameraToPosition(poi.position);
         });
+    }
+
+    private addTerrainLayer() {
+        const protocol = new Protocol();
+        maplibregl.addProtocol('pmtiles', protocol.tile.bind(protocol));
+
+        const PMTILES_URL = 'https://r2-public.protomaps.com/protomaps-sample-datasets/terrarium_z9.pmtiles';
+        const pmtiles = new PMTiles(PMTILES_URL);
+
+        pmtiles.getHeader().then((header: Header) => {
+            this.map.addSource('terrain', {
+                type: 'raster-dem',
+                url: `pmtiles://${PMTILES_URL}`,
+                attribution: '<a href="https://github.com/tilezen/joerd/blob/master/docs/attribution.md">Tilezen Joerd: Attribution</a>',
+                encoding: 'terrarium',
+                tileSize: 256
+            });
+
+            // this.map.addLayer({
+            //     id: 'terrain',
+            //     source: 'terrain',
+            //     type: 'hillshade',
+            //     minzoom: 10,
+            // });
+
+            // this.map.setTerrain({ source: 'terrain', exaggeration: 1 });
+
+            // const terrainLayer = this.map.getLayer('terrain');
+            // if (!terrainLayer) return;
+            // terrainLayer.visibility = 'none';
+
+        }).catch(error => {
+            console.error('Error loading PMTiles header:', error);
+        });
+    }
+
+    private toggleTerrainLayer(isTerrainActive: boolean): void {
+        const duration: number = 1000;
+
+        if (isTerrainActive) {
+            this.map.dragRotate.enable();
+            this.map.easeTo({
+                pitch: 60,
+                duration,
+                // easing(t) {
+                //     return t < 0.5 ?
+                //         (1 - Math.sqrt(1 - Math.pow(2 * t, 2))) / 2 :
+                //         (Math.sqrt(1 - Math.pow(-2 * t + 2, 2)) + 1) / 2;
+                // },
+                essential: true
+            });
+            setTimeout(() => {
+                this.map.setTerrain({ source: 'terrain', exaggeration: 2 });
+            }, duration * 2);
+        } else {
+            this.map.dragRotate.disable();
+            this.map.easeTo({
+                pitch: 0,
+                bearing: 0,
+                duration,
+                // easing(t) {
+                //     return t < 0.5 ?
+                //         (1 - Math.sqrt(1 - Math.pow(2 * t, 2))) / 2 :
+                //         (Math.sqrt(1 - Math.pow(-2 * t + 2, 2)) + 1) / 2;
+                // },
+                essential: true
+            });
+            setTimeout(() => {
+                this.map.setTerrain({ source: 'terrain', exaggeration: 0 });
+            }, duration * 2);
+        }
     }
 
     private async handleClick(e: MapMouseEvent): Promise<void> {
@@ -518,6 +607,7 @@ export class MaplibreComponent extends HTMLElement {
         EventObservable.instance.unsubscribeAll('toggle-tabs');
         EventObservable.instance.unsubscribeAll('sidenav-status-change');
         EventObservable.instance.unsubscribeAll('change-theme');
+        EventObservable.instance.unsubscribeAll('toggle-terrain');
         EventObservable.instance.unsubscribeAll('add-layer');
         EventObservable.instance.unsubscribeAll('bench-layer');
         EventObservable.instance.unsubscribeAll('bench-all-layers');

@@ -13,7 +13,7 @@ export class MapTypeBtnComponent extends HTMLButtonElement {
     }
 
     set isOpen(isOpen: boolean) {
-        this._isOpen = isOpen;  
+        this._isOpen = isOpen;
         this.isOpen === true ? this.classList.add('open') : this.classList.remove('open');
     }
 
@@ -22,7 +22,8 @@ export class MapTypeBtnComponent extends HTMLButtonElement {
     }
 
     private setup(): void {
-        this.addEventListener('click', () => ThemeService.instance.togglePhysicalMap());
+        // this.addEventListener('click', () => ThemeService.instance.togglePhysicalMap());
+        this.addEventListener('click', () => ThemeService.instance.toggleTerrain());
 
         EventObservable.instance.subscribe('toggle-tabs', (isOpen: boolean) => {
             this.isOpen = isOpen;
