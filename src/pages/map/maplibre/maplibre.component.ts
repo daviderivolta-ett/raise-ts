@@ -17,6 +17,7 @@ import style from './maplibre.component.scss?raw';
 import { ThemeService } from '../../../services/theme.service';
 import { Header, PMTiles, Protocol } from 'pmtiles';
 import { MapTerrainControl } from '../map-terrain-control/map-terrain-control.component';
+import { PointsCloudControl } from '../point-clouds-control/points-cloud-control.component';
 
 export class MaplibreComponent extends HTMLElement {
     public shadowRoot: ShadowRoot;
@@ -59,10 +60,10 @@ export class MaplibreComponent extends HTMLElement {
             dragRotate: false
         });
 
-        const attribution = new AttributionControl();
-        this.map.addControl(attribution, 'bottom-left');
+        const attributionControl = new AttributionControl();
+        this.map.addControl(attributionControl, 'bottom-left');
 
-        const geolocate: GeolocateControl = new GeolocateControl({
+        const geolocateControl: GeolocateControl = new GeolocateControl({
             positionOptions: {
                 enableHighAccuracy: true,
             },
@@ -70,21 +71,24 @@ export class MaplibreComponent extends HTMLElement {
             showAccuracyCircle: false,
             showUserLocation: true
         });
-        this.map.addControl(geolocate, 'bottom-right');
+        this.map.addControl(geolocateControl, 'bottom-right');
 
-        const navigation: NavigationControl = new NavigationControl({
+        const navigationControl: NavigationControl = new NavigationControl({
             visualizePitch: true,
             showCompass: true,
             showZoom: false
         });
-        this.map.addControl(navigation, 'bottom-right');
+        this.map.addControl(navigationControl, 'bottom-right');
 
-        const terrain: MapTerrainControl = new MapTerrainControl();
-        this.map.addControl(terrain, 'bottom-right');
+        const terrainControl: MapTerrainControl = new MapTerrainControl();
+        this.map.addControl(terrainControl, 'bottom-right');
 
-        geolocate.on('geolocate', (e: GeolocationPosition) => {
+        geolocateControl.on('geolocate', (e: GeolocationPosition) => {
             PositionService.instance.position = e;
         });
+
+        const pointsCloudControl: PointsCloudControl = new PointsCloudControl();
+        this.map.addControl(pointsCloudControl, 'bottom-right');
     }
 
     public async connectedCallback(): Promise<void> {
@@ -113,7 +117,7 @@ export class MaplibreComponent extends HTMLElement {
         EventObservable.instance.subscribe('toggle-tabs', (isOpen: boolean) => this.isOpen = isOpen);
         EventObservable.instance.subscribe('sidenav-status-change', (status: SidenavStatus) => status === SidenavStatus.Close ? this.isOpen = false : this.isOpen = true);
         EventObservable.instance.subscribe('change-theme', (theme: any) => this.changeTheme(theme));
-        EventObservable.instance.subscribe('toggle-terrain', (isTerrainActive: boolean) => this.toggleTerrainLayer(isTerrainActive));
+        // EventObservable.instance.subscribe('toggle-terrain', (isTerrainActive: boolean) => this.toggleTerrainLayer(isTerrainActive));
         EventObservable.instance.subscribe('add-layer', (layer: Layer) => this.addLayer(layer));
         EventObservable.instance.subscribe('bench-layer', (layer: Layer) => this.benchLayer(layer));
         EventObservable.instance.subscribe('bench-all-layers', () => this.benchAllLayers());
@@ -179,42 +183,42 @@ export class MaplibreComponent extends HTMLElement {
         });
     }
 
-    private toggleTerrainLayer(isTerrainActive: boolean): void {
-        const duration: number = 1000;
+    // private toggleTerrainLayer(isTerrainActive: boolean): void {
+    //     const duration: number = 1000;
 
-        if (isTerrainActive) {
-            this.map.dragRotate.enable();
-            this.map.easeTo({
-                pitch: 60,
-                duration,
-                // easing(t) {
-                //     return t < 0.5 ?
-                //         (1 - Math.sqrt(1 - Math.pow(2 * t, 2))) / 2 :
-                //         (Math.sqrt(1 - Math.pow(-2 * t + 2, 2)) + 1) / 2;
-                // },
-                essential: true
-            });
-            setTimeout(() => {
-                this.map.setTerrain({ source: 'terrain', exaggeration: 2 });
-            }, duration * 2);
-        } else {
-            this.map.dragRotate.disable();
-            this.map.easeTo({
-                pitch: 0,
-                bearing: 0,
-                duration,
-                // easing(t) {
-                //     return t < 0.5 ?
-                //         (1 - Math.sqrt(1 - Math.pow(2 * t, 2))) / 2 :
-                //         (Math.sqrt(1 - Math.pow(-2 * t + 2, 2)) + 1) / 2;
-                // },
-                essential: true
-            });
-            setTimeout(() => {
-                this.map.setTerrain({ source: 'terrain', exaggeration: 0 });
-            }, duration * 2);
-        }
-    }
+    //     if (isTerrainActive) {
+    //         this.map.dragRotate.enable();
+    //         this.map.easeTo({
+    //             pitch: 60,
+    //             duration,
+    //             // easing(t) {
+    //             //     return t < 0.5 ?
+    //             //         (1 - Math.sqrt(1 - Math.pow(2 * t, 2))) / 2 :
+    //             //         (Math.sqrt(1 - Math.pow(-2 * t + 2, 2)) + 1) / 2;
+    //             // },
+    //             essential: true
+    //         });
+    //         setTimeout(() => {
+    //             this.map.setTerrain({ source: 'terrain', exaggeration: 2 });
+    //         }, duration * 2);
+    //     } else {
+    //         this.map.dragRotate.disable();
+    //         this.map.easeTo({
+    //             pitch: 0,
+    //             bearing: 0,
+    //             duration,
+    //             // easing(t) {
+    //             //     return t < 0.5 ?
+    //             //         (1 - Math.sqrt(1 - Math.pow(2 * t, 2))) / 2 :
+    //             //         (Math.sqrt(1 - Math.pow(-2 * t + 2, 2)) + 1) / 2;
+    //             // },
+    //             essential: true
+    //         });
+    //         setTimeout(() => {
+    //             this.map.setTerrain({ source: 'terrain', exaggeration: 0 });
+    //         }, duration * 2);
+    //     }
+    // }
 
     private async handleClick(e: MapMouseEvent): Promise<void> {
         EventObservable.instance.publish('empty-searchbar', null);
