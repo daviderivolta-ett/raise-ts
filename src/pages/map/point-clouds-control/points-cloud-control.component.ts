@@ -52,7 +52,7 @@ export class PointsCloudControl implements IControl {
     private addPointsCloudLayers(): void {
         const tile3dLayer: Tile3DLayer = new Tile3DLayer({
             id: 'tile-3d-layer',
-            data: './point-clouds/nuvola_punti_genova_porto/tileset.json',
+            data: './point-cloud/nuvola_punti_genova_porto/tileset.json',
             // data: './point-clouds/ischia_dtm/tileset.json',
             pointSize: .5,
             opacity: .5
