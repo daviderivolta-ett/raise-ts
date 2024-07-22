@@ -9,6 +9,7 @@ import { SnackbarService } from '../../../services/snackbar.service';
 import { StorageService } from '../../../services/storage.service';
 import { CustomPathCardComponent } from '../custom-path-card/custom-path-card.component';
 import { CustomPathDownloadBtnComponent } from '../custom-path-download-btn/custom-path-download-btn.component';
+import { DirectionsBtnComponent } from '../directions-btn/directions-btn.component';
 
 import style from './custom-path-panel.component.scss?raw';
 
@@ -60,6 +61,9 @@ export class CustomPathPanelComponent extends HTMLElement {
                 <button type="button" title="Salva percorso" class="tool-btn bookmark-btn"><span class="material-symbols-outlined tool-icon">bookmark</span></button>
                 <button type="button" title="Carica percorsi salvati" class="tool-btn load-btn"><span class="material-symbols-outlined tool-icon">bookmarks</span></button>
             </div>
+            <button is="app-directions-btn" class="btn directions-btn">
+                <span class="material-symbols-outlined action-icon">directions</span>
+            </button>
             `
             ;
     }
@@ -88,12 +92,16 @@ export class CustomPathPanelComponent extends HTMLElement {
 
     private update(): void {
         const list: HTMLDivElement | null = this.shadowRoot.querySelector('.list');
-        if (!list) return;
+        const directionsBtn: DirectionsBtnComponent | null = this.shadowRoot.querySelector('button[is="app-directions-btn"]');
+        if (!list || !directionsBtn) return;
+
         list.innerHTML = '';
         this.path.pois.forEach((poi: PointOfInterest) => {
             let card: CustomPathCardComponent = new CustomPathCardComponent();
             card.poi = poi;
             list.appendChild(card);
+
+            directionsBtn.pois.push(poi);
         });
 
         const editBtn: HTMLButtonElement | null = this.shadowRoot.querySelector('.edit-btn');

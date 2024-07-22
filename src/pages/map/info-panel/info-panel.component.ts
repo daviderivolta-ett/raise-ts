@@ -1,9 +1,9 @@
 import { MyColor } from '../../../models/color.model';
 import { PoiProperty, PoiType, PointOfInterest } from '../../../models/poi.model';
 import { EventObservable } from '../../../observables/event.observable';
-import { MapService } from '../../../services/map.service';
 import { PoiService } from '../../../services/poi.service';
 import { StorageService } from '../../../services/storage.service';
+import { DirectionsBtnComponent } from '../directions-btn/directions-btn.component';
 
 import style from './info-panel.component.scss?raw';
 
@@ -79,7 +79,9 @@ export class InfoPanelComponent extends HTMLElement {
                 </div>
                 <p class="category"></p>
             </div>
-            <div class="tools"></div>
+            <div class="tools">
+                <button is="app-directions-btn" class="directions-btn">Indicazioni</button>
+            </div>
             `
             ;
 
@@ -94,9 +96,12 @@ export class InfoPanelComponent extends HTMLElement {
             prop.displayName === 'Nome' ? category.innerHTML = prop.value : category.innerHTML = this.poi!.name;
         });
 
-        const directionsBtn: HTMLButtonElement | null = this.renderDirectionsBtn();
-        if (directionsBtn) tools.appendChild(directionsBtn);
+        // const directionsBtn: HTMLButtonElement | null = this.renderDirectionsBtn();
+        // if (directionsBtn) tools.appendChild(directionsBtn);
 
+        const directionsBtn: DirectionsBtnComponent | null = this.shadowRoot.querySelector('.directions-btn');
+        if (directionsBtn) directionsBtn.pois = [this.poi];
+        
         const addToTouteBtn: HTMLButtonElement | null = this.renderAddToRouteBtn();
         if (addToTouteBtn) tools.append(addToTouteBtn);
 
@@ -104,14 +109,14 @@ export class InfoPanelComponent extends HTMLElement {
         if (info) this.shadowRoot.appendChild(info);
     }
 
-    private renderDirectionsBtn(): HTMLButtonElement | null {
-        if (!this.poi) return null;
-        const button: HTMLButtonElement = document.createElement('button');
-        button.classList.add('directions-btn');
-        button.innerHTML = 'Indicazioni';
-        button.addEventListener('click', () => MapService.instance.openGoogleMaps(this.poi!.position));
-        return button;
-    }
+    // private renderDirectionsBtn(): HTMLButtonElement | null {
+    //     if (!this.poi) return null;
+    //     const button: HTMLButtonElement = document.createElement('button');
+    //     button.classList.add('directions-btn');
+    //     button.innerHTML = 'Indicazioni';
+    //     button.addEventListener('click', () => MapService.instance.openGoogleMaps(this.poi!.position));
+    //     return button;
+    // }
 
     private renderAddToRouteBtn(): HTMLButtonElement | null {
         if (!this.poi) return null;
@@ -119,7 +124,7 @@ export class InfoPanelComponent extends HTMLElement {
         const button: HTMLButtonElement = document.createElement('button');
         button.classList.add('add-to-path-btn');
         button.innerHTML = 'Aggiungi';
-        button.addEventListener('click', () => {           
+        button.addEventListener('click', () => {
             // const selectedCustomPath: Path = StorageService.instance.selectedCustomPath;
             // if (this.poi) selectedCustomPath.pois.unshift(this.poi);
             // StorageService.instance.selectedCustomPath = selectedCustomPath;                     

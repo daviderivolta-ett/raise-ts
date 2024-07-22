@@ -1600,7 +1600,10 @@
       "type": "fill-extrusion",
       "source": "protomaps",
       "source-layer": "buildings",
-      "minzoom": 15,
+      "minzoom": 16,
+      "layout": {
+        "visibility": "none"
+      },
       "paint": {
         "fill-extrusion-color": [
           "interpolate",

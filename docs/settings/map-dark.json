@@ -30,9 +30,9 @@
           ["linear"],
           ["zoom"],
           10,
-          "#15130E",
+          "#282828",
           12,
-          "#15130E"
+          "#282828"
         ]
       }
     },
@@ -92,7 +92,7 @@
       "source": "protomaps",
       "source-layer": "landuse",
       "filter": ["any", ["==", "pmap:kind", "industrial"]],
-      "paint": {"fill-color": "rgba(21, 20, 20, 1)"}
+      "paint": {"fill-color": "#282828"}
     },
     {
       "id": "landuse_school",
@@ -1590,9 +1590,9 @@
       "source": "protomaps",
       "source-layer": "buildings",
       "paint": {
-        "fill-color": "#16120D",
+        "fill-color": "#1F201F",
         "fill-opacity": 1,
-        "fill-outline-color": "#322915"
+        "fill-outline-color": "#1A1919"
       }
     },
     {
@@ -1600,19 +1600,19 @@
       "type": "fill-extrusion",
       "source": "protomaps",
       "source-layer": "buildings",
-      "minzoom": 15,
-      "layout": {"visibility": "visible"},
+      "minzoom": 16,
+      "layout": {"visibility": "none"},
       "paint": {
         "fill-extrusion-color": [
           "interpolate",
           ["linear"],
           ["coalesce", ["get", "height"], 0],
           0,
-          "#16120D",
+          "#1F201F",
           200,
-          "#16120D",
+          "#1F201F",
           400,
-          "#16120D"
+          "#1F201F"
         ],
         "fill-extrusion-height": [
           "interpolate",

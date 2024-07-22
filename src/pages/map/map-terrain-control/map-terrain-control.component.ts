@@ -21,7 +21,7 @@ export class MapTerrainControl implements IControl {
         return this.container;
     }
 
-    onRemove(map: Map): void {
+    onRemove(): void {
         if (this.container && this.container.parentNode) {
             this.container.parentNode.removeChild(this.container);
         }

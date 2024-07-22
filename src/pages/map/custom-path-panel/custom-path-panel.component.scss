@@ -15,6 +15,8 @@ p {
     padding: 24px 24px 0 24px;
     box-sizing: border-box;
     color: var(--on-surface);
+    display: flex;
+    justify-content: space-between;
 }
 
 .list {
@@ -59,9 +61,6 @@ p {
 
 .btn {
     cursor: pointer;
-    position: absolute;
-    right: -10px;
-    top: 32px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -69,9 +68,6 @@ p {
     border: none;
     background-color: transparent;
     color: var(--on-surface);
-    width: 40px;
-    height: 40px;
-    transform: translate(-50%, -50%);
 
     &:hover {
         color: var(--on-surface-variant);
@@ -86,6 +82,21 @@ p {
     width: fit-content;
     background-color: transparent;
     color: var(--on-surface-variant);
+
+    &:hover {
+        color: var(--on-surface);
+    }
+}
+
+.directions-btn {
+    position: absolute;
+    bottom: 56px;
+    right: 20px;
+    width: 40px;
+    height: 40px;
+    border-radius: var(--border-radius-m);
+    background-color: var(--primary-container);
+    color: var(--on-primary-container);
 
     &:hover {
         color: var(--on-surface);

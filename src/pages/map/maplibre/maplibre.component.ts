@@ -1,4 +1,4 @@
-import maplibregl, { Map, MapMouseEvent, MapGeoJSONFeature, Marker, GeolocateControl, LngLat, AttributionControl, LayerSpecification, NavigationControl, TerrainControl } from 'maplibre-gl';
+import maplibregl, { Map, MapMouseEvent, MapGeoJSONFeature, Marker, GeolocateControl, LngLat, AttributionControl, LayerSpecification, NavigationControl } from 'maplibre-gl';
 import { EventObservable } from '../../../observables/event.observable';
 import { Layer } from '../../../models/layer.model';
 import { MapService } from '../../../services/map.service';
@@ -15,7 +15,7 @@ import { PositionService } from '../../../services/position.service';
 import MaplibreStyle from 'maplibre-gl/dist/maplibre-gl.css?raw';
 import style from './maplibre.component.scss?raw';
 import { ThemeService } from '../../../services/theme.service';
-import { Header, PMTiles, Protocol } from 'pmtiles';
+import { PMTiles, Protocol } from 'pmtiles';
 import { MapTerrainControl } from '../map-terrain-control/map-terrain-control.component';
 import { PointsCloudControl } from '../point-clouds-control/points-cloud-control.component';
 
@@ -156,7 +156,7 @@ export class MaplibreComponent extends HTMLElement {
         const PMTILES_URL = 'https://r2-public.protomaps.com/protomaps-sample-datasets/terrarium_z9.pmtiles';
         const pmtiles = new PMTiles(PMTILES_URL);
 
-        pmtiles.getHeader().then((header: Header) => {
+        pmtiles.getHeader().then(() => {
             this.map.addSource('terrain', {
                 type: 'raster-dem',
                 url: `pmtiles://${PMTILES_URL}`,
