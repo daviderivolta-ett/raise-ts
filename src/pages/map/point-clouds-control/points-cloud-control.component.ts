@@ -54,7 +54,7 @@ export class PointsCloudControl implements IControl {
             id: 'tile-3d-layer',
             data: './point-cloud/nuvola_punti_genova_porto/tileset.json',
             // data: './point-clouds/ischia_dtm/tileset.json',
-            pointSize: .5,
+            pointSize: 1,
             opacity: .5
         });
 

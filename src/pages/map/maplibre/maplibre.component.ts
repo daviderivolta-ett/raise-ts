@@ -162,7 +162,7 @@ export class MaplibreComponent extends HTMLElement {
                 url: `pmtiles://${PMTILES_URL}`,
                 attribution: '<a href="https://github.com/tilezen/joerd/blob/master/docs/attribution.md">Tilezen Joerd: Attribution</a>',
                 encoding: 'terrarium',
-                tileSize: 256
+                tileSize: 16
             });
 
             // this.map.addLayer({
@@ -172,7 +172,7 @@ export class MaplibreComponent extends HTMLElement {
             //     minzoom: 10,
             // });
 
-            // this.map.setTerrain({ source: 'terrain', exaggeration: 1 });
+            // this.map.setTerrain({ source: 'terrain', exaggeration: 2 });
 
             // const terrainLayer = this.map.getLayer('terrain');
             // if (!terrainLayer) return;
