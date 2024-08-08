@@ -1590,9 +1590,9 @@
       "source": "protomaps",
       "source-layer": "buildings",
       "paint": {
-        "fill-color": "#1F201F",
+        "fill-color": "#121212",
         "fill-opacity": 1,
-        "fill-outline-color": "#1A1919"
+        "fill-outline-color": "#121212"
       }
     },
     {
@@ -1608,11 +1608,11 @@
           ["linear"],
           ["coalesce", ["get", "height"], 0],
           0,
-          "#1F201F",
+          "#121212",
           200,
-          "#1F201F",
+          "#121212",
           400,
-          "#1F201F"
+          "#121212"
         ],
         "fill-extrusion-height": [
           "interpolate",
@@ -1629,7 +1629,7 @@
           ["get", "render_min_height"],
           0
         ],
-        "fill-extrusion-opacity": 0.5
+        "fill-extrusion-opacity": 0.75
       }
     },
     {

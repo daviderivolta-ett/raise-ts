@@ -433,7 +433,7 @@ export class MaplibreComponent extends HTMLElement {
             source: sourceId,
             type: 'circle',
             paint: {
-                "circle-radius": 8,
+                "circle-radius": 4,
                 "circle-color": layer.style.color,
                 "circle-opacity": .5,
                 "circle-stroke-color": layer.style.color,
