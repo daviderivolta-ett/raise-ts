@@ -58,6 +58,35 @@
       "components": [
         "app-opacity-slider"
       ]
+    },
+    {
+      "name": "Blu area",
+      "layer": "SITGEO:V_MOB_BLUAREA",
+      "layer_url_wfs": "https://mappe.comune.genova.it/geoserver/wfs",
+      "style": {
+        "color": "#56f676",
+        "opacity": 0.5
+      },
+      "tags": [
+        "città",
+        "parcheggi",
+        "blu area"
+      ],
+      "relevant_properties": [
+        {
+          "property_name": "DENOMINAZIONE",
+          "display_name": "Nome area",
+          "type": "string"
+        },
+        {
+          "property_name": "CODICE_ZONA",
+          "display_name": "Codice area",
+          "type": "string"
+        }
+      ],
+      "components": [
+        "app-opacity-slider"
+      ]
     }
   ]
 }
