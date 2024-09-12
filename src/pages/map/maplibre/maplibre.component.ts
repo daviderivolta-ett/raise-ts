@@ -360,7 +360,7 @@ export class MaplibreComponent extends HTMLElement {
     private async addLayer(layer: Layer): Promise<void> {
         if (!this.isLayerOnMap(layer)) {
             try {
-                SnackbarService.instance.createSnackbar(SnackbarType.Loader, layer.layer, 'Caricamento...');
+                SnackbarService.instance.createSnackbar(SnackbarType.Loader, layer.layer, 'Caricamento...');                
                 await this.addLayerToMap(layer);
                 this.addLayerToActiveLayers(layer);
                 SnackbarService.instance.removeSnackbar(layer.layer);
@@ -389,8 +389,6 @@ export class MaplibreComponent extends HTMLElement {
 
     private async addLayerToMap(layer: Layer): Promise<void> {
         const geoJSON: any = await MapService.instance.createGeoJsonFromLayer(layer);
-        // console.log(geoJSON);
-
         const sourceId: string = layer.layer;
 
         if (!this.map.getSource(sourceId)) {
@@ -399,34 +397,6 @@ export class MaplibreComponent extends HTMLElement {
                 data: geoJSON
             });
         }
-
-        // const res: Response = await fetch('./images/pin.svg');
-        // const text: string = await res.text();
-        // const div = document.createElement('div');
-        // div.innerHTML = text;
-        // const svg = div.querySelector('svg');
-        // if (svg) {
-        //     const path = svg.querySelector('path');
-        //     if (path) path.style.fill = layer.style.color;
-        // }
-        // const blob = new Blob([svg ? svg.outerHTML : ''], { type: 'image/svg+xml' });
-        // const url = URL.createObjectURL(blob);
-        // const img = new Image(32, 32);
-
-        // img.onload = () => {
-        //     this.map.addImage(layer.layer, img);
-        //     this.map.addLayer({
-        //         id: sourceId + '_circle',
-        //         source: sourceId,
-        //         type: 'symbol',
-        //         layout: {
-        //             "icon-image": layer.layer,
-        //             "icon-size": 1
-        //         },
-        //         filter: ['==', ['geometry-type'], 'Point']
-        //     });
-        // }
-        // img.src = url;
 
         this.map.addLayer({
             id: sourceId + '_circle',
@@ -465,103 +435,6 @@ export class MaplibreComponent extends HTMLElement {
             },
             filter: ['==', ['geometry-type'], 'Polygon']
         }, 'buildings');
-
-        // console.log(this.map.getStyle());
-
-
-        // const geoJSONs: any[] = await MapService.instance.createGeoJSONs(layer);
-
-        // for (let i = 0; i < geoJSONs.length; i++) {
-        //     const geoJSON: any = geoJSONs[i];
-        //     const type: 'circle' | 'line' | 'fill' = MapService.instance.getGeoJSONLayerSpecificationType(geoJSON.features[0].geometry.type);
-        //     const id: string = `${layer.layer}_${type}`;
-
-        //     const source: GeoJSONSourceSpecification = {
-        //         type: 'geojson',
-        //         data: geoJSON
-        //     }
-
-
-        //     this.map.addSource(id, source);
-        // this.map.addLayer(MapService.instance.createGeoJSONLayerSpecification(id, type, layer.style));
-
-        // const res = await fetch('./images/polygon.svg');
-        // const svg = await res.text();
-
-        // const res2 = await fetch('./images/bike_icon.svg');
-        // const bike = await res2.text();
-
-        // if (type === 'circle') {
-        //     geoJSON.features.forEach((feature: any) => {
-        //         const div = document.createElement('div');
-        //         div.innerHTML = svg;
-        //         div.style.width = '96px';
-        //         div.style.height = '96px';
-        //         const icon = div.querySelector('svg');
-        //         if (icon) {
-        //             icon.setAttribute('viewBox', '0 0 360 280');
-        //             icon.style.width = '100%';
-        //             icon.style.height = '100%';
-        //             icon.style.fill = 'red';
-        //             icon.setAttribute('preserveAspectRatio', 'xMidYMid meet');
-
-        //             const bikeCont = document.createElement('div');
-        //             bikeCont.innerHTML = bike;
-        //             const bikeIcon = bikeCont.querySelector('path');
-        //             if (bikeIcon) {
-        //                 bikeIcon.style.fill = 'blue';
-        //                 const polygon = icon.querySelector('polygon');
-        //                 if (polygon) polygon.append(bikeIcon);
-        //             }
-        //         }
-        //         console.log(icon);
-
-        //         const marker = new Marker({ element: div });
-        //         div.addEventListener('click', () => console.log(feature.properties))
-        //         marker.setLngLat([feature.geometry.coordinates[0], feature.geometry.coordinates[1]]).addTo(this.map);
-        //     });
-        // } else {
-        //     this.map.addLayer(MapService.instance.createGeoJSONLayerSpecification(id, type, layer.style));
-        // }
-
-        // if (type === 'circle') {
-        //     const img = await this.map.loadImage('./images/RAISE_pictogram_512x512.png');
-        //     this.map.addImage('pin', img.data);
-        //     this.map.addLayer({
-        //         id: 'point',
-        //         source,
-        //         type: 'symbol',
-        //         layout: {
-        //             "icon-image": 'pin',
-        //             "icon-size": .25
-        //         }
-        //     })
-        // } else {
-        //     this.map.addLayer(MapService.instance.createGeoJSONLayerSpecification(id, type, layer.style));
-        // }
-
-        // if (type === 'circle') {
-        //     const img = new Image(250, 250);
-        //     img.onload = () => {
-        //         this.map.addImage('pin', img);
-        //         this.map.addLayer({
-        //             id: 'point',
-        //             source,
-        //             type: 'symbol',
-        //             layout: {
-        //                 "icon-image": 'pin',
-        //                 "icon-size": .25
-        //             }
-        //         });
-        //     }
-        //     img.src = './images/polygon.svg';
-
-        // } else {
-        //     this.map.addLayer(MapService.instance.createGeoJSONLayerSpecification(id, type, layer.style));
-        // }
-
-        // console.log(this.map.getStyle());
-        // }
     }
 
     public removeLayerFromMap(layer: Layer): void {
@@ -570,7 +443,6 @@ export class MaplibreComponent extends HTMLElement {
         if (this.map.getLayer(layer.layer + '_fill')) this.map.removeLayer(layer.layer + '_fill');
         if (this.map.getImage(layer.layer)) this.map.removeImage(layer.layer);
         if (this.map.getSource(layer.layer)) this.map.removeSource(layer.layer);
-        // console.log(this.map.getStyle());
     }
 
     public removeLayerFromActiveLayers(layer: Layer): void {

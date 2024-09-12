@@ -1,0 +1,277 @@
+{
+    "name": "Turismo",
+    "layers": [
+        {
+            "name": "Pietre d'inciampo",
+            "layer": "SITGEO:V_LUOGHI_TURISTICI&CQL_FILTER=OGGETTO='PIETRE_INCIAMPO'",
+            "layer_url_wfs": "https://mappe.comune.genova.it/geoserver/wfs",
+            "style": {
+                "color": "#ebdb34",
+                "opacity": 1
+            },
+            "tags": [
+                "turismo",
+                "pietre d'inciampo"
+            ],
+            "relevant_properties": [
+                {
+                    "property_name": "TITOLO",
+                    "display_name": "Titolo",
+                    "type": "string"
+                },
+                {
+                    "property_name": "LUOGO",
+                    "display_name": "Luogo",
+                    "type": "string"
+                },
+                {
+                    "property_name": "STORIA",
+                    "display_name": "Storia",
+                    "type": "string"
+                }
+            ],
+            "components": [
+                "app-opacity-slider"
+            ]
+        },
+        {
+            "name": "Strutture ricettive turistiche",
+            "layer": "SITGEO:V_RIC_TURISTICHE",
+            "layer_url_wfs": "https://mappe.comune.genova.it/geoserver/wfs",
+            "style": {
+                "color": "#bf5132",
+                "opacity": 0.5
+            },
+            "tags": [
+                "città",
+                "strada"
+            ],
+            "relevant_properties": [
+                {
+                    "property_name": "TIPOLOGIA",
+                    "display_name": "Tipologia",
+                    "type": "string"
+                },
+                {
+                    "property_name": "INDIRIZZO",
+                    "display_name": "Indirizzo",
+                    "type": "string"
+                },
+                {
+                    "property_name": "CIVICO",
+                    "display_name": "n",
+                    "type": "number"
+                },
+                {
+                    "property_name": "CLAS",
+                    "display_name": "Valutazione",
+                    "type": "string"
+                },
+                {
+                    "property_name": "CAMERE",
+                    "display_name": "Camere",
+                    "type": "number"
+                },
+                {
+                    "property_name": "LETTI",
+                    "display_name": "Letti",
+                    "type": "number"
+                }
+            ],
+            "components": [
+                "app-opacity-slider"
+            ]
+        },
+        {
+            "name": "MIAGE Cinta muraria",
+            "layer": "V_CINTA_MURARIA",
+            "layer_url_wfs": "https://mappe.comune.genova.it/geoserver/wfs",
+            "style": {
+                "color": "#00FFFF",
+                "opacity": 1
+            },
+            "tags": [
+                "città",
+                "muro",
+                "storia"
+            ],
+            "relevant_properties": [
+                {
+                    "property_name": "stato",
+                    "display_name": "Stato",
+                    "type": "string"
+                },
+                {
+                    "property_name": "epoca",
+                    "display_name": "Epoca",
+                    "type": "string"
+                }
+            ],
+            "components": [
+                "app-opacity-slider"
+            ]
+        },
+        {
+            "name": "Botteghe Storiche",
+            "layer": "V_BOTTEGHE_STORICHE",
+            "layer_url_wfs": "https://mappe.comune.genova.it/geoserver/wfs",
+            "style": {
+                "color": "#DC2124",
+                "opacity": 1
+            },
+            "tags": [
+                "città",
+                "botteghe",
+                "storiche"
+            ],
+            "relevant_properties": [
+                {
+                    "property_name": "TITOLO",
+                    "display_name": "Titolo",
+                    "type": "string"
+                },
+                {
+                    "property_name": "INDIRIZZO",
+                    "display_name": "Indirizzo",
+                    "type": "string"
+                },
+                {
+                    "property_name": "TIPO",
+                    "display_name": "Tipo",
+                    "type": "string"
+                },
+                {
+                    "property_name": "NOTE",
+                    "display_name": "Note",
+                    "type": "string"
+                },
+                {
+                    "property_name": "URL",
+                    "display_name": "Sito web",
+                    "type": "string"
+                },
+                {
+                    "property_name": "TELEFONO",
+                    "display_name": "Telefono",
+                    "type": "string"
+                }
+            ],
+            "components": [
+                "app-opacity-slider"
+            ]
+        },
+        {
+            "name": "Palazzi UNESCO di Genova",
+            "layer": "V_UNESCO_GEOPORT",
+            "layer_url_wfs": "https://mappe.comune.genova.it/geoserver/wfs",
+            "style": {
+                "color": "#0077D4",
+                "opacity": 0.5
+            },
+            "tags": [
+                "città",
+                "botteghe",
+                "storiche"
+            ],
+            "relevant_properties": [
+                {
+                    "property_name": "NOME_PALAZZO",
+                    "display_name": "Nome palazzo",
+                    "type": "string"
+                },
+                {
+                    "property_name": "INDIRIZZO",
+                    "display_name": "Indirizzo",
+                    "type": "string"
+                },
+                {
+                    "property_name": "ANNO_COSTRUZIONE",
+                    "display_name": "Anno costruzione",
+                    "type": "string"
+                },
+                {
+                    "property_name": "RICONOSCIMENTO",
+                    "display_name": "Riconoscimento",
+                    "type": "string"
+                },
+                {
+                    "property_name": "AMBITO_DI_APPARTENENZA",
+                    "display_name": "Ambito",
+                    "type": "string"
+                },
+                {
+                    "property_name": "DESTINAZIONE_ATTUALE",
+                    "display_name": "Destinazione attuale",
+                    "type": "string"
+                },
+                {
+                    "property_name": "PROPRIETA_ATTUALE",
+                    "display_name": "Proprietà attuale",
+                    "type": "string"
+                },
+                {
+                    "property_name": "ESTERNO",
+                    "display_name": "Esterno",
+                    "type": "string"
+                },
+                {
+                    "property_name": "VISITABILE",
+                    "display_name": "Visitabile",
+                    "type": "string"
+                },
+                {
+                    "property_name": "ORARI",
+                    "display_name": "Orari",
+                    "type": "string"
+                },
+                {
+                    "property_name": "DA_NON_PERDERE",
+                    "display_name": "Da non perdere",
+                    "type": "string"
+                },
+                {
+                    "property_name": "APPROFONDIMENTO",
+                    "display_name": "Approfondimento",
+                    "type": "string"
+                }
+            ],
+            "components": [
+                "app-opacity-slider"
+            ]
+        },
+        {
+            "name": "Luoghi di culto",
+            "layer": "V_CULTO_GEO",
+            "layer_url_wfs": "https://mappe.comune.genova.it/geoserver/wfs",
+            "style": {
+                "color": "#90AEDC",
+                "opacity": 0.5
+            },
+            "tags": [
+                "città",
+                "chiese",
+                "culto"
+            ],
+            "relevant_properties": [
+                {
+                    "property_name": "DESCRIZIONE",
+                    "display_name": "Nome Descirizione",
+                    "type": "string"
+                },
+                {
+                    "property_name": "INDIRIZZO",
+                    "display_name": "Indirizzo",
+                    "type": "string"
+                },
+                {
+                    "property_name": "DENOMINAZIONE",
+                    "display_name": "Nome",
+                    "type": "string"
+                }
+            ],
+            "components": [
+                "app-opacity-slider"
+            ]
+        }
+    ]
+}

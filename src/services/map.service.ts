@@ -1,5 +1,3 @@
-// import * as Cesium from 'cesium';
-
 import { Layer, LayerProperty, LayerStyle } from '../models/layer.model';
 import { Feature, FeatureGeometryType } from '../models/feature.model';
 import { PointOfInterest } from '../models/poi.model';
@@ -24,6 +22,7 @@ export class MapService {
         let geoJson: any = await res.json();
         let geoJsonNewProp: any = this.substituteRelevantProperties(geoJson, layer);
         let geoJsonAddProp = this.createFeatureAdditionalProperties(geoJsonNewProp, layer);
+        console.log(geoJsonAddProp);
         return geoJsonAddProp;
     }
 
@@ -147,7 +146,7 @@ export class MapService {
                     }
                 }
                 return lineLayerSpec;
-                
+
             case 'fill':
                 const fillLayerSpec: FillLayerSpecification = {
                     id,
@@ -163,35 +162,6 @@ export class MapService {
         }
 
     }
-
-    // public async createGeoJsonFromEntity(entity: Cesium.Entity): Promise<any> {
-    //     let geojson: any = {
-    //         type: 'Feature',
-    //         geometry: {
-    //             type: 'Point',
-    //             coordinates: []
-    //         },
-    //         properties: {}
-    //     }
-
-    //     if (entity.point && entity.position) {
-    //         geojson.geometry.type = 'Point';
-    //         let cartographic: Cesium.Cartographic | null = this.createGeojsonPointCoordinates(entity)
-    //         if (cartographic) geojson.geometry.coordinates = [Cesium.Math.toDegrees(cartographic.longitude), Cesium.Math.toDegrees(cartographic.latitude)];
-    //     }
-
-    //     if (entity.polyline && entity.polyline.positions) {
-    //         geojson.geometry.type = 'LineString';
-    //         geojson.geometry.coordinates = this.createGeojsonPolylineCoordinates(entity);
-    //     }
-
-    //     if (entity.polygon && entity.polygon.hierarchy) {
-    //         geojson.geometry.type = 'Polygon';
-    //         geojson.geometry.coordinates = this.createGeojsonPolygonCoordinates(entity)
-    //     }
-
-    //     return geojson;
-    // }
 
     private createGeojsonFeatureFromPoi(poi: PointOfInterest): any {
         return {
@@ -215,86 +185,36 @@ export class MapService {
         return geoJson;
     }
 
-    // private createGeojsonPointCoordinates(entity: Cesium.Entity): Cesium.Cartographic | null {
-    //     if (!entity.position) return null;
-    //     let pos: Cesium.Cartesian3 | undefined = entity.position.getValue(Cesium.JulianDate.now());
-    //     if (!pos) return null
-    //     let cartographic: Cesium.Cartographic = Cesium.Cartographic.fromCartesian(pos);
-    //     return cartographic;
-    // }
-
-    // private createGeojsonPolylineCoordinates(entity: Cesium.Entity): number[][] {
-    //     if (!entity.polyline || !entity.polyline.positions) return [];
-    //     let pos: Cesium.Cartesian3[] | undefined = entity.polyline.positions.getValue(Cesium.JulianDate.now());
-    //     let array: number[][] = [];
-    //     if (pos) {
-    //         pos.forEach((p: Cesium.Cartesian3) => {
-    //             let arr: number[];
-    //             let cartographic: Cesium.Cartographic = Cesium.Cartographic.fromCartesian(p);
-    //             arr = [Cesium.Math.toDegrees(cartographic.longitude), Cesium.Math.toDegrees(cartographic.latitude)];
-    //             array.push(arr);
-    //         });
-    //     }
-    //     return array;
-    // }
-
-    // private createGeojsonPolygonCoordinates(entity: Cesium.Entity): number[][][] {
-    //     if (!entity.polygon || !entity.polygon.hierarchy) return [];
-    //     let pos: Cesium.PolygonHierarchy | undefined = entity.polygon.hierarchy.getValue(Cesium.JulianDate.now());
-    //     let array = [];
-
-    //     if (pos) {
-    //         let positionsArray: number[][] = []
-    //         pos.positions.forEach((p: Cesium.Cartesian3) => {
-    //             let arr: number[];
-    //             let cartographic: Cesium.Cartographic = Cesium.Cartographic.fromCartesian(p);
-    //             arr = [Cesium.Math.toDegrees(cartographic.longitude), Cesium.Math.toDegrees(cartographic.latitude)];
-    //             positionsArray.push(arr);
-    //         });
-    //         array.push(positionsArray);
-    //         pos.holes.forEach((h: Cesium.PolygonHierarchy) => {
-    //             let holeArray: number[][] = [];
-    //             h.positions.forEach((p: Cesium.Cartesian3) => {
-    //                 let array: number[];
-    //                 let cartographic: Cesium.Cartographic = Cesium.Cartographic.fromCartesian(p);
-    //                 array = [Cesium.Math.toDegrees(cartographic.longitude), Cesium.Math.toDegrees(cartographic.latitude)];
-    //                 holeArray.push(array);
-    //             });
-    //             array.push(holeArray);
-    //         });
-    //     }
-
-    //     return array;
-    // }
-
     private createFeatureAdditionalProperties(geoJson: any, layer: Layer): any {
-        geoJson.features = geoJson.features.map((f: Feature, i: number) => {
-            f.properties.name = layer.name + ' ' + i;
-            // f.properties.layer = layer;
-            f.properties.layerName = layer.layer;
+        geoJson.features = geoJson.features
+            .filter((f: Feature) => f.geometry && f.geometry.type)
+            .map((f: Feature, i: number) => {
+                f.properties.name = layer.name + ' ' + i;
+                f.properties.layerName = layer.layer;
 
-            switch (f.geometry.type) {
-                case FeatureGeometryType.Point:
-                    f.properties.uuid = layer.layer + f.geometry.coordinates[1] + f.geometry.coordinates[0];
-                    break;
 
-                case FeatureGeometryType.MultiPoint:
-                    f.properties.uuid = layer.layer + (f.geometry.coordinates as number[][])[0][1] + (f.geometry.coordinates as number[][])[0][0];
-                    break;
+                switch (f.geometry.type) {
+                    case FeatureGeometryType.Point:
+                        f.properties.uuid = layer.layer + f.geometry.coordinates[1] + f.geometry.coordinates[0];
+                        break;
 
-                case FeatureGeometryType.LineString || FeatureGeometryType.Polygon || FeatureGeometryType.MultiPoint:
-                    f.properties.uuid = layer.layer + (f.geometry.coordinates as number[][])[0][1] + (f.geometry.coordinates as number[][])[0][0];
-                    break;
+                    case FeatureGeometryType.MultiPoint:
+                        f.properties.uuid = layer.layer + (f.geometry.coordinates as number[][])[0][1] + (f.geometry.coordinates as number[][])[0][0];
+                        break;
 
-                default:
-                    f.properties.uuid = layer.layer + (f.geometry.coordinates as number[][][])[0][0][1] + (f.geometry.coordinates as number[][][])[0][0][0];
-                    break;
-            }
+                    case FeatureGeometryType.LineString || FeatureGeometryType.Polygon || FeatureGeometryType.MultiPoint:
+                        f.properties.uuid = layer.layer + (f.geometry.coordinates as number[][])[0][1] + (f.geometry.coordinates as number[][])[0][0];
+                        break;
 
-            f.properties.uuid = f.id; // TESTING
+                    default:
+                        f.properties.uuid = layer.layer + (f.geometry.coordinates as number[][][])[0][0][1] + (f.geometry.coordinates as number[][][])[0][0][0];
+                        break;
+                }
 
-            return f;
-        });
+                f.properties.uuid = f.id; // TESTING
+
+                return f;
+            });
         return geoJson;
     }
 
@@ -319,74 +239,7 @@ export class MapService {
         return geoJsonObj;
     }
 
-    // public styleFeature(dataSource: Cesium.DataSource, style: LayerStyle): void {
-    //     dataSource.entities.values.forEach((entity: Cesium.Entity) => {
-    //         if (entity.billboard) {
-    //             switch (dataSource.name) {
-    //                 case 'custom-path':
-    //                     this.styleCustomPath(entity);
-    //                     break;
-    //                 case 'selected-feature':
-    //                     this.styleSelectedFeature(entity);
-    //                     break;
-    //                 default:
-    //                     this.stylePointFeature(entity, style);
-    //                     break;
-    //             }
-    //         }
-    //         if (entity.polyline) this.stylePolylineFeature(entity, style);
-    //         if (entity.polygon) this.stylePolygonFeature(entity, style);
-    //     });
-    // }
-
-    // private stylePointFeature(entity: Cesium.Entity, style: LayerStyle): Cesium.Entity {
-    //     entity.billboard = undefined;
-    //     entity.point = new Cesium.PointGraphics({
-    //         pixelSize: 8,
-    //         color: Cesium.Color.fromCssColorString(style.color).withAlpha(style.opacity),
-    //         outlineColor: Cesium.Color.fromCssColorString(style.color),
-    //         outlineWidth: 1
-    //     });
-    //     return entity;
-    // }
-
-    // private styleCustomPath(entity: Cesium.Entity): Cesium.Entity {
-    //     entity.billboard = undefined;
-    //     entity.point = new Cesium.PointGraphics({
-    //         pixelSize: 12,
-    //         color: Cesium.Color.TRANSPARENT,
-    //         outlineColor: Cesium.Color.BLUE,
-    //         outlineWidth: 2
-    //     });
-    //     return entity;
-    // }
-
-    // private styleSelectedFeature(entity: Cesium.Entity): Cesium.Entity {
-    //     entity.billboard = undefined;
-    //     entity.point = new Cesium.PointGraphics({
-    //         pixelSize: 16,
-    //         color: Cesium.Color.TRANSPARENT,
-    //         outlineColor: Cesium.Color.GREEN,
-    //         outlineWidth: 2
-    //     });
-    //     return entity;
-    // }
-
-    // private stylePolylineFeature(entity: Cesium.Entity, style: LayerStyle): Cesium.Entity {
-    //     if (!entity.polyline) return entity;
-    //     entity.polyline.material = new Cesium.ColorMaterialProperty(Cesium.Color.fromCssColorString(style.color));
-    //     entity.polyline.width = new Cesium.ConstantProperty(2.0);
-    //     return entity;
-    // }
-
-    // private stylePolygonFeature(entity: Cesium.Entity, style: LayerStyle): Cesium.Entity {
-    //     if (!entity.polygon) return entity;
-    //     entity.polygon.material = new Cesium.ColorMaterialProperty(Cesium.Color.fromCssColorString(style.color).withAlpha(style.opacity));
-    //     entity.polygon.outlineColor = new Cesium.ConstantProperty(Cesium.Color.fromCssColorString(style.color));
-    //     return entity;
-    // }
-
-    public openGoogleMaps(position: LngLat): void {        
+    public openGoogleMaps(position: LngLat): void {
         const url: string = `https://www.google.it/maps/dir/?api=1&destination=${position.lat},${position.lng}`;
         window.open(url, '_blank');
     }
