@@ -17,14 +17,17 @@
                 "./json/telecommunications.json",
                 "./json/architectural-barriers.json",
                 "./json/buildings.json",
-                "./json/roads.json"
+                "./json/roads.json",
+                "./json/borders.json"
             ]
         },
         {
             "name": "Cultura",
             "groups": [
                 "./json/aqueduct.json",
-                "./json/staglieno-monuments.json"
+                "./json/staglieno-monuments.json",
+                "./json/tourism.json"
+
             ]
         }
     ]

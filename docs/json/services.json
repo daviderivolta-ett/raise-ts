@@ -344,54 +344,6 @@
       ]
     },
     {
-      "name": "Strutture ricettive turistiche",
-      "layer": "SITGEO:V_RIC_TURISTICHE",
-      "layer_url_wfs": "./GeoJson/strutture-ricettive-turistiche.geojson",
-      "style": {
-        "color": "#bf5132",
-        "opacity": 0.5
-      },
-      "tags": [
-        "città",
-        "strada"
-      ],
-      "relevant_properties": [
-        {
-          "property_name": "TIPOLOGIA",
-          "display_name": "Tipologia",
-          "type": "string"
-        },
-        {
-          "property_name": "INDIRIZZO",
-          "display_name": "Indirizzo",
-          "type": "string"
-        },
-        {
-          "property_name": "CIVICO",
-          "display_name": "n",
-          "type": "number"
-        },
-        {
-          "property_name": "CLAS",
-          "display_name": "Valutazione",
-          "type": "string"
-        },
-        {
-          "property_name": "CAMERE",
-          "display_name": "Camere",
-          "type": "number"
-        },
-        {
-          "property_name": "LETTI",
-          "display_name": "Letti",
-          "type": "number"
-        }
-      ],
-      "components": [
-        "app-opacity-slider"
-      ]
-    },
-    {
       "name": "Acqua potabile",
       "layer": "GEOJSON_ACQUA_POTABILE",
       "layer_url_wfs": "./GeoJson/drinking-water.geojson",

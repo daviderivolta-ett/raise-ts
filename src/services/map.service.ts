@@ -22,7 +22,6 @@ export class MapService {
         let geoJson: any = await res.json();
         let geoJsonNewProp: any = this.substituteRelevantProperties(geoJson, layer);
         let geoJsonAddProp = this.createFeatureAdditionalProperties(geoJsonNewProp, layer);
-        console.log(geoJsonAddProp);
         return geoJsonAddProp;
     }
 
