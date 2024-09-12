@@ -46,6 +46,17 @@ export class MapTerrainControl implements IControl {
                 essential: true
             });
             map.setLayoutProperty('3d-buildings', 'visibility', 'visible');
+
+            map.addLayer({
+                id: 'terrain',
+                source: 'terrain',
+                type: 'hillshade',
+                minzoom: 10,
+                paint: {
+                    "hillshade-shadow-color": '#00000033'
+                }
+            });
+
             setTimeout(() => map.setTerrain({ source: 'terrain', exaggeration: 1 }), duration * 2);
         } else {
             map.dragRotate.disable();
@@ -61,6 +72,9 @@ export class MapTerrainControl implements IControl {
                 essential: true
             });
             map.setLayoutProperty('3d-buildings', 'visibility', 'none');
+
+            map.removeLayer('terrain')
+
             setTimeout(() => map.setTerrain({ source: 'terrain', exaggeration: 0 }), duration * 2);
         }
     }

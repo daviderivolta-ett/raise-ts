@@ -165,63 +165,10 @@ export class MaplibreComponent extends HTMLElement {
                 tileSize: 16
             });
 
-            this.map.addLayer({
-                id: 'terrain',
-                source: 'terrain',
-                type: 'hillshade',
-                minzoom: 10,
-                paint: {
-                    "hillshade-shadow-color": '#00000033'
-                }
-            });
-
-            // this.map.setTerrain({ source: 'terrain', exaggeration: 2 });
-
-            // const terrainLayer = this.map.getLayer('terrain');
-            // if (!terrainLayer) return;
-            // terrainLayer.visibility = 'none';
-
         }).catch(error => {
             console.error('Error loading PMTiles header:', error);
         });
     }
-
-    // private toggleTerrainLayer(isTerrainActive: boolean): void {
-    //     const duration: number = 1000;
-
-    //     if (isTerrainActive) {
-    //         this.map.dragRotate.enable();
-    //         this.map.easeTo({
-    //             pitch: 60,
-    //             duration,
-    //             // easing(t) {
-    //             //     return t < 0.5 ?
-    //             //         (1 - Math.sqrt(1 - Math.pow(2 * t, 2))) / 2 :
-    //             //         (Math.sqrt(1 - Math.pow(-2 * t + 2, 2)) + 1) / 2;
-    //             // },
-    //             essential: true
-    //         });
-    //         setTimeout(() => {
-    //             this.map.setTerrain({ source: 'terrain', exaggeration: 2 });
-    //         }, duration * 2);
-    //     } else {
-    //         this.map.dragRotate.disable();
-    //         this.map.easeTo({
-    //             pitch: 0,
-    //             bearing: 0,
-    //             duration,
-    //             // easing(t) {
-    //             //     return t < 0.5 ?
-    //             //         (1 - Math.sqrt(1 - Math.pow(2 * t, 2))) / 2 :
-    //             //         (Math.sqrt(1 - Math.pow(-2 * t + 2, 2)) + 1) / 2;
-    //             // },
-    //             essential: true
-    //         });
-    //         setTimeout(() => {
-    //             this.map.setTerrain({ source: 'terrain', exaggeration: 0 });
-    //         }, duration * 2);
-    //     }
-    // }
 
     private async handleClick(e: MapMouseEvent): Promise<void> {
         EventObservable.instance.publish('empty-searchbar', null);
