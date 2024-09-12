@@ -46,7 +46,7 @@ export class MapTerrainControl implements IControl {
                 essential: true
             });
             map.setLayoutProperty('3d-buildings', 'visibility', 'visible');
-            // setTimeout(() => map.setTerrain({ source: 'terrain', exaggeration: 2 }), duration * 2);
+            setTimeout(() => map.setTerrain({ source: 'terrain', exaggeration: 1 }), duration * 2);
         } else {
             map.dragRotate.disable();
             map.easeTo({
@@ -61,7 +61,7 @@ export class MapTerrainControl implements IControl {
                 essential: true
             });
             map.setLayoutProperty('3d-buildings', 'visibility', 'none');
-            // setTimeout(() => map.setTerrain({ source: 'terrain', exaggeration: 0 }), duration * 2);
+            setTimeout(() => map.setTerrain({ source: 'terrain', exaggeration: 0 }), duration * 2);
         }
     }
 }

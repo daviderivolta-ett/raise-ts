@@ -165,12 +165,15 @@ export class MaplibreComponent extends HTMLElement {
                 tileSize: 16
             });
 
-            // this.map.addLayer({
-            //     id: 'terrain',
-            //     source: 'terrain',
-            //     type: 'hillshade',
-            //     minzoom: 10,
-            // });
+            this.map.addLayer({
+                id: 'terrain',
+                source: 'terrain',
+                type: 'hillshade',
+                minzoom: 10,
+                paint: {
+                    "hillshade-shadow-color": '#00000033'
+                }
+            });
 
             // this.map.setTerrain({ source: 'terrain', exaggeration: 2 });
 
