@@ -242,4 +242,18 @@ export class MapService {
         const url: string = `https://www.google.it/maps/dir/?api=1&destination=${position.lat},${position.lng}`;
         window.open(url, '_blank');
     }
+
+    public async getAddressFromCoordinates(lngLat: LngLat, signal: AbortSignal): Promise<string> {
+        const res: Response = await fetch(`https://nominatim.openstreetmap.org/reverse?lat=${lngLat.lat}&lon=${lngLat.lng}&format=json`, { signal });
+        const data: any = await res.json();
+        let address: string = ``;
+        if (data.address) {
+            if (data.address.road) address += data.address.road + ', ';
+            if (data.address.house_number) address += data.address.house_number + ', ';
+            if (data.address.postcode) address += data.address.postcode + ' ';
+            if (data.address.city) address += data.address.city + ' ';
+        }
+        address = address.trim();
+        return address;
+    }
 }

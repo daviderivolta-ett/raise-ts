@@ -39,6 +39,18 @@ export class PointOfInterest {
             []
         );
     }
+
+    static createCustomPoi(lngLat: LngLat): PointOfInterest {
+        return new PointOfInterest(
+            generateId(20),
+            'Punto personalizzato',
+            lngLat,
+            PoiType.Point,
+            Layer.createEmpty(),
+            '',
+            []
+        );
+    }
 }
 
 export class PoiProperty {
@@ -61,4 +73,16 @@ export enum PoiType {
     Point = 'point',
     Polyline = 'polyline',
     Polygon = 'polygon'
+}
+
+function generateId(length: number): string {
+    let id: string = '';
+    const letters: string = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    let idLength: number = 0;
+    while (idLength < length) {
+        const pickedLetter: string = letters[Math.floor(Math.random() * letters.length)];
+        id += pickedLetter;
+        idLength++;
+    }
+    return id;
 }

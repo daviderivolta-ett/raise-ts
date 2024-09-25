@@ -338,7 +338,7 @@ export class StorageService {
     }
 
     public isPoiInSelectedPath(poi: PointOfInterest): boolean {
-        return this.selectedCustomPath.pois.some((p: PointOfInterest) => p.name === poi.name);
+        return this.selectedCustomPath.pois.some((p: PointOfInterest) => p.uuid === poi.uuid);
     }
 
     public editPath(name: string): void {

@@ -1,6 +1,6 @@
 import maplibregl, { Map, MapMouseEvent, MapGeoJSONFeature, Marker, GeolocateControl, LngLat, AttributionControl, LayerSpecification, NavigationControl } from 'maplibre-gl';
 import { EventObservable } from '../../../observables/event.observable';
-import { Layer } from '../../../models/layer.model';
+import { Layer, PropertyType } from '../../../models/layer.model';
 import { MapService } from '../../../services/map.service';
 import { StorageService } from '../../../services/storage.service';
 import { SnackbarService } from '../../../services/snackbar.service';
@@ -9,7 +9,7 @@ import { TabsToggleObservable } from '../../../observables/tabs-toggle.observabl
 import { SidenavStatus } from '../../../models/sidenav.model';
 import { BenchToggleObservable } from '../../../observables/bench-toggle.observable';
 import { PoiService } from '../../../services/poi.service';
-import { PoiType, PointOfInterest } from '../../../models/poi.model';
+import { PoiProperty, PoiType, PointOfInterest } from '../../../models/poi.model';
 import { Path } from '../../../models/path.model';
 import { PositionService } from '../../../services/position.service';
 import MaplibreStyle from 'maplibre-gl/dist/maplibre-gl.css?raw';
@@ -26,14 +26,7 @@ export class MaplibreComponent extends HTMLElement {
     public markers: Marker[] = [];
     private _isOpen: boolean = false;
 
-    public get isOpen(): boolean {
-        return this._isOpen;
-    }
-
-    public set isOpen(isOpen: boolean) {
-        this._isOpen = isOpen;
-        this.isOpen === true ? this.classList.add('reduce') : this.classList.remove('reduce');
-    }
+    private controller: AbortController | null = null;
 
     constructor() {
         super();
@@ -89,6 +82,12 @@ export class MaplibreComponent extends HTMLElement {
 
         const pointsCloudControl: PointsCloudControl = new PointsCloudControl();
         this.map.addControl(pointsCloudControl, 'bottom-right');
+    }
+
+    public get isOpen(): boolean { return this._isOpen }
+    public set isOpen(isOpen: boolean) {
+        this._isOpen = isOpen;
+        this.isOpen === true ? this.classList.add('reduce') : this.classList.remove('reduce');
     }
 
     public async connectedCallback(): Promise<void> {
@@ -173,6 +172,10 @@ export class MaplibreComponent extends HTMLElement {
     private async handleClick(e: MapMouseEvent): Promise<void> {
         EventObservable.instance.publish('empty-searchbar', null);
         const features: MapGeoJSONFeature[] = this.map.queryRenderedFeatures(e.point).filter((feature: MapGeoJSONFeature) => feature.source !== 'protomaps');
+        
+        if (this.controller) this.controller.abort();
+        this.controller = new AbortController();
+        const { signal } = this.controller;
 
         this.removeCustomMarkers('selected-feature');
         this.removeCustomMarkers('custom-path');
@@ -180,9 +183,25 @@ export class MaplibreComponent extends HTMLElement {
         this.removeCustomLayer('selected-feature');
 
         if (features.length === 0) {
-            TabsToggleObservable.instance.status = SidenavStatus.Close;
+            TabsToggleObservable.instance.status = SidenavStatus.Open;
             BenchToggleObservable.instance.isOpen = false;
-            PoiService.instance.selectedPoi = null;
+            const marker = await this.createCustomMarker('selected-feature', '#EA4335', '#B31412');
+            if (marker) {
+                this.markers.push(marker);
+                marker.setLngLat(e.lngLat).addTo(this.map);
+            }
+            const poi: PointOfInterest = PointOfInterest.createCustomPoi(e.lngLat);
+            try {
+                const address = await MapService.instance.getAddressFromCoordinates(e.lngLat, signal);
+                poi.props.push(new PoiProperty('Nome', PropertyType.String, address));
+            } catch (error: unknown) {
+                if (error instanceof Error && error.name === 'AbortError') {
+                    console.log('Richiesta annullata');
+                } else {
+                    console.error(error);
+                }
+            }
+            PoiService.instance.selectedPoi = poi;
             return;
         }
 
@@ -310,7 +329,7 @@ export class MaplibreComponent extends HTMLElement {
     private async addLayer(layer: Layer): Promise<void> {
         if (!this.isLayerOnMap(layer)) {
             try {
-                SnackbarService.instance.createSnackbar(SnackbarType.Loader, layer.layer, 'Caricamento...');                
+                SnackbarService.instance.createSnackbar(SnackbarType.Loader, layer.layer, 'Caricamento...');
                 await this.addLayerToMap(layer);
                 this.addLayerToActiveLayers(layer);
                 SnackbarService.instance.removeSnackbar(layer.layer);

@@ -92,6 +92,7 @@ export class InfoPanelComponent extends HTMLElement {
         legend.style.backgroundColor = MyColor.rgbToRgba(MyColor.hexToRgb(this._poi!.layer.style.color), 0.5);
         legend.style.borderColor = this._poi!.layer.style.color;
 
+        if (this.poi.props.length === 0) category.innerHTML = this.poi.name;
         this.poi.props.forEach((prop: PoiProperty) => {
             prop.displayName === 'Nome' ? category.innerHTML = prop.value : category.innerHTML = this.poi!.name;
         });
