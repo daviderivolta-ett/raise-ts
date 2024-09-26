@@ -1,5 +1,5 @@
 // Web components polyfills for Safari
-// import '@ungap/custom-elements';
+import '@ungap/custom-elements';
 
 // Models
 import { Route, RouteType } from './models/route.model';
@@ -38,6 +38,7 @@ import './pages/map/suggested-path-card/suggested-path-card.component';
 import './pages/map/selected-suggested-path-panel/selected-suggested-path-panel.component';
 import './pages/map/selected-suggested-path-card/selected-suggested-path-card.component';
 import './pages/map/directions-btn/directions-btn.component';
+import './pages/map/wheel-btn/wheel-btn.component';
 
 // Classes
 import { Router } from './components/router.component';

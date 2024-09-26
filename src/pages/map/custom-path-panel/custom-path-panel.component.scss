@@ -92,15 +92,14 @@ p {
     position: absolute;
     bottom: 56px;
     right: 20px;
+}
+
+.directions-btn__action {
     width: 40px;
     height: 40px;
     border-radius: var(--border-radius-m);
-    background-color: var(--primary-container);
-    color: var(--on-primary-container);
-
-    &:hover {
-        color: var(--on-surface);
-    }
+    background-color: var(--tertiary-container);
+    color: var(--on-tertiary-container);
 }
 
 .material-symbols-outlined {

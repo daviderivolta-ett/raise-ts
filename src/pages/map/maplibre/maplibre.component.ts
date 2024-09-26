@@ -146,6 +146,15 @@ export class MaplibreComponent extends HTMLElement {
 
             this.setCameraToPosition(poi.position);
         });
+        EventObservable.instance.subscribe('add-optimal-path', (geoJson: any) => {          
+            if (this.map.getSource('optimal-path')) {              
+                this.removeGeoJsonFromMap('optimal-path');
+            }
+            this.addGeoJsonToMap(geoJson, 'optimal-path', '#1152F7');
+            const lngLat: LngLat = MapService.instance.getGeoJsonCenter(geoJson);
+            this.map.setCenter(lngLat);
+        });
+        EventObservable.instance.subscribe('remove-optimal-path', () => this.removeGeoJsonFromMap('optimal-path'));
     }
 
     private addTerrainLayer() {
@@ -172,7 +181,7 @@ export class MaplibreComponent extends HTMLElement {
     private async handleClick(e: MapMouseEvent): Promise<void> {
         EventObservable.instance.publish('empty-searchbar', null);
         const features: MapGeoJSONFeature[] = this.map.queryRenderedFeatures(e.point).filter((feature: MapGeoJSONFeature) => feature.source !== 'protomaps');
-        
+
         if (this.controller) this.controller.abort();
         this.controller = new AbortController();
         const { signal } = this.controller;
@@ -357,25 +366,28 @@ export class MaplibreComponent extends HTMLElement {
     }
 
     private async addLayerToMap(layer: Layer): Promise<void> {
-        const geoJSON: any = await MapService.instance.createGeoJsonFromLayer(layer);
         const sourceId: string = layer.layer;
+        const geoJSON: any = await MapService.instance.createGeoJsonFromLayer(layer);
+        this.addGeoJsonToMap(geoJSON, sourceId, layer.style.color);
+    }
 
-        if (!this.map.getSource(sourceId)) {
-            this.map.addSource(sourceId, {
+    private addGeoJsonToMap(geoJSON: any, id: string, color: string): void {
+        if (!this.map.getSource(id)) {
+            this.map.addSource(id, {
                 type: 'geojson',
                 data: geoJSON
             });
         }
 
         this.map.addLayer({
-            id: sourceId + '_circle',
-            source: sourceId,
+            id: id + '_circle',
+            source: id,
             type: 'circle',
             paint: {
                 "circle-radius": 4,
-                "circle-color": layer.style.color,
+                "circle-color": color,
                 "circle-opacity": .5,
-                "circle-stroke-color": layer.style.color,
+                "circle-stroke-color": color,
                 "circle-stroke-opacity": 1,
                 "circle-stroke-width": 2
             },
@@ -383,27 +395,35 @@ export class MaplibreComponent extends HTMLElement {
         });
 
         this.map.addLayer({
-            id: sourceId + '_line',
-            source: sourceId,
+            id: id + '_line',
+            source: id,
             type: 'line',
             paint: {
-                "line-color": layer.style.color,
+                "line-color": color,
                 "line-width": 4
             },
             filter: ['==', ['geometry-type'], 'LineString']
         }, 'buildings');
 
         this.map.addLayer({
-            id: sourceId + '_fill',
-            source: sourceId,
+            id: id + '_fill',
+            source: id,
             type: 'fill',
             paint: {
-                "fill-color": layer.style.color,
+                "fill-color": color,
                 "fill-opacity": .5,
-                "fill-outline-color": layer.style.color
+                "fill-outline-color": color
             },
             filter: ['==', ['geometry-type'], 'Polygon']
         }, 'buildings');
+    }
+
+    private removeGeoJsonFromMap(id: string) {
+        if (this.map.getLayer(`${id}_fill`)) this.map.removeLayer(`${id}_fill`);
+        if (this.map.getLayer(`${id}_circle`)) this.map.removeLayer(`${id}_circle`);
+        if (this.map.getLayer(`${id}_line`)) this.map.removeLayer(`${id}_line`);
+        if (this.map.getLayer(id)) this.map.removeLayer(id);
+        if (this.map.getSource(id)) this.map.removeSource(id);
     }
 
     public removeLayerFromMap(layer: Layer): void {
@@ -454,6 +474,7 @@ export class MaplibreComponent extends HTMLElement {
         EventObservable.instance.unsubscribeAll('remove-layer-from-bench');
         EventObservable.instance.unsubscribeAll('load-custom-path');
         EventObservable.instance.unsubscribeAll('selected-poi');
+        EventObservable.instance.unsubscribeAll('add-optimal-path');
     }
 
     public addLayerToBench(layer: Layer): void {

@@ -42,7 +42,7 @@ export class MapService {
         }
     }
 
-    private checkGeoJSON(obj: any): boolean {
+    public checkGeoJSON(obj: any): boolean {
         if (!obj || typeof obj !== 'object' || !obj.type) {
             return false;
         }
@@ -162,6 +162,36 @@ export class MapService {
 
     }
 
+    public getGeoJsonCenter(geoJson: any): LngLat {
+        let totalLng: number = 0;
+        let totalLat: number = 0;
+        let count: number = 0;
+
+        geoJson.features.forEach((feature: any) => {
+            const coordinates: any = feature.geometry.coordinates;
+            if (Array.isArray(coordinates[0][0])) {
+                coordinates.forEach((coordSet: any) => {
+                    coordSet.forEach((coord: any) => {
+                        totalLng += coord[0];
+                        totalLat += coord[1];
+                        count++;
+                    });
+                });
+            } else {
+                coordinates.forEach((coord: any) => {
+                    totalLng += coord[0];
+                    totalLat += coord[1];
+                    count++;
+                });
+            }
+        });
+
+        const centerLng = totalLng / count;
+        const centerLat = totalLat / count;
+
+        return new LngLat(centerLng, centerLat);
+    }
+
     private createGeojsonFeatureFromPoi(poi: PointOfInterest): any {
         return {
             type: 'Feature',
@@ -238,9 +268,39 @@ export class MapService {
         return geoJsonObj;
     }
 
-    public openGoogleMaps(position: LngLat): void {
-        const url: string = `https://www.google.it/maps/dir/?api=1&destination=${position.lat},${position.lng}`;
+    // public openGoogleMaps(position: LngLat): void {
+    //     const url: string = `https://www.google.it/maps/dir/?api=1&destination=${position.lat},${position.lng}`;
+    //     window.open(url, '_blank');
+    // }
+
+    public openGoogleMaps(pois: PointOfInterest[]): void {
+        const url: string = `https://www.google.it/maps/dir/?api=1&origin=My+Location${this.generateGoogleMapsUrl(pois)}`;
         window.open(url, '_blank');
+    }
+
+    private generateGoogleMapsUrl(pois: PointOfInterest[]): string {
+        const poisLatLng: string[] = pois.map((poi: PointOfInterest) => `${poi.position.lat},${poi.position.lng}`);
+        let destinationUrl: string = '&destination=';
+        let waypointsUrl: string = '&waypoints=';
+
+        if (poisLatLng.length > 1) {
+            const lastLatLng: string | undefined = poisLatLng.pop();
+            waypointsUrl = waypointsUrl.concat(poisLatLng.join('|'));
+            return destinationUrl + lastLatLng + waypointsUrl;
+        } else {
+            return '&destination=' + poisLatLng;
+        }
+    }
+
+    public async getOptimalPath(pois: PointOfInterest[]): Promise<any> {
+        const poisLatLng: [number, number][] = pois.map((poi: PointOfInterest) => [poi.position.lat, poi.position.lng]);
+        try {
+            const res: Response = await fetch('./GeoJson/optimal-path.geojson');
+            const geoJSON: any = await res.json();
+            return geoJSON;
+        } catch (error) {
+            throw new Error('Impossibile recuperare il percorso ottimo');
+        }
     }
 
     public async getAddressFromCoordinates(lngLat: LngLat, signal: AbortSignal): Promise<string> {
@@ -253,7 +313,6 @@ export class MapService {
             if (data.address.postcode) address += data.address.postcode + ' ';
             if (data.address.city) address += data.address.city + ' ';
         }
-        address = address.trim();
-        return address;
+        return address.trim();
     }
 }

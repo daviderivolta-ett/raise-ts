@@ -4,12 +4,14 @@ import { PointOfInterest } from '../../../models/poi.model';
 import { SnackbarType } from '../../../models/snackbar-type.model';
 import { EventObservable } from '../../../observables/event.observable';
 import { DialogService } from '../../../services/dialog.service';
+import { MapService } from '../../../services/map.service';
 import { PositionService } from '../../../services/position.service';
 import { SnackbarService } from '../../../services/snackbar.service';
 import { StorageService } from '../../../services/storage.service';
 import { CustomPathCardComponent } from '../custom-path-card/custom-path-card.component';
 import { CustomPathDownloadBtnComponent } from '../custom-path-download-btn/custom-path-download-btn.component';
 import { DirectionsBtnComponent } from '../directions-btn/directions-btn.component';
+import { WheelBtnComponent } from '../wheel-btn/wheel-btn.component';
 
 import style from './custom-path-panel.component.scss?raw';
 
@@ -37,7 +39,7 @@ export class CustomPathPanelComponent extends HTMLElement {
         EventObservable.instance.publish('load-custom-path', this.path);
     }
 
-    public connectedCallback(): void {        
+    public connectedCallback(): void {
         this.render();
         this.setup();
         this.update();
@@ -61,9 +63,15 @@ export class CustomPathPanelComponent extends HTMLElement {
                 <button type="button" title="Salva percorso" class="tool-btn bookmark-btn"><span class="material-symbols-outlined tool-icon">bookmark</span></button>
                 <button type="button" title="Carica percorsi salvati" class="tool-btn load-btn"><span class="material-symbols-outlined tool-icon">bookmarks</span></button>
             </div>
-            <button is="app-directions-btn" class="btn directions-btn">
-                <span class="material-symbols-outlined action-icon">directions</span>
-            </button>
+            <app-wheel-btn class="directions-btn" layout="vertical">
+                <span slot="icon" class="material-symbols-outlined">directions</span>
+                <button is="app-directions-btn" slot="content" btn-mode="create" class="btn directions-btn__action">
+                    <span class="material-symbols-outlined action-icon">navigation</span>
+                </button>
+                <button is="app-directions-btn" slot="content" btn-mode="delete" class="btn directions-btn__action">
+                    <span class="material-symbols-outlined action-icon">near_me_disabled</span>
+                </button>
+            </app-wheel-btn>
             `
             ;
     }
@@ -75,6 +83,7 @@ export class CustomPathPanelComponent extends HTMLElement {
         const bookmarkBtn: HTMLButtonElement | null = this.shadowRoot.querySelector('.bookmark-btn');
         const loadBtn: HTMLButtonElement | null = this.shadowRoot.querySelector('.load-btn');
         const csvDownloadBtn: CustomPathDownloadBtnComponent | null = this.shadowRoot.querySelector('button[is="app-custom-path-download-btn"]');
+        const wheelBtn: WheelBtnComponent | null = this.shadowRoot.querySelector('app-wheel-btn');
 
         if (sortBtn) sortBtn.addEventListener('click', () => {
             PositionService.instance.position ? DialogService.instance.createFormDialog(DialogType.SortPois) : SnackbarService.instance.createSnackbar(SnackbarType.Error, '', 'Attivare la geolocalizzazione per riordinare i punti di interesse.');
@@ -84,9 +93,11 @@ export class CustomPathPanelComponent extends HTMLElement {
         if (bookmarkBtn) bookmarkBtn.addEventListener('click', () => DialogService.instance.createFormDialog(DialogType.BookmarkPath));
         if (loadBtn) loadBtn.addEventListener('click', () => DialogService.instance.createFormDialog(DialogType.LoadPath));
         if (csvDownloadBtn) csvDownloadBtn.path = { ...this.path };
+        if (wheelBtn) wheelBtn.callback = () => this.createPath(this.path.pois);
 
         EventObservable.instance.subscribe('selected-custom-path-updated', (path: Path) => {
             this.path = path;
+            EventObservable.instance.publish('remove-optimal-path', null);
         });
     }
 
@@ -110,6 +121,15 @@ export class CustomPathPanelComponent extends HTMLElement {
 
     public disconnectedCallback(): void {
         EventObservable.instance.unsubscribeAll('selected-custom-path-updated');
+    }
+
+    private async createPath(pois: PointOfInterest[]): Promise<void> {
+        try {
+            const geoJSON: any = await MapService.instance.getOptimalPath(pois);
+            EventObservable.instance.publish('add-optimal-path', geoJSON);
+        } catch (error: unknown) {
+            MapService.instance.openGoogleMaps(pois);
+        }
     }
 }
 

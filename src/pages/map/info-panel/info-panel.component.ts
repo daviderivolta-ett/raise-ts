@@ -80,10 +80,12 @@ export class InfoPanelComponent extends HTMLElement {
                 <p class="category"></p>
             </div>
             <div class="tools">
-                <button is="app-directions-btn" class="directions-btn">Indicazioni</button>
+                
             </div>
             `
             ;
+
+            // <button is="app-directions-btn" class="directions-btn">Indicazioni</button>
 
         const legend: HTMLSpanElement = this.shadowRoot.querySelector('.legend') as HTMLSpanElement;
         const category: HTMLParagraphElement = this.shadowRoot.querySelector('.category') as HTMLParagraphElement;

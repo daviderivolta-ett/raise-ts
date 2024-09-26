@@ -79,7 +79,7 @@ export class PoiService {
         }
 
         poi.type = this.getPoiType(feature); 
-        console.log(poi);            
+         
         return poi;
     }
 
