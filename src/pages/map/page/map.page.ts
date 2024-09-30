@@ -53,7 +53,7 @@ export class MapPage extends HTMLElement {
         const mapComponent: MapComponent = this.shadowRoot.querySelector('app-map') as MapComponent;
         mapComponent.removeEventListener('position-updated', (event: Event) => this._updatePosition(event));
         mapComponent.removeEventListener('map-loaded', () => this._handleMapLoad(mapComponent));
-        mapComponent.removeEventListener('map-click', (event: Event) => this._handleMapClick(event, mapComponent));
+        mapComponent.removeEventListener('map-click', (event: Event) => this._handleMapClick(event));
         EventObservable.instance.unsubscribeAll('sidenav-status-change');
         EventObservable.instance.unsubscribeAll('add-layer');
         EventObservable.instance.unsubscribeAll('bench-layer');
@@ -118,7 +118,7 @@ export class MapPage extends HTMLElement {
         const mapComponent: MapComponent = this.shadowRoot.querySelector('app-map') as MapComponent;      
         mapComponent.addEventListener('position-updated', (event: Event) => this._updatePosition(event));
         mapComponent.addEventListener('map-loaded', () => this._handleMapLoad(mapComponent));
-        mapComponent.addEventListener('map-click', (event: Event) => this._handleMapClick(event, mapComponent));
+        mapComponent.addEventListener('map-click', (event: Event) => this._handleMapClick(event));
         EventObservable.instance.subscribe('sidenav-status-change', (status: SidenavStatus) => mapComponent.isMinimal = status === SidenavStatus.Close ? false : true);
         EventObservable.instance.subscribe('add-layer', (layer: Layer) => this._handleAddLayer(mapComponent, layer));
         EventObservable.instance.subscribe('bench-layer', (layer: Layer) => this._handleBenchLayer(mapComponent, layer));
@@ -134,7 +134,7 @@ export class MapPage extends HTMLElement {
 
     private _handleMapLoad(mapComponent: MapComponent): void {
         mapComponent.map.setStyle(ThemeService.instance.chooseMapColor(ThemeService.instance.currentTheme));
-        
+
         StorageService.instance.activeLayers.forEach(async (layer: Layer) => {
             try {
                 const geoJSON: any = await MapService.instance.createGeoJsonFromLayer(layer);
@@ -145,7 +145,7 @@ export class MapPage extends HTMLElement {
         });
     }
 
-    private async _handleMapClick(event: Event, mapComponent: MapComponent): Promise<void> {
+    private async _handleMapClick(event: Event): Promise<void> {
         if (this.controller) this.controller.abort();
         this.controller = new AbortController();
         const { signal } = this.controller;

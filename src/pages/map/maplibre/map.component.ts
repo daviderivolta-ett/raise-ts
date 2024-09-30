@@ -1,4 +1,4 @@
-import maplibregl, { AttributionControl, GeolocateControl, LayerSpecification, LngLat, Map, MapGeoJSONFeature, MapMouseEvent, Marker, NavigationControl } from 'maplibre-gl';
+import maplibregl, { AttributionControl, GeolocateControl, LngLat, Map, MapGeoJSONFeature, MapMouseEvent, Marker, NavigationControl } from 'maplibre-gl';
 import { PMTiles, Protocol } from 'pmtiles';
 import { MapTerrainControl } from '../map-terrain-control/map-terrain-control.component';
 import { PointsCloudControl } from '../point-clouds-control/points-cloud-control.component';
