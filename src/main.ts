@@ -8,7 +8,7 @@ import { Route, RouteType } from './models/route.model';
 import './components/router.component';
 import './pages/tags/page/tags.page';
 import './pages/map/page/map.page';
-import './pages/map/map/map.component';
+import './pages/map/map/cesium-map.component';
 import './pages/map/maplibre/maplibre.component';
 import './pages/map/map-mode-btn/map-mode-btn.component';
 import './pages/map/map-theme-btn/map-theme-btn.component';
@@ -39,6 +39,7 @@ import './pages/map/selected-suggested-path-panel/selected-suggested-path-panel.
 import './pages/map/selected-suggested-path-card/selected-suggested-path-card.component';
 import './pages/map/directions-btn/directions-btn.component';
 import './pages/map/wheel-btn/wheel-btn.component';
+import './pages/map/maplibre/map.component';
 
 // Classes
 import { Router } from './components/router.component';

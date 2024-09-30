@@ -23,6 +23,7 @@ export class TabsToggleObservable {
 
     set isOpen(isOpen) {
         this._isOpen = isOpen;    
+        console.log(isOpen);              
         EventObservable.instance.publish('toggle-tabs', this.isOpen);
         if (this.isOpen) EventObservable.instance.publish('toggle-bench', false);
     }
@@ -32,7 +33,7 @@ export class TabsToggleObservable {
     }
 
     public set status(status: SidenavStatus) {
-        this._status = status;
+        this._status = status;      
         EventObservable.instance.publish('sidenav-status-change', this.status);
         if (this.status !== 0) BenchToggleObservable.instance.isOpen = false;
     }

@@ -19,7 +19,7 @@ import style from './map.component.scss?raw';
 import cesiumStyle from 'cesium/Build/Cesium/Widgets/widgets.css?raw';
 import { SidenavStatus } from '../../../models/sidenav.model';
 
-export class MapComponent extends HTMLElement {
+export class CesiumMapComponent extends HTMLElement {
     public shadowRoot: ShadowRoot;
     public container: HTMLElement = document.createElement('div');
     public viewer!: Cesium.Viewer;
@@ -407,4 +407,4 @@ export class MapComponent extends HTMLElement {
     }
 }
 
-customElements.define('app-map', MapComponent);
+customElements.define('app-cesium-map', CesiumMapComponent);

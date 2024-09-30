@@ -16,6 +16,7 @@ export class PositionService {
 
     public set position(position: GeolocationPosition | null) {
         this._position = position;
+        console.log(position);        
         EventObservable.instance.publish('set-position', this.position);
     }
 

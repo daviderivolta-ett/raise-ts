@@ -95,20 +95,6 @@ export class ThemeService {
         );
     }
 
-    // public createImageryProvider(theme: MapTheme): Cesium.WebMapTileServiceImageryProvider {
-    //     return new Cesium.WebMapTileServiceImageryProvider(
-    //         {
-    //             url: theme.url,
-    //             layer: theme.layer,
-    //             credit: new Cesium.Credit(theme.credit),
-    //             tileMatrixSetID: 'default',
-    //             style: 'default',
-    //             format: 'image/jpeg',
-    //             maximumLevel: 19,
-    //         }
-    //     );
-    // }
-
     public toggleTheme(): void {
         this.currentTheme === Theme.Light ? this.currentTheme = Theme.Dark : this.currentTheme = Theme.Light;
     }

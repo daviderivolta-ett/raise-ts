@@ -44,7 +44,7 @@ export class TabsComponent extends HTMLElement {
             <nav class="header">
                 <button class="tab info-tab">Informazioni<span class="border"></span></button>
                 <button class="tab suggested-route-tab">Percorsi suggeriti<span class="border"></span></button>
-                <button class="tab custom-route-tab">Percorsi custom<span class="border"></span></button>
+                <button class="tab custom-route-tab">Navigazione<span class="border"></span></button>
             </nav>
             <div class="panel"></div>
             `

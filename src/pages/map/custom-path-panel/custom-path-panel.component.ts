@@ -35,7 +35,7 @@ export class CustomPathPanelComponent extends HTMLElement {
 
     public set path(path: Path) {
         this._path = path;
-        // this.update();
+        // this.update();       
         EventObservable.instance.publish('load-custom-path', this.path);
     }
 

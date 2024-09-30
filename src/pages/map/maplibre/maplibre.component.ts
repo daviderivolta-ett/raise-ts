@@ -186,12 +186,20 @@ export class MaplibreComponent extends HTMLElement {
         this.controller = new AbortController();
         const { signal } = this.controller;
 
-        this.removeCustomMarkers('selected-feature');
-        this.removeCustomMarkers('custom-path');
-        this.markers.forEach((marker: Marker) => marker.remove());
-        this.removeCustomLayer('selected-feature');
+        // this.removeCustomMarkers('selected-feature');
+        // this.removeCustomMarkers('custom-path');
+        // this.markers.forEach((marker: Marker) => marker.remove());
+        // this.removeCustomLayer('selected-feature');
 
         if (features.length === 0) {
+            if (this.isMarkerOnMap('selected-feature')) {
+                this.removeCustomMarkers('selected-feature');
+                this.removeCustomMarkers('custom-path');
+                this.markers.forEach((marker: Marker) => marker.remove());
+                this.removeCustomLayer('selected-feature');
+                return;
+            }
+            
             TabsToggleObservable.instance.status = SidenavStatus.Open;
             BenchToggleObservable.instance.isOpen = false;
             const marker = await this.createCustomMarker('selected-feature', '#EA4335', '#B31412');
@@ -255,6 +263,12 @@ export class MaplibreComponent extends HTMLElement {
             console.error('Errore nel caricamento del file SVG:', error);
             return null;
         }
+    }
+
+    private isMarkerOnMap(className: string): boolean {
+        const markers: HTMLElement[] = this.markers.map((marker: Marker) => marker.getElement());        
+        const marker: HTMLElement | undefined = markers.find((element: HTMLElement) => element.classList.contains(className));
+        return marker ? true : false;
     }
 
     private removeCustomMarkers(className: string): void {

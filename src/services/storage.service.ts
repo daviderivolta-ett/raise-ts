@@ -333,7 +333,7 @@ export class StorageService {
         }
         const pois: PointOfInterest[] = [...this.selectedCustomPath.pois];
         pois.unshift(poi);
-        this.selectedCustomPath = { ...Path.createEmpty(), name: this.selectedCustomPath.name }; // TODO
+        // this.selectedCustomPath = { ...Path.createEmpty(), name: this.selectedCustomPath.name }; // TODO
         this.selectedCustomPath = { ...this.selectedCustomPath, pois };
     }
 
@@ -407,5 +407,37 @@ export class StorageService {
         this.setCustomPaths();
 
         SnackbarService.instance.createSnackbar(SnackbarType.Temporary, 'loaded-path', `Percorso ${name} caricato con successo.`);
+    }
+
+    public addLayerToActiveLayers(layer: Layer): void {
+        const activeLayers: Layer[] = this.activeLayers;
+        activeLayers.unshift(layer);
+        this.activeLayers = [...activeLayers];
+
+        let benchLayers: Layer[] = this.benchLayers;
+
+        const isBenched: boolean = benchLayers.some((l: Layer) => l.layer === layer.layer);
+        if (isBenched) {
+            benchLayers = benchLayers.filter((l: Layer) => l.layer !== layer.layer);
+            this.benchLayers = benchLayers;
+        }
+    }
+
+    public removeLayerFromActiveLayers(layer: Layer): void {
+        let activeLayers: Layer[] = this.activeLayers;
+        activeLayers = activeLayers.filter((l: Layer) => l.layer !== layer.layer);
+        this.activeLayers = [...activeLayers];
+    }
+
+    public addLayerToBench(layer: Layer): void {
+        let benchLayers: Layer[] = this.benchLayers;
+        benchLayers.unshift(layer);
+        this.benchLayers = [...benchLayers];
+    }
+
+    public removeLayerFromBench(layer: Layer): void {
+        let benchLayers: Layer[] = this.benchLayers;
+        benchLayers = benchLayers.filter((l: Layer) => l.layer !== layer.layer);
+        this.benchLayers = benchLayers;
     }
 }

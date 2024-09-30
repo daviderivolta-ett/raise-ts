@@ -17,13 +17,25 @@ export class MapService {
     }
 
     public async createGeoJsonFromLayer(layer: Layer): Promise<any> {
-        const url = `${layer.url}?service=WFS&typeName=${layer.layer}&outputFormat=application/json&request=GetFeature&srsname=EPSG:4326`;
-        const res: Response = await fetch(url);
-        let geoJson: any = await res.json();
-        let geoJsonNewProp: any = this.substituteRelevantProperties(geoJson, layer);
-        let geoJsonAddProp = this.createFeatureAdditionalProperties(geoJsonNewProp, layer);
-        return geoJsonAddProp;
+        try {
+            const url = `${layer.url}?service=WFS&typeName=${layer.layer}&outputFormat=application/json&request=GetFeature&srsname=EPSG:4326`;
+            const res: Response = await fetch(url);
+
+            if (!res.ok) {
+                throw new Error(`Network response was not ok: ${res.statusText}`);
+            }
+
+            let geoJson: any = await res.json();
+            let geoJsonNewProp: any = this.substituteRelevantProperties(geoJson, layer);
+            let geoJsonAddProp = this.createFeatureAdditionalProperties(geoJsonNewProp, layer);
+
+            return geoJsonAddProp;
+        } catch (error) {
+            console.error('Error creating GeoJSON:', error);
+            throw error;
+        }
     }
+
 
     public async createGeoJSONs(layer: Layer): Promise<any[]> {
         let geoJSONs: any[] = [];
