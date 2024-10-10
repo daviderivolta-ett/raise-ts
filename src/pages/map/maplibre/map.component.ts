@@ -42,8 +42,8 @@ style.innerHTML =
     .maplibregl-ctrl-group button {
         font-family: 'Material Symbols Outlined';
         font-size: 1.5rem;
-        width: 40px;
-        height: 40px;
+        width: 40px !important;
+        height: 40px !important;
         border-radius: var(--border-radius-l);
         color: var(--on-surface);
     }
@@ -267,7 +267,7 @@ export class MapComponent extends HTMLElement {
         ) ? true : false;
     }
 
-    public addGeoJsonToMap(geoJSON: any, id: string, color: string): void {
+    public addGeoJsonToMap(geoJSON: any, id: string, color: string): void {      
         if (!this.map.getSource(id)) this.map.addSource(id, { type: 'geojson', data: geoJSON });
         this._createCircleLayer(id, color);
         this._createLineLayer(id, color);

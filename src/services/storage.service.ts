@@ -194,7 +194,7 @@ export class StorageService {
         this.suggestedPaths.forEach((path: Path) => {
             path.pois.forEach((poi: PointOfInterest) => {
                 this.activeLayers.forEach((layer: Layer) => {
-                    if (poi.layerName === layer.layer) paths.push(path);
+                    if (poi.layerName === layer.id) paths.push(path);
                 });
             });
         });
@@ -203,7 +203,7 @@ export class StorageService {
 
     public isPoiInLayers(poi: PointOfInterest): boolean {
         return this.activeLayers.some((layer: Layer) => {
-            if (layer.layer === poi.layerName) return true;
+            if (layer.id === poi.layerName) return true;
             return false;
         });
     }
@@ -416,16 +416,16 @@ export class StorageService {
 
         let benchLayers: Layer[] = this.benchLayers;
 
-        const isBenched: boolean = benchLayers.some((l: Layer) => l.layer === layer.layer);
+        const isBenched: boolean = benchLayers.some((l: Layer) => l.id === layer.id);
         if (isBenched) {
-            benchLayers = benchLayers.filter((l: Layer) => l.layer !== layer.layer);
+            benchLayers = benchLayers.filter((l: Layer) => l.id !== layer.id);
             this.benchLayers = benchLayers;
         }
     }
 
     public removeLayerFromActiveLayers(layer: Layer): void {
         let activeLayers: Layer[] = this.activeLayers;
-        activeLayers = activeLayers.filter((l: Layer) => l.layer !== layer.layer);
+        activeLayers = activeLayers.filter((l: Layer) => l.id !== layer.id);
         this.activeLayers = [...activeLayers];
     }
 
@@ -437,7 +437,7 @@ export class StorageService {
 
     public removeLayerFromBench(layer: Layer): void {
         let benchLayers: Layer[] = this.benchLayers;
-        benchLayers = benchLayers.filter((l: Layer) => l.layer !== layer.layer);
+        benchLayers = benchLayers.filter((l: Layer) => l.id !== layer.id);
         this.benchLayers = benchLayers;
     }
 }

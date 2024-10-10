@@ -17,9 +17,12 @@ export class MapService {
     }
 
     public async createGeoJsonFromLayer(layer: Layer): Promise<any> {
+        console.log(layer);        
         try {
-            const url = `${layer.url}?service=WFS&typeName=${layer.layer}&outputFormat=application/json&request=GetFeature&srsname=EPSG:4326`;
+            const url = `${layer.url}?service=WFS&typeName=${layer.id}&outputFormat=application/json&request=GetFeature&srsname=EPSG:4326`;
             const res: Response = await fetch(url);
+
+            console.log(res);            
 
             if (!res.ok) {
                 throw new Error(`Network response was not ok: ${res.statusText}`);
@@ -36,11 +39,10 @@ export class MapService {
         }
     }
 
-
     public async createGeoJSONs(layer: Layer): Promise<any[]> {
         let geoJSONs: any[] = [];
         try {
-            const url: string = `${layer.url}?service=WFS&typeName=${layer.layer}&outputFormat=application/json&request=GetFeature&srsname=EPSG:4326`;
+            const url: string = `${layer.url}?service=WFS&typeName=${layer.id}&outputFormat=application/json&request=GetFeature&srsname=EPSG:4326`;
             const res: Response = await fetch(url);
             let data: any = await res.json();
 
@@ -231,24 +233,24 @@ export class MapService {
             .filter((f: Feature) => f.geometry && f.geometry.type)
             .map((f: Feature, i: number) => {
                 f.properties.name = layer.name + ' ' + i;
-                f.properties.layerName = layer.layer;
+                f.properties.layerName = layer.id;
 
 
                 switch (f.geometry.type) {
                     case FeatureGeometryType.Point:
-                        f.properties.uuid = layer.layer + f.geometry.coordinates[1] + f.geometry.coordinates[0];
+                        f.properties.uuid = layer.id + f.geometry.coordinates[1] + f.geometry.coordinates[0];
                         break;
 
                     case FeatureGeometryType.MultiPoint:
-                        f.properties.uuid = layer.layer + (f.geometry.coordinates as number[][])[0][1] + (f.geometry.coordinates as number[][])[0][0];
+                        f.properties.uuid = layer.id + (f.geometry.coordinates as number[][])[0][1] + (f.geometry.coordinates as number[][])[0][0];
                         break;
 
                     case FeatureGeometryType.LineString || FeatureGeometryType.Polygon || FeatureGeometryType.MultiPoint:
-                        f.properties.uuid = layer.layer + (f.geometry.coordinates as number[][])[0][1] + (f.geometry.coordinates as number[][])[0][0];
+                        f.properties.uuid = layer.id + (f.geometry.coordinates as number[][])[0][1] + (f.geometry.coordinates as number[][])[0][0];
                         break;
 
                     default:
-                        f.properties.uuid = layer.layer + (f.geometry.coordinates as number[][][])[0][0][1] + (f.geometry.coordinates as number[][][])[0][0][0];
+                        f.properties.uuid = layer.id + (f.geometry.coordinates as number[][][])[0][0][1] + (f.geometry.coordinates as number[][][])[0][0][0];
                         break;
                 }
 

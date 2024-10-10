@@ -53,7 +53,7 @@ export enum PropertyType {
 
 export class Layer {
     name: string;
-    layer: string;
+    id: string;
     url: string;
     style: LayerStyle;
     tags: string[];
@@ -61,14 +61,14 @@ export class Layer {
 
     constructor(
         name: string,
-        layer: string,
+        id: string,
         url: string,
         style: LayerStyle,
         tags: string[],
         relevantProperties: LayerProperty[]
     ) {
         this.name = name;
-        this.layer = layer;
+        this.id = id;
         this.url = url;
         this.style = style;
         this.tags = tags;

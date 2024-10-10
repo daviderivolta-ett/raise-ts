@@ -156,7 +156,7 @@ export class DataService {
         this.data.categories.find((category: LayerCategory) => {
             return category.groups.find((group: LayerGroup | string) => {
                 if (typeof group === 'string') return false;
-                foundLayer = group.layers.find((layer: Layer) => layer.layer.includes(value));
+                foundLayer = group.layers.find((layer: Layer) => layer.id.includes(value));
                 return foundLayer !== undefined;
             });
         });

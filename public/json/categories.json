@@ -18,7 +18,8 @@
                 "./json/architectural-barriers.json",
                 "./json/buildings.json",
                 "./json/roads.json",
-                "./json/borders.json"
+                "./json/borders.json",
+                "./json/san-martino-sensors.json"
             ]
         },
         {

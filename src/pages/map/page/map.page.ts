@@ -138,7 +138,7 @@ export class MapPage extends HTMLElement {
         StorageService.instance.activeLayers.forEach(async (layer: Layer) => {
             try {
                 const geoJSON: any = await MapService.instance.createGeoJsonFromLayer(layer);
-                mapComponent.addGeoJsonToMap(geoJSON, layer.layer, layer.style.color);
+                mapComponent.addGeoJsonToMap(geoJSON, layer.id, layer.style.color);
             } catch (error) {
                 SnackbarService.instance.createSnackbar(SnackbarType.Error, 'error', 'Errore nel caricamento del layer');
             }
@@ -171,15 +171,15 @@ export class MapPage extends HTMLElement {
     }
 
     private async _handleAddLayer(mapComponent: MapComponent, layer: Layer): Promise<void> {
-        if (!mapComponent.isLayerOnMap(layer.layer)) {
+        if (!mapComponent.isLayerOnMap(layer.id)) {
             try {
-                SnackbarService.instance.createSnackbar(SnackbarType.Loader, layer.layer, 'Caricamento...');
+                SnackbarService.instance.createSnackbar(SnackbarType.Loader, layer.id, 'Caricamento...');
                 const geoJSON: any = await MapService.instance.createGeoJsonFromLayer(layer);
-                mapComponent.addGeoJsonToMap(geoJSON, layer.layer, layer.style.color);
+                mapComponent.addGeoJsonToMap(geoJSON, layer.id, layer.style.color);
                 StorageService.instance.addLayerToActiveLayers(layer);
-                SnackbarService.instance.removeSnackbar(layer.layer);
+                SnackbarService.instance.removeSnackbar(layer.id);
             } catch (error) {
-                SnackbarService.instance.removeSnackbar(layer.layer);
+                SnackbarService.instance.removeSnackbar(layer.id);
                 SnackbarService.instance.createSnackbar(SnackbarType.Error, 'error', 'Errore nel caricamento del layer');
             }
         } else {
@@ -188,7 +188,7 @@ export class MapPage extends HTMLElement {
     }
 
     private _handleBenchLayer(mapComponent: MapComponent, layer: Layer): void {
-        mapComponent.removeLayerFromMap(layer.layer);
+        mapComponent.removeLayerFromMap(layer.id);
         StorageService.instance.removeLayerFromActiveLayers(layer);
         StorageService.instance.addLayerToBench(layer);
     }
@@ -196,7 +196,7 @@ export class MapPage extends HTMLElement {
     private _handleBenchAllLayers(mapComponent: MapComponent): void {
         const activeLayers: Layer[] = [...StorageService.instance.activeLayers];
         activeLayers.forEach((layer: Layer) => {
-            mapComponent.removeLayerFromMap(layer.layer);
+            mapComponent.removeLayerFromMap(layer.id);
             StorageService.instance.removeLayerFromActiveLayers(layer);
             StorageService.instance.addLayerToBench(layer);
         });
@@ -204,14 +204,14 @@ export class MapPage extends HTMLElement {
 
     private async _unbenchLayer(mapComponent: MapComponent, layer: Layer): Promise<void> {
         try {
-            SnackbarService.instance.createSnackbar(SnackbarType.Loader, layer.layer, 'Caricamento...');
+            SnackbarService.instance.createSnackbar(SnackbarType.Loader, layer.id, 'Caricamento...');
             const geoJSON: any = await MapService.instance.createGeoJsonFromLayer(layer);
-            mapComponent.addGeoJsonToMap(geoJSON, layer.layer, layer.style.color);
+            mapComponent.addGeoJsonToMap(geoJSON, layer.id, layer.style.color);
             StorageService.instance.removeLayerFromBench(layer);
             StorageService.instance.addLayerToActiveLayers(layer);
-            SnackbarService.instance.removeSnackbar(layer.layer);
+            SnackbarService.instance.removeSnackbar(layer.id);
         } catch (error) {
-            SnackbarService.instance.removeSnackbar(layer.layer);
+            SnackbarService.instance.removeSnackbar(layer.id);
             SnackbarService.instance.createSnackbar(SnackbarType.Error, 'error', 'Errore nel caricamento del layer');
         }
     }
@@ -236,7 +236,7 @@ export class MapPage extends HTMLElement {
     }
 
     private _handleAddOptimalPath(mapComponent: MapComponent, geoJSON: any): void {
-        if (mapComponent.map.getSource('optimal-path')) mapComponent.map.removeLayer('optimal-path');
+        if (mapComponent.map.getSource('optimal-path')) mapComponent.removeLayerFromMap('optimal-path');
         mapComponent.addGeoJsonToMap(geoJSON, 'optimal-path', '#1152F7');
         mapComponent.map.setCenter(MapService.instance.getGeoJsonCenter(geoJSON));
     }
