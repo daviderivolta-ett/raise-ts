@@ -360,9 +360,9 @@ export class MapService {
                 headers: {
                     'content-type': 'application/json'
                 },
-                body: JSON.stringify(poisLatLng)
+                body: JSON.stringify({ list_of_coords: poisLatLng, attribute: 'length' })
             })
-            console.log(res);            
+            console.log(res);
             // const geoJSON: any = await res.json();
             const geoJSON: any = this.createGeoJsonLineStringFromCoordinates(poisLatLng);
             return geoJSON;
