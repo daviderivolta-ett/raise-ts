@@ -31,6 +31,7 @@ export class DataService {
             let data = await this.fetchAppData(this.CATEGORIES_URL);
             data = this.parseData(data);
             this.data = data;
+            console.log(data);            
             return data;
         }
     }
@@ -90,10 +91,10 @@ export class DataService {
         }
     }
 
-    private parseLayer(layer: any): Layer {
+    private parseLayer(layer: any): Layer {     
         return new Layer(
             layer.name,
-            layer.layer,
+            layer.id,
             layer.layer_url_wfs,
             new LayerStyle(layer.style.color, parseFloat(layer.style.opacity)),
             layer.tags,
@@ -115,7 +116,9 @@ export class DataService {
                 }
 
                 return p;
-            })
+            }),
+            layer.hasAction ? layer.hasAction : false,
+            layer.components ? layer.components : []
         );
     }
 

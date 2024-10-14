@@ -347,7 +347,7 @@ export class MapComponent extends HTMLElement {
     }
 
     // Click
-    private async _handleClick(event: MapMouseEvent) {       
+    private async _handleClick(event: MapMouseEvent) {
         this.dispatchEvent(new CustomEvent('empty-searchbar'));
         const features: MapGeoJSONFeature[] = this._getClickedFeatures(event, 'protomaps');
 
@@ -367,7 +367,7 @@ export class MapComponent extends HTMLElement {
             });
         }
 
-        this.removeLayerFromMap('selected-feature');
+        this.removeLayerFromMap('selected-feature');  
 
         if (features.length === 0) {
             const marker: Marker | null = await this.createCustomMarker('./images/pin.svg', 'selected-feature', '#EA4335', '#B31412');
@@ -382,7 +382,7 @@ export class MapComponent extends HTMLElement {
                 this.addGeoJsonToMap(geoJSON, 'selected-feature', '#1152F7');
             }
         }
-
+       
         this.dispatchEvent(new CustomEvent('map-click', { bubbles: true, composed: true, detail: { lngLat: event.lngLat, features: features.length === 0 ? [] : [features[0]] } }));
     }
 

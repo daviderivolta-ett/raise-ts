@@ -1,4 +1,5 @@
 import { MyColor } from '../../../models/color.model';
+import { LayerComponent } from '../../../models/layer.model';
 import { PoiProperty, PoiType, PointOfInterest } from '../../../models/poi.model';
 import { EventObservable } from '../../../observables/event.observable';
 import { PoiService } from '../../../services/poi.service';
@@ -15,7 +16,7 @@ export class InfoPanelComponent extends HTMLElement {
     constructor() {
         super();
 
-        this.shadowRoot = this.attachShadow({ mode: 'closed' });
+        this.shadowRoot = this.attachShadow({ mode: 'open' });
 
         let sheet: CSSStyleSheet = new CSSStyleSheet();
         sheet.replaceSync(style);
@@ -29,7 +30,7 @@ export class InfoPanelComponent extends HTMLElement {
     public set poi(poi: PointOfInterest | null) {
         this._poi = poi;
         this.isInfoOpen = false;
-        this.update();
+        // this.update();
     }
 
     public get isInfoOpen(): boolean {
@@ -48,7 +49,7 @@ export class InfoPanelComponent extends HTMLElement {
     }
 
     public disconnectedCallback(): void {
-        EventObservable.instance.unsubscribe('selected-poi', this.handleSelectedPoi.bind(this));
+        EventObservable.instance.unsubscribeAll('selected-poi');
     }
 
     private handleSelectedPoi(poi: PointOfInterest): void {
@@ -79,13 +80,13 @@ export class InfoPanelComponent extends HTMLElement {
                 </div>
                 <p class="category"></p>
             </div>
-            <div class="tools">
-                
+            <div class="tools"></div>
+            <div class="info">
+                <div class="info-content"></div>
+                <div class="components"><slot name="components"></slot></div>
             </div>
             `
             ;
-
-        // <button is="app-directions-btn" class="directions-btn">Indicazioni</button>
 
         const legend: HTMLSpanElement = this.shadowRoot.querySelector('.legend') as HTMLSpanElement;
         const category: HTMLParagraphElement = this.shadowRoot.querySelector('.category') as HTMLParagraphElement;
@@ -99,9 +100,6 @@ export class InfoPanelComponent extends HTMLElement {
             prop.displayName === 'Nome' ? category.innerHTML = prop.value : category.innerHTML = this.poi!.name;
         });
 
-        // const directionsBtn: HTMLButtonElement | null = this.renderDirectionsBtn();
-        // if (directionsBtn) tools.appendChild(directionsBtn);
-
         const directionsBtn: DirectionsBtnComponent | null = this.shadowRoot.querySelector('.directions-btn');
         if (directionsBtn) directionsBtn.pois = [this.poi];
 
@@ -110,16 +108,20 @@ export class InfoPanelComponent extends HTMLElement {
 
         const info: HTMLDivElement | null = this.renderInfo();
         if (info) this.shadowRoot.appendChild(info);
-    }
 
-    // private renderDirectionsBtn(): HTMLButtonElement | null {
-    //     if (!this.poi) return null;
-    //     const button: HTMLButtonElement = document.createElement('button');
-    //     button.classList.add('directions-btn');
-    //     button.innerHTML = 'Indicazioni';
-    //     button.addEventListener('click', () => MapService.instance.openGoogleMaps(this.poi!.position));
-    //     return button;
-    // }
+        if (this._hasLayerAction(this.poi)) {
+            this.poi.layer.components.forEach((c: LayerComponent) => {
+                const comp: any = document.createElement(c.tag);
+                for (const key in c.props) comp[key] = c.props[key];
+                this.poi?.props.forEach((prop: PoiProperty) => {
+                    comp[prop.propertyName] = prop.value;
+                });
+                comp.setAttribute('slot', 'components');
+                this.appendChild(comp);
+            });
+        }
+
+    }
 
     private renderAddToRouteBtn(): HTMLButtonElement | null {
         if (!this.poi) return null;
@@ -128,9 +130,6 @@ export class InfoPanelComponent extends HTMLElement {
         button.classList.add('add-to-path-btn');
         button.innerHTML = 'Aggiungi';
         button.addEventListener('click', () => {
-            // const selectedCustomPath: Path = StorageService.instance.selectedCustomPath;
-            // if (this.poi) selectedCustomPath.pois.unshift(this.poi);
-            // StorageService.instance.selectedCustomPath = selectedCustomPath;                     
             if (this.poi) StorageService.instance.addPoiToSelectedPath(this.poi);
         }, { once: true });
         return button;
@@ -141,15 +140,11 @@ export class InfoPanelComponent extends HTMLElement {
         const props: PoiProperty[] = this.poi.props.filter((prop: PoiProperty) => prop.displayName !== 'Nome');
         if (props.length === 0) return null;
 
-        let info: HTMLDivElement = document.createElement('div');
-        info.classList.add('info');
+        let info: HTMLDivElement | null = this.shadowRoot.querySelector('.info');
+        if (!info) return null;
 
-        // const moreInfoBtn: HTMLButtonElement = this.renderMoreInfoBtn();
-        // info.appendChild(moreInfoBtn);
-
-        const infoContent: HTMLDivElement = document.createElement('div');
-        infoContent.classList.add('info-content');
-        info.appendChild(infoContent);
+        let infoContent: HTMLDivElement | null = this.shadowRoot.querySelector('.info-content');
+        if (!infoContent) return null;
 
         props.forEach((prop: PoiProperty) => {
             const topic: HTMLDivElement = this.renderTopic(prop);
@@ -158,14 +153,6 @@ export class InfoPanelComponent extends HTMLElement {
 
         return info;
     }
-
-    // private renderMoreInfoBtn(): HTMLButtonElement {
-    //     const button: HTMLButtonElement = document.createElement('button');
-    //     button.innerHTML = 'Leggi info';
-    //     button.classList.add('toggle-info');
-    //     button.addEventListener('click', () => this.isInfoOpen = !this.isInfoOpen);
-    //     return button;
-    // }
 
     private toggleInfo(): void {
         const infoContent: HTMLDivElement | null = this.shadowRoot.querySelector('.info-content');
@@ -190,6 +177,10 @@ export class InfoPanelComponent extends HTMLElement {
         topic.appendChild(label);
         topic.appendChild(info);
         return topic;
+    }
+
+    private _hasLayerAction(poi: PointOfInterest): boolean {
+        return poi.layer.hasAction ? true : false;
     }
 }
 

@@ -3,8 +3,8 @@
   "layers": [
     {
       "name": "Acquedotto storico",
-      "layer": "CULTURA:V_ACQ_STORICO",
-      "layer_url_wfs": "./GeoJson/aqueduct-path.geojson",
+      "id": "CULTURA:V_ACQ_STORICO",
+      "layer_url_wfs": "./geojson/aqueduct-path.geojson",
       "style": {
         "color": "#33e000",
         "opacity": 1
@@ -35,8 +35,8 @@
     },
     {
       "name": "Manufatti storici acquedotto",
-      "layer": "CULTURA:V_ACQ_MANU_STORICI",
-      "layer_url_wfs": "./GeoJson/aqueduct-manufatti.geojson",
+      "id": "CULTURA:V_ACQ_MANU_STORICI",
+      "layer_url_wfs": "./geojson/aqueduct-manufatti.geojson",
       "style": {
         "color": "#5e0ca8",
         "opacity": 0.5
@@ -77,8 +77,8 @@
     },
     {
       "name": "Area di sosta acquedotto",
-      "layer": "CULTURA:V_ACQ_AREA_SOSTA",
-      "layer_url_wfs": "./GeoJson/aqueduct-area-sosta.geojson",
+      "id": "CULTURA:V_ACQ_AREA_SOSTA",
+      "layer_url_wfs": "./geojson/aqueduct-area-sosta.geojson",
       "style": {
         "color": "#64896d",
         "opacity": 0.5
@@ -100,8 +100,8 @@
     },
     {
       "name": "Punti di accesso acquedotto",
-      "layer": "V_ACQ_PTI_ACCESSO",
-      "layer_url_wfs": "./GeoJson/aqueduct-punti-accesso.geojson",
+      "id": "V_ACQ_PTI_ACCESSO",
+      "layer_url_wfs": "./geojson/aqueduct-punti-accesso.geojson",
       "style": {
         "color": "#714fc7",
         "opacity": 0.5
@@ -133,8 +133,8 @@
     },
     {
       "name": "Punti di interesse storico acquedotto",
-      "layer": "CULTURA:V_ACQ_PTI_INT_STORICO",
-      "layer_url_wfs": "./GeoJson/aqueduct-punti-interesse.geojson",
+      "id": "CULTURA:V_ACQ_PTI_INT_STORICO",
+      "layer_url_wfs": "./geojson/aqueduct-punti-interesse.geojson",
       "style": {
         "color": "#5d18f3",
         "opacity": 0.5
@@ -159,16 +159,12 @@
           "display_name": "Descrizione",
           "type": "string"
         }
-      ],
-      "components": [
-        "app-opacity-slider",
-        "app-navigation-btn"
       ]
     },
     {
       "name": "Pannelli informativi acquedotto",
-      "layer": "SITGEO:V_LOCALIZZAZIONE_PANNELLI_INFORMATIVI",
-      "layer_url_wfs": "./GeoJson/aqueduct-pannelli-informativi.geojson",
+      "id": "SITGEO:V_LOCALIZZAZIONE_PANNELLI_INFORMATIVI",
+      "layer_url_wfs": "./geojson/aqueduct-pannelli-informativi.geojson",
       "style": {
         "color": "#d356c4",
         "opacity": 0.5
@@ -183,11 +179,7 @@
         "pannello",
         "informazione"
       ],
-      "relevant_properties": [],
-      "components": [
-        "app-opacity-slider",
-        "app-navigation-btn"
-      ]
+      "relevant_properties": []
     }
   ]
 }

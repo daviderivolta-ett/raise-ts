@@ -1,7 +1,7 @@
 import { Layer, LayerProperty, LayerStyle } from '../models/layer.model';
 import { Feature, FeatureGeometryType } from '../models/feature.model';
 import { PointOfInterest } from '../models/poi.model';
-import { CircleLayerSpecification, FillLayerSpecification, LineLayerSpecification, LngLat } from 'maplibre-gl';
+import { CircleLayerSpecification, FillLayerSpecification, LineLayerSpecification, LngLat, MapGeoJSONFeature } from 'maplibre-gl';
 
 export class MapService {
     private static _instance: MapService;
@@ -17,12 +17,9 @@ export class MapService {
     }
 
     public async createGeoJsonFromLayer(layer: Layer): Promise<any> {
-        console.log(layer);        
         try {
             const url = `${layer.url}?service=WFS&typeName=${layer.id}&outputFormat=application/json&request=GetFeature&srsname=EPSG:4326`;
             const res: Response = await fetch(url);
-
-            console.log(res);            
 
             if (!res.ok) {
                 throw new Error(`Network response was not ok: ${res.statusText}`);
@@ -181,8 +178,27 @@ export class MapService {
         let totalLat: number = 0;
         let count: number = 0;
 
-        geoJson.features.forEach((feature: any) => {
-            const coordinates: any = feature.geometry.coordinates;
+        if (geoJson.type === 'FeatureCollection' && Array.isArray(geoJson.features)) {
+            geoJson.features.forEach((feature: any) => {
+                const coordinates: any = feature.geometry.coordinates;
+                if (Array.isArray(coordinates[0][0])) {
+                    coordinates.forEach((coordSet: any) => {
+                        coordSet.forEach((coord: any) => {
+                            totalLng += coord[0];
+                            totalLat += coord[1];
+                            count++;
+                        });
+                    });
+                } else {
+                    coordinates.forEach((coord: any) => {
+                        totalLng += coord[0];
+                        totalLat += coord[1];
+                        count++;
+                    });
+                }
+            });
+        } else if (geoJson.type === 'Feature') {
+            const coordinates: any = geoJson.geometry.coordinates;
             if (Array.isArray(coordinates[0][0])) {
                 coordinates.forEach((coordSet: any) => {
                     coordSet.forEach((coord: any) => {
@@ -198,7 +214,7 @@ export class MapService {
                     count++;
                 });
             }
-        });
+        }
 
         const centerLng = totalLng / count;
         const centerLat = totalLat / count;
@@ -228,6 +244,17 @@ export class MapService {
         return geoJson;
     }
 
+    public createGeoJsonLineStringFromCoordinates(coords: [number, number][]): any {
+        return {
+            type: "Feature",
+            geometry: {
+                type: "LineString",
+                coordinates: coords.map((couple: [number, number]) => [couple[1], couple[0]])
+            },
+            properties: {}
+        }
+    }
+
     private createFeatureAdditionalProperties(geoJson: any, layer: Layer): any {
         geoJson.features = geoJson.features
             .filter((f: Feature) => f.geometry && f.geometry.type)
@@ -254,7 +281,7 @@ export class MapService {
                         break;
                 }
 
-                f.properties.uuid = f.id; // TESTING
+                // f.properties.uuid = f.id; // TESTING
 
                 return f;
             });
@@ -269,6 +296,7 @@ export class MapService {
                 const relevantProperty = layer.relevantProperties.find((prop: LayerProperty) => prop.propertyName === key);
                 if (relevantProperty) {
                     const newPropertyValue = {
+                        propertyName: relevantProperty.propertyName,
                         displayName: relevantProperty.displayName,
                         type: relevantProperty.type,
                         value: feature.properties[key]
@@ -282,10 +310,27 @@ export class MapService {
         return geoJsonObj;
     }
 
-    // public openGoogleMaps(position: LngLat): void {
-    //     const url: string = `https://www.google.it/maps/dir/?api=1&destination=${position.lat},${position.lng}`;
-    //     window.open(url, '_blank');
-    // }
+    public getFeatureProperties(feature: MapGeoJSONFeature): Record<string, any> {
+        const properties: Record<string, any> = {};
+
+        for (const key in feature.properties) {
+            if (Object.prototype.hasOwnProperty.call(feature.properties, key)) {
+                const value: any = feature.properties[key];
+
+                if (typeof value === 'string') {
+                    try {
+                        properties[key] = JSON.parse(value);
+                    } catch (e) {
+                        properties[key] = value;
+                    }
+                } else {
+                    properties[key] = value;
+                }
+            }
+        }
+
+        return properties;
+    }
 
     public openGoogleMaps(pois: PointOfInterest[]): void {
         const url: string = `https://www.google.it/maps/dir/?api=1&origin=My+Location${this.generateGoogleMapsUrl(pois)}`;
@@ -310,7 +355,8 @@ export class MapService {
         const poisLatLng: [number, number][] = pois.map((poi: PointOfInterest) => [poi.position.lat, poi.position.lng]);
         try {
             const res: Response = await fetch('./GeoJson/optimal-path.geojson');
-            const geoJSON: any = await res.json();
+            // const geoJSON: any = await res.json();
+            const geoJSON: any = this.createGeoJsonLineStringFromCoordinates(poisLatLng);
             return geoJSON;
         } catch (error) {
             throw new Error('Impossibile recuperare il percorso ottimo');

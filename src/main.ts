@@ -40,6 +40,7 @@ import './pages/map/selected-suggested-path-card/selected-suggested-path-card.co
 import './pages/map/directions-btn/directions-btn.component';
 import './pages/map/wheel-btn/wheel-btn.component';
 import './pages/map/maplibre/map.component';
+import './pages/map/layer-components/san-martino-charts.component';
 
 // Classes
 import { Router } from './components/router.component';

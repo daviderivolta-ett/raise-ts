@@ -45,7 +45,7 @@ export class TabsSidenavComponent extends HTMLElement {
 
     constructor() {
         super();
-        this.shadowRoot = this.attachShadow({ mode: 'closed' });
+        this.shadowRoot = this.attachShadow({ mode: 'open' });
 
         let sheet: CSSStyleSheet = new CSSStyleSheet();
         sheet.replaceSync(style);

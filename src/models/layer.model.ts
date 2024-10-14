@@ -51,6 +51,16 @@ export enum PropertyType {
     Number = 'number'
 }
 
+export class LayerComponent {
+    tag: string;
+    props: Record<string, any>;
+
+    constructor(tag: string, props: {}) {
+        this.tag = tag;
+        this.props = props;
+    }
+}
+
 export class Layer {
     name: string;
     id: string;
@@ -58,6 +68,8 @@ export class Layer {
     style: LayerStyle;
     tags: string[];
     relevantProperties: LayerProperty[];
+    hasAction: boolean;
+    components: LayerComponent[];
 
     constructor(
         name: string,
@@ -65,7 +77,9 @@ export class Layer {
         url: string,
         style: LayerStyle,
         tags: string[],
-        relevantProperties: LayerProperty[]
+        relevantProperties: LayerProperty[],
+        hasAction: boolean,
+        components: LayerComponent[]
     ) {
         this.name = name;
         this.id = id;
@@ -73,6 +87,8 @@ export class Layer {
         this.style = style;
         this.tags = tags;
         this.relevantProperties = relevantProperties;
+        this.hasAction = hasAction;
+        this.components = components;
     }
 
     static createEmpty(): Layer {
@@ -82,7 +98,9 @@ export class Layer {
             '',
             LayerStyle.createEmpty(),
             [],
-            [LayerProperty.createEmpty()]
+            [LayerProperty.createEmpty()],
+            false,
+            []
         )
     }
 

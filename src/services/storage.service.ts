@@ -275,7 +275,7 @@ export class StorageService {
     private parseLayer(layer: any): Layer {
         return new Layer(
             layer.name,
-            layer.layer,
+            layer.id,
             layer.url = layer.url,
             new LayerStyle(layer.style.color, layer.style.opacity),
             layer.tags,
@@ -297,7 +297,9 @@ export class StorageService {
                 }
 
                 return p;
-            })
+            }),
+            layer.hasAction ? layer.hasAction : false,
+            layer.components ? layer.components : []
         );
     }
 

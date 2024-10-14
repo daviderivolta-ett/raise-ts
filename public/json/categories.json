@@ -19,7 +19,7 @@
                 "./json/buildings.json",
                 "./json/roads.json",
                 "./json/borders.json",
-                "./json/san-martino-sensors.json"
+                "./json/sensors.json"
             ]
         },
         {

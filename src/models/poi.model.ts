@@ -54,18 +54,20 @@ export class PointOfInterest {
 }
 
 export class PoiProperty {
+    propertyName: string;
     displayName: string;
     type: PropertyType;
     value: string;
 
-    constructor(displayName: string, type: PropertyType, value: string) {
+    constructor(propertyName: string, displayName: string, type: PropertyType, value: string) {
+        this.propertyName = propertyName;
         this.displayName = displayName;
         this.type = type;
         this.value = value;
     }
 
     static createEmpty(): PoiProperty {
-        return new PoiProperty('', PropertyType.String, '');
+        return new PoiProperty('', '', PropertyType.String, '');
     }
 }
 

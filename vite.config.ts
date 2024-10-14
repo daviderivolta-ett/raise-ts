@@ -7,6 +7,6 @@ export default defineConfig({
         outDir: 'docs'
     },
     optimizeDeps: {
-        exclude: ['cesium.js', 'vue-demi', '@vite/client', '@vite/env']
+        exclude: ['cesium.js', 'vue-demi', '@vite/client', '@vite/env', 'd3']
     }
 });

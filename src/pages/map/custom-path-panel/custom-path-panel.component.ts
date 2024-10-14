@@ -125,9 +125,10 @@ export class CustomPathPanelComponent extends HTMLElement {
 
     private async createPath(pois: PointOfInterest[]): Promise<void> {
         try {
-            const geoJSON: any = await MapService.instance.getOptimalPath(pois);
+            const geoJSON: any = await MapService.instance.getOptimalPath(pois);            
             EventObservable.instance.publish('add-optimal-path', geoJSON);
         } catch (error: unknown) {
+            console.log(error);            
             MapService.instance.openGoogleMaps(pois);
         }
     }

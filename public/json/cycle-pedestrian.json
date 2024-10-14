@@ -3,8 +3,8 @@
   "layers": [
     {
       "name": "Parcheggi Bike Sharing",
-      "layer": "SITGEO:V_MOB_PARKS_BIKESHARING",
-      "layer_url_wfs": "./GeoJson/bike-sharing-parks.geojson",
+      "id": "SITGEO:V_MOB_PARKS_BIKESHARING",
+      "layer_url_wfs": "./geojson/bike-sharing-parks.geojson",
       "style": {
         "color": "#51fa67",
         "opacity": 0.5
@@ -24,16 +24,12 @@
           "display_name": "Nome",
           "type": "string"
         }
-      ],
-      "components": [
-        "app-opacity-slider",
-        "app-navigation-btn"
       ]
     },
     {
       "name": "Piste ciclabili",
-      "layer": "SITGEO:V_MOB_PISTE_CICLABILI",
-      "layer_url_wfs": "./GeoJson/piste-ciclabili.geojson",
+      "id": "SITGEO:V_MOB_PISTE_CICLABILI",
+      "layer_url_wfs": "./geojson/piste-ciclabili.geojson",
       "style": {
         "color": "#51b6b0",
         "opacity": 1
@@ -64,15 +60,12 @@
           "display_name": "Condizione",
           "type": "string"
         }
-      ],
-      "components": [
-        "app-opacity-slider"
       ]
     },
     {
       "name": "Aree pedonali",
-      "layer": "SITGEO:V_MOB_AREE_PEDONALI",
-      "layer_url_wfs": "./GeoJson/aree-pedonali.geojson",
+      "id": "SITGEO:V_MOB_AREE_PEDONALI",
+      "layer_url_wfs": "./geojson/aree-pedonali.geojson",
       "style": {
         "color": "#b3e27d",
         "opacity": 0.5
@@ -88,9 +81,6 @@
           "display_name": "Indirizzo",
           "type": "string"
         }
-      ],
-      "components": [
-        "app-opacity-slider"
       ]
     }
   ]

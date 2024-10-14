@@ -3,8 +3,8 @@
   "layers": [
     {
       "name": "Fermate AMT",
-      "layer": "SITGEO:V_MOB_FERMATE_AMT",
-      "layer_url_wfs": "./GeoJson/amt-bus-stop.geojson",
+      "id": "SITGEO:V_MOB_FERMATE_AMT",
+      "layer_url_wfs": "./geojson/amt-bus-stop.geojson",
       "style": {
         "color": "#85499a",
         "opacity": 0.5
@@ -36,15 +36,12 @@
           "display_name": "Codice",
           "type": "string"
         }
-      ],
-      "components": [
-        "app-opacity-slider"
       ]
     },
     {
       "name": "Stazioni metropolitana",
-      "layer": "SITGEO:V_MOB_METROPOLITANA_STAZIONI",
-      "layer_url_wfs": "./GeoJson/metro-stations.geojson",
+      "id": "SITGEO:V_MOB_METROPOLITANA_STAZIONI",
+      "layer_url_wfs": "./geojson/metro-stations.geojson",
       "style": {
         "color": "#58a293",
         "opacity": 0.5
@@ -66,16 +63,12 @@
           "display_name": "Stato",
           "type": "string"
         }
-      ],
-      "components": [
-        "app-opacity-slider",
-        "app-navigation-btn"
       ]
     },
     {
       "name": "Tracciato metropolitana",
-      "layer": "SITGEO:V_MOB_METROPOLITANA",
-      "layer_url_wfs": "./GeoJson/metro-path.geojson",
+      "id": "SITGEO:V_MOB_METROPOLITANA",
+      "layer_url_wfs": "./geojson/metro-path.geojson",
       "style": {
         "color": "#1b2eb7",
         "opacity": 1
@@ -86,14 +79,11 @@
         "amt",
         "metropolitana"
       ],
-      "relevant_properties": [],
-      "components": [
-        "app-opacity-slider"
-      ]
+      "relevant_properties": []
     },
     {
       "name": "Funicolari",
-      "layer": "L8020",
+      "id": "L8020",
       "layer_url_wfs": "https://geoservizi.regione.liguria.it/geoserver/M2201/wfs",
       "style": {
         "color": "#493e68",
@@ -119,9 +109,6 @@
           "display_name": "Stato",
           "type": "string"
         }
-      ],
-      "components": [
-        "app-opacity-slider"
       ]
     }
   ]

@@ -3,7 +3,7 @@
   "layers": [
     {
       "name": "Alberi monumentali",
-      "layer": "L9671",
+      "id": "L9671",
       "layer_url_wfs": "https://geoservizi.regione.liguria.it/geoserver/M2502/wfs",
       "style": {
         "color": "#57af21",
@@ -86,14 +86,11 @@
           "display_name": "Circonferenza fusto (cm)",
           "type": "number"
         }
-      ],
-      "components": [
-        "app-opacity-slider"
       ]
     },
     {
       "name": "Parchi e giardini",
-      "layer": "L8776",
+      "id": "L8776",
       "layer_url_wfs": "https://geoservizi.regione.liguria.it/geoserver/M2342/wfs",
       "style": {
         "color": "#e302a6",
@@ -145,15 +142,11 @@
           "display_name": "Provincia",
           "type": "string"
         }
-      ],
-      "components": [
-        "app-opacity-slider",
-        "app-navigation-btn"
       ]
     },
     {
       "name": "Foreste regionali",
-      "layer": "L7937",
+      "id": "L7937",
       "layer_url_wfs": "https://geoservizi.regione.liguria.it/geoserver/M2188/wfs",
       "style": {
         "color": "#eecc5f",
@@ -181,9 +174,6 @@
           "display_name": "Contatto gestore",
           "type": "string"
         }
-      ],
-      "components": [
-        "app-opacity-slider"
       ]
     }
   ]

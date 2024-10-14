@@ -1,6 +1,6 @@
-import { LayerSpecification, LngLat, Marker } from 'maplibre-gl';
+import { LayerSpecification, LngLat, MapGeoJSONFeature, Marker } from 'maplibre-gl';
 import { SplashComponent } from '../../../components/splash/splash.component';
-import { Layer, PropertyType } from '../../../models/layer.model';
+import { Layer, LayerComponent, PropertyType } from '../../../models/layer.model';
 import { Path } from '../../../models/path.model';
 import { PointOfInterest, PoiProperty, PoiType } from '../../../models/poi.model';
 import { SidenavStatus } from '../../../models/sidenav.model';
@@ -115,7 +115,7 @@ export class MapPage extends HTMLElement {
     }
 
     private _setupMap(): void {
-        const mapComponent: MapComponent = this.shadowRoot.querySelector('app-map') as MapComponent;      
+        const mapComponent: MapComponent = this.shadowRoot.querySelector('app-map') as MapComponent;
         mapComponent.addEventListener('position-updated', (event: Event) => this._updatePosition(event));
         mapComponent.addEventListener('map-loaded', () => this._handleMapLoad(mapComponent));
         mapComponent.addEventListener('map-click', (event: Event) => this._handleMapClick(event));
@@ -152,6 +152,25 @@ export class MapPage extends HTMLElement {
 
         const e = event as CustomEvent;
 
+        //////
+        // const properties: Record<string, any> = MapService.instance.getFeatureProperties(e.detail.features[0]);
+        // console.log(properties);
+        // const layer: Layer | undefined = DataService.instance.filterLayersByLayerName(properties.layerName);
+        // console.log(layer);
+        // console.log(this.shadowRoot.querySelector('app-tabs-sidenav'));
+
+        // const poi = PoiService.instance.createPoiFromFeature(e.detail.features[0]);
+        // console.log(poi);        
+
+        // const infoPanel: HTMLElement | null = this._getInfoPanelSlot();
+        // if (!infoPanel) return;
+        // if (layer) layer.components.forEach((c: LayerComponent) => {
+        //     const comp: any = document.createElement(c.tag);
+        //     for (const key in c.props) comp[key] = c.props[key];
+        // });
+        //////
+
+
         BenchToggleObservable.instance.isOpen = false;
         if (e.detail.features.length > 0) {
             TabsToggleObservable.instance.status = SidenavStatus.Open;
@@ -163,10 +182,10 @@ export class MapPage extends HTMLElement {
             PoiService.instance.selectedPoi = poi;
             try {
                 const address: string = await MapService.instance.getAddressFromCoordinates(e.detail.lngLat, signal);
-                poi.props.push(new PoiProperty('Nome', PropertyType.String, address));
+                poi.props.push(new PoiProperty('name', 'Nome', PropertyType.String, address));
             } catch (error: unknown) {
                 error instanceof Error && error.name === 'AbortError' ? console.log('Richiesta annullata') : console.error(error)
-            }            
+            }
         }
     }
 
@@ -262,6 +281,15 @@ export class MapPage extends HTMLElement {
     private _updatePosition(event: Event): void {
         const e: CustomEvent = event as CustomEvent;
         PositionService.instance.position = e.detail.position;
+    }
+
+    private _getInfoPanelSlot(): HTMLElement | null {
+        const sidenav: HTMLElement | null = this.shadowRoot.querySelector('app-tabs-sidenav');
+        if (!sidenav || !sidenav.shadowRoot) return null;
+        const tabs: HTMLElement | null = sidenav.shadowRoot.querySelector('app-tabs');
+        if (!tabs || !tabs.shadowRoot) return null;
+        const panel: HTMLElement | null = tabs.shadowRoot.querySelector('app-info-panel');
+        return panel;
     }
 }
 

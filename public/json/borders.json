@@ -3,7 +3,7 @@
     "layers": [
         {
             "name": "Confini municipi",
-            "layer": "V_MUNICIPI",
+            "id": "V_MUNICIPI",
             "layer_url_wfs": "https://mappe.comune.genova.it/geoserver/wfs",
             "style": {
                 "color": "#5B0B23",
@@ -25,14 +25,11 @@
                     "display_name": "Nome",
                     "type": "number"
                 }
-            ],
-            "components": [
-                "app-opacity-slider"
             ]
         },
         {
             "name": "Confini circoscrizioni",
-            "layer": "V_CIRCOS",
+            "id": "V_CIRCOS",
             "layer_url_wfs": "https://mappe.comune.genova.it/geoserver/wfs",
             "style": {
                 "color": "#700F7C",
@@ -54,9 +51,6 @@
                     "display_name": "Nome",
                     "type": "number"
                 }
-            ],
-            "components": [
-                "app-opacity-slider"
             ]
         }
     ]

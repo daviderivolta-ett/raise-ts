@@ -3,8 +3,8 @@
     "layers": [
         {
             "name": "Sensori San Martino",
-            "layer": "SENSORS_SAN_MARTINO",
-            "layer_url_wfs": "./GeoJson/mock-sensors-locations.geojson",
+            "id": "SENSORS_SAN_MARTINO",
+            "layer_url_wfs": "./geojson/mock-sensors-locations.geojson",
             "style": {
                 "color": "#1AA7EC",
                 "opacity": 0.5
@@ -29,7 +29,15 @@
                     "type": "string"
                 }
             ],
-            "components": []
+            "hasAction": true,
+            "components": [
+                {
+                    "tag": "app-san-martino-charts",
+                    "props": {
+                        "url": "https://cnr-udp.aitek.it/api/sensors/byId/"
+                    } 
+                }
+            ]
         }
     ]
 }

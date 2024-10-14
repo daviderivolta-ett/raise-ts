@@ -3,7 +3,7 @@
     "layers": [
         {
             "name": "Pietre d'inciampo",
-            "layer": "SITGEO:V_LUOGHI_TURISTICI&CQL_FILTER=OGGETTO='PIETRE_INCIAMPO'",
+            "id": "SITGEO:V_LUOGHI_TURISTICI&CQL_FILTER=OGGETTO='PIETRE_INCIAMPO'",
             "layer_url_wfs": "https://mappe.comune.genova.it/geoserver/wfs",
             "style": {
                 "color": "#ebdb34",
@@ -29,14 +29,11 @@
                     "display_name": "Storia",
                     "type": "string"
                 }
-            ],
-            "components": [
-                "app-opacity-slider"
             ]
         },
         {
             "name": "Strutture ricettive turistiche",
-            "layer": "SITGEO:V_RIC_TURISTICHE",
+            "id": "SITGEO:V_RIC_TURISTICHE",
             "layer_url_wfs": "https://mappe.comune.genova.it/geoserver/wfs",
             "style": {
                 "color": "#bf5132",
@@ -77,14 +74,11 @@
                     "display_name": "Letti",
                     "type": "number"
                 }
-            ],
-            "components": [
-                "app-opacity-slider"
             ]
         },
         {
             "name": "MIAGE Cinta muraria",
-            "layer": "V_CINTA_MURARIA",
+            "id": "V_CINTA_MURARIA",
             "layer_url_wfs": "https://mappe.comune.genova.it/geoserver/wfs",
             "style": {
                 "color": "#00FFFF",
@@ -106,14 +100,11 @@
                     "display_name": "Epoca",
                     "type": "string"
                 }
-            ],
-            "components": [
-                "app-opacity-slider"
             ]
         },
         {
             "name": "Botteghe Storiche",
-            "layer": "V_BOTTEGHE_STORICHE",
+            "id": "V_BOTTEGHE_STORICHE",
             "layer_url_wfs": "https://mappe.comune.genova.it/geoserver/wfs",
             "style": {
                 "color": "#DC2124",
@@ -155,14 +146,11 @@
                     "display_name": "Telefono",
                     "type": "string"
                 }
-            ],
-            "components": [
-                "app-opacity-slider"
             ]
         },
         {
             "name": "Palazzi UNESCO di Genova",
-            "layer": "V_UNESCO_GEOPORT",
+            "id": "V_UNESCO_GEOPORT",
             "layer_url_wfs": "https://mappe.comune.genova.it/geoserver/wfs",
             "style": {
                 "color": "#0077D4",
@@ -234,14 +222,11 @@
                     "display_name": "Approfondimento",
                     "type": "string"
                 }
-            ],
-            "components": [
-                "app-opacity-slider"
             ]
         },
         {
             "name": "Luoghi di culto",
-            "layer": "V_CULTO_GEO",
+            "id": "V_CULTO_GEO",
             "layer_url_wfs": "https://mappe.comune.genova.it/geoserver/wfs",
             "style": {
                 "color": "#90AEDC",
@@ -268,9 +253,6 @@
                     "display_name": "Nome",
                     "type": "string"
                 }
-            ],
-            "components": [
-                "app-opacity-slider"
             ]
         }
     ]

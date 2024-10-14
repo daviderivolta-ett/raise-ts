@@ -3,7 +3,7 @@
     "layers": [
         {
             "name": "Edifici del territorio comunale",
-            "layer": "MEDIATORE:V_IMM_ANTRO_BASE",
+            "id": "MEDIATORE:V_IMM_ANTRO_BASE",
             "layer_url_wfs": "https://mappe.comune.genova.it/geoserver/wfs",
             "style": {
                 "color": "#4840b5",
@@ -25,14 +25,11 @@
                     "display_name": "Tipo",
                     "type": "string"
                 }
-            ],
-            "components": [
-                "app-opacity-slider"
             ]
         },
         {
             "name": "Edifici centro storico",
-            "layer": "SITGEO:V_TIPO_CONNOTATIVO_CS",
+            "id": "SITGEO:V_TIPO_CONNOTATIVO_CS",
             "layer_url_wfs": "https://mappe.comune.genova.it/geoserver/wfs",
             "style": {
                 "color": "#e1c550",
@@ -48,14 +45,11 @@
                     "display_name": "Tipologia",
                     "type": "number"
                 }
-            ],
-            "components": [
-                "app-opacity-slider"
             ]
         },
         {
             "name": "Corpi edilizi del centro storico di Genova",
-            "layer": "V_CORPI_MAPP_CIVIS",
+            "id": "V_CORPI_MAPP_CIVIS",
             "layer_url_wfs": "https://mappe.comune.genova.it/geoserver/wfs",
             "style": {
                 "color": "#e1c550",
@@ -302,9 +296,6 @@
                     "display_name": "Origine dati",
                     "type": "string"
                 }
-            ],
-            "components": [
-                "app-opacity-slider"
             ]
         }
     ]

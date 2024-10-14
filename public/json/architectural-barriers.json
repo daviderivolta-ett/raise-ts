@@ -3,7 +3,7 @@
     "layers": [
         {
             "name": "Barriere architettoniche",
-            "layer": "SITGEO:V_PEBA_OGGETTI_FUNZ",
+            "id": "SITGEO:V_PEBA_OGGETTI_FUNZ",
             "layer_url_wfs": "https://mappe.comune.genova.it/geoserver/wfs",
             "style": {
                 "color": "#55340a",
@@ -56,14 +56,11 @@
                     "display_name": "Grado di accessibilità sensoriale",
                     "type": "string"
                 }
-            ],
-            "components": [
-                "app-opacity-slider"
             ]
         },
         {
             "name": "Percorsi",
-            "layer": "SITGEO:V_PEBA_PERCORSI_CS",
+            "id": "SITGEO:V_PEBA_PERCORSI_CS",
             "layer_url_wfs": "https://mappe.comune.genova.it/geoserver/wfs",
             "style": {
                 "color": "#b70960",
@@ -81,9 +78,6 @@
                     "display_name": "Tipologia",
                     "type": "string"
                 }
-            ],
-            "components": [
-                "app-opacity-slider"
             ]
         }
     ]

@@ -54,7 +54,7 @@ export class PoiService {
 
             }
         }
-
+      
         for (const key in properties) {
             if (Object.prototype.hasOwnProperty.call(properties, key)) {
                 switch (key) {
@@ -65,7 +65,7 @@ export class PoiService {
                         poi.name = properties[key];
                         break;
                     case 'layerName':
-                        poi.layerName = properties[key];
+                        poi.layerName = properties[key];                       
                         const layer: Layer | undefined = DataService.instance.filterLayersByLayerName(properties[key]);
                         if (layer) poi.layer = layer;
                         break;
@@ -121,8 +121,9 @@ export class PoiService {
         return new LngLat(avgLng, avgLat);
     }
 
-    private parsePoiProperty(rawProp: any): PoiProperty {
+    private parsePoiProperty(rawProp: any): PoiProperty {       
         let prop: PoiProperty = PoiProperty.createEmpty();
+        if (rawProp.propertyName) prop.propertyName = rawProp.propertyName;
         if (rawProp.displayName) prop.displayName = rawProp.displayName;
         if (rawProp.type) prop.type = rawProp.type;
         if (rawProp.value) prop.value = rawProp.value;

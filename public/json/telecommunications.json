@@ -3,8 +3,8 @@
   "layers": [
     {
       "name": "Router FreeWiFiGenova",
-      "layer": "SITGEO:WI-FI_URBANO",
-      "layer_url_wfs": "./GeoJson/free-wifi-router.geojson",
+      "id": "SITGEO:WI-FI_URBANO",
+      "layer_url_wfs": "./geojson/free-wifi-router.geojson",
       "style": {
         "color": "#f7cb90",
         "opacity": 0.5
@@ -40,14 +40,11 @@
           "display_name": "Anno installazione",
           "type": "string"
         }
-      ],
-      "components": [
-        "app-opacity-slider"
       ]
     },
     {
       "name": "Impianti telecomunicazione",
-      "layer": "L7991",
+      "id": "L7991",
       "layer_url_wfs": "https://geoservizi.regione.liguria.it/geoserver/M2196/wms",
       "style": {
         "color": "#e597ca",
@@ -99,9 +96,6 @@
           "display_name": "Anno installazione",
           "type": "string"
         }
-      ],
-      "components": [
-        "app-opacity-slider"
       ]
     }
   ]

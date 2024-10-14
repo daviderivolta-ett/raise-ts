@@ -3,8 +3,8 @@
   "layers": [
     {
       "name": "Monumenti cimitero Staglieno",
-      "layer": "CULTURA:V_STAG_SCULTURE",
-      "layer_url_wfs": "./GeoJson/staglieno.geojson",
+      "id": "CULTURA:V_STAG_SCULTURE",
+      "layer_url_wfs": "./geojson/staglieno.geojson",
       "style": {
         "color": "#7ae8fe",
         "opacity": 0.5
@@ -57,9 +57,6 @@
           "display_name": "Descrizione settore",
           "type": "string"
         }
-      ],
-      "components": [
-        "app-opacity-slider"
       ]
     }
   ]
