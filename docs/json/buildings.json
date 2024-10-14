@@ -1,0 +1,302 @@
+{
+    "name": "Edifici",
+    "layers": [
+        {
+            "name": "Edifici del territorio comunale",
+            "id": "MEDIATORE:V_IMM_ANTRO_BASE",
+            "layer_url_wfs": "https://mappe.comune.genova.it/geoserver/wfs",
+            "style": {
+                "color": "#4840b5",
+                "opacity": 1
+            },
+            "tags": [
+                "città",
+                "servizi",
+                "ospedali"
+            ],
+            "relevant_properties": [
+                {
+                    "property_name": "TIPO_OGGETTO",
+                    "display_name": "Tipo oggetto",
+                    "type": "string"
+                },
+                {
+                    "property_name": "TIPO",
+                    "display_name": "Tipo",
+                    "type": "string"
+                }
+            ]
+        },
+        {
+            "name": "Edifici centro storico",
+            "id": "SITGEO:V_TIPO_CONNOTATIVO_CS",
+            "layer_url_wfs": "https://mappe.comune.genova.it/geoserver/wfs",
+            "style": {
+                "color": "#e1c550",
+                "opacity": 0.5
+            },
+            "tags": [
+                "città",
+                "strada"
+            ],
+            "relevant_properties": [
+                {
+                    "property_name": "TIPO_CONN",
+                    "display_name": "Tipologia",
+                    "type": "number"
+                }
+            ]
+        },
+        {
+            "name": "Corpi edilizi del centro storico di Genova",
+            "id": "V_CORPI_MAPP_CIVIS",
+            "layer_url_wfs": "https://mappe.comune.genova.it/geoserver/wfs",
+            "style": {
+                "color": "#e1c550",
+                "opacity": 0.5
+            },
+            "tags": [
+                "città",
+                "edifici",
+                "centro"
+            ],
+            "relevant_properties": [
+                {
+                    "property_name": "INDIRIZZO",
+                    "display_name": "Indirizzo",
+                    "type": "string"
+                },
+                {
+                    "property_name": "COD_CIVICO",
+                    "display_name": "Codice civico",
+                    "type": "string"
+                },
+                {
+                    "property_name": "COD_CORPO",
+                    "display_name": "Codice corpo",
+                    "type": "string"
+                },
+                {
+                    "property_name": "ORDINE",
+                    "display_name": "Ordine",
+                    "type": "number"
+                },
+                {
+                    "property_name": "TIPO",
+                    "display_name": "Tipo",
+                    "type": "string"
+                },
+                {
+                    "property_name": "TIPO_EDIFICIO",
+                    "display_name": "Tipo edificio",
+                    "type": "string"
+                },
+                {
+                    "property_name": "VUOTI",
+                    "display_name": "Vuoti",
+                    "type": "string"
+                },
+                {
+                    "property_name": "PIANI_F_TERRA",
+                    "display_name": "Piani al piano terra",
+                    "type": "number"
+                },
+                {
+                    "property_name": "PIANO_ACCESSO",
+                    "display_name": "Piano di accesso",
+                    "type": "number"
+                },
+                {
+                    "property_name": "APPARTAMENTI",
+                    "display_name": "Appartamenti",
+                    "type": "number"
+                },
+                {
+                    "property_name": "APPARTAM_RILEV",
+                    "display_name": "Appartamenti rilevati",
+                    "type": "number"
+                },
+                {
+                    "property_name": "APPARTAM_OCCUP",
+                    "display_name": "Appartamenti occupati",
+                    "type": "number"
+                },
+                {
+                    "property_name": "TERRENO_VOLTATO",
+                    "display_name": "Terreno voltato",
+                    "type": "string"
+                },
+                {
+                    "property_name": "TIPO_STRUTT",
+                    "display_name": "Tipo struttura",
+                    "type": "string"
+                },
+                {
+                    "property_name": "EPOCA_PREVAL",
+                    "display_name": "Epoca prevalente",
+                    "type": "string"
+                },
+                {
+                    "property_name": "EPOCA_ANTIQ",
+                    "display_name": "Epoca antica",
+                    "type": "string"
+                },
+                {
+                    "property_name": "TIPO_CONNOT",
+                    "display_name": "Tipo connotazione",
+                    "type": "string"
+                },
+                {
+                    "property_name": "DESTINAZIONE",
+                    "display_name": "Destinazione",
+                    "type": "string"
+                },
+                {
+                    "property_name": "TIPO_ATTUAT",
+                    "display_name": "Tipo attuazione",
+                    "type": "string"
+                },
+                {
+                    "property_name": "SOPRAELEV_PIANI",
+                    "display_name": "Sopraelevazione piani",
+                    "type": "number"
+                },
+                {
+                    "property_name": "FONDAZIONI",
+                    "display_name": "Fondazioni",
+                    "type": "string"
+                },
+                {
+                    "property_name": "ORIENT_PAR_PORT",
+                    "display_name": "Orientamento parziale portante",
+                    "type": "string"
+                },
+                {
+                    "property_name": "LOCAL_DEGRADO",
+                    "display_name": "Localizzazione degrado",
+                    "type": "string"
+                },
+                {
+                    "property_name": "CARATT_DEGRADO",
+                    "display_name": "Caratteristiche degrado",
+                    "type": "string"
+                },
+                {
+                    "property_name": "UMIDITA",
+                    "display_name": "Umidità",
+                    "type": "string"
+                },
+                {
+                    "property_name": "LOCAL_UMIDITA",
+                    "display_name": "Localizzazione umidità",
+                    "type": "string"
+                },
+                {
+                    "property_name": "ABBANDONO",
+                    "display_name": "Abbandono",
+                    "type": "string"
+                },
+                {
+                    "property_name": "INTERVENTI",
+                    "display_name": "Interventi",
+                    "type": "string"
+                },
+                {
+                    "property_name": "DESCR_INTERV",
+                    "display_name": "Descrizione interventi",
+                    "type": "string"
+                },
+                {
+                    "property_name": "ACCESS_EDIF",
+                    "display_name": "Accesso edificio",
+                    "type": "string"
+                },
+                {
+                    "property_name": "PORTICO",
+                    "display_name": "Portico",
+                    "type": "string"
+                },
+                {
+                    "property_name": "ASCENSORE",
+                    "display_name": "Ascensore",
+                    "type": "string"
+                },
+                {
+                    "property_name": "EDICOLA",
+                    "display_name": "Edicola",
+                    "type": "string"
+                },
+                {
+                    "property_name": "UTS",
+                    "display_name": "Unità territoriale speciale",
+                    "type": "string"
+                },
+                {
+                    "property_name": "COD_CORPO_COP",
+                    "display_name": "Codice corpo copertura",
+                    "type": "string"
+                },
+                {
+                    "property_name": "DEGRADO",
+                    "display_name": "Degrado",
+                    "type": "string"
+                },
+                {
+                    "property_name": "NOTE",
+                    "display_name": "Note",
+                    "type": "string"
+                },
+                {
+                    "property_name": "DATACREA",
+                    "display_name": "Data creazione",
+                    "type": "string"
+                },
+                {
+                    "property_name": "RECNO",
+                    "display_name": "Numero record",
+                    "type": "number"
+                },
+                {
+                    "property_name": "COD_LOCAL_UMID",
+                    "display_name": "Codice locale umidità",
+                    "type": "string"
+                },
+                {
+                    "property_name": "COD_CAUSA_UMID",
+                    "display_name": "Codice causa umidità",
+                    "type": "string"
+                },
+                {
+                    "property_name": "TIPO_DEST",
+                    "display_name": "Tipo destinazione",
+                    "type": "string"
+                },
+                {
+                    "property_name": "TIPO_DEGRADO",
+                    "display_name": "Tipo degrado",
+                    "type": "string"
+                },
+                {
+                    "property_name": "LOCAL_INTERVENTI",
+                    "display_name": "Localizzazione interventi",
+                    "type": "string"
+                },
+                {
+                    "property_name": "PRES_ELEM_AMIANTO",
+                    "display_name": "Presenza elementi di amianto",
+                    "type": "string"
+                },
+                {
+                    "property_name": "COD_TOPON",
+                    "display_name": "Codice toponomastico",
+                    "type": "string"
+                },
+                {
+                    "property_name": "ORIGINE_DATI",
+                    "display_name": "Origine dati",
+                    "type": "string"
+                }
+            ]
+        }
+    ]
+}

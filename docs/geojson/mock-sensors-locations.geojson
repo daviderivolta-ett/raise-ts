@@ -1,0 +1,69 @@
+{
+    "type": "FeatureCollection",
+    "features": [
+        {
+            "type": "Feature",
+            "properties": {
+                "id": "sensor_1",
+                "type": "meteorological station",
+                "active": true
+            },
+            "geometry": {
+                "coordinates": [
+                    8.974697569253436,
+                    44.410804443035744
+                ],
+                "type": "Point"
+            },
+            "id": 0
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "id": "sensor_2",
+                "type": "meteorological station",
+                "active": true
+            },
+            "geometry": {
+                "coordinates": [
+                    8.971244921824393,
+                    44.40867337685978
+                ],
+                "type": "Point"
+            },
+            "id": 1
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "id": "sensor_3",
+                "type": "meteorological station",
+                "active": false
+            },
+            "geometry": {
+                "coordinates": [
+                    8.972456377062514,
+                    44.410696268958105
+                ],
+                "type": "Point"
+            },
+            "id": 2
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "id": "sensor_4",
+                "type": "meteorological station",
+                "active": true
+            },
+            "geometry": {
+                "coordinates": [
+                    8.974788428396636,
+                    44.409289987746405
+                ],
+                "type": "Point"
+            },
+            "id": 3
+        }
+    ]
+}
