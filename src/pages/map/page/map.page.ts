@@ -152,25 +152,6 @@ export class MapPage extends HTMLElement {
 
         const e = event as CustomEvent;
 
-        //////
-        // const properties: Record<string, any> = MapService.instance.getFeatureProperties(e.detail.features[0]);
-        // console.log(properties);
-        // const layer: Layer | undefined = DataService.instance.filterLayersByLayerName(properties.layerName);
-        // console.log(layer);
-        // console.log(this.shadowRoot.querySelector('app-tabs-sidenav'));
-
-        // const poi = PoiService.instance.createPoiFromFeature(e.detail.features[0]);
-        // console.log(poi);        
-
-        // const infoPanel: HTMLElement | null = this._getInfoPanelSlot();
-        // if (!infoPanel) return;
-        // if (layer) layer.components.forEach((c: LayerComponent) => {
-        //     const comp: any = document.createElement(c.tag);
-        //     for (const key in c.props) comp[key] = c.props[key];
-        // });
-        //////
-
-
         BenchToggleObservable.instance.isOpen = false;
         if (e.detail.features.length > 0) {
             TabsToggleObservable.instance.status = SidenavStatus.Open;

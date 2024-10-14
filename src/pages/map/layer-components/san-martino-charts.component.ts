@@ -56,8 +56,7 @@ export class SanMartinoChartsComponent extends HTMLElement {
 
     public get data(): any { return this._data }
     public set data(value: any) {
-        this._data = value;
-        console.log(value);        
+        this._data = value;   
         this._render(this._parseData(value));
     }
 
@@ -74,8 +73,7 @@ export class SanMartinoChartsComponent extends HTMLElement {
         const wrapper = this.shadowRoot.querySelector('.charts');
         if (!wrapper) return;
 
-        wrapper.innerHTML = '';
-        console.log(chartData);        
+        wrapper.innerHTML = '';      
         chartData.forEach((d: Chart) => {
             const chart: LineChartComponent = new LineChartComponent();
             chart.xUnit = 'Data';

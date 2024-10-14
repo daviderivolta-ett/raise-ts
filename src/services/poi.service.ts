@@ -26,7 +26,7 @@ export class PoiService {
     }
 
     public set selectedPoi(selectedPoi: PointOfInterest | null) {
-        this._selectedPoi = selectedPoi;
+        this._selectedPoi = selectedPoi;       
         EventObservable.instance.publish('selected-poi', this.selectedPoi);
         if (this._selectedPoi !== null) TabsObservable.instance.currentTab = Tab.Info;
     }

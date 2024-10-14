@@ -30,7 +30,7 @@ export class InfoPanelComponent extends HTMLElement {
     public set poi(poi: PointOfInterest | null) {
         this._poi = poi;
         this.isInfoOpen = false;
-        // this.update();
+        // this.update();     
     }
 
     public get isInfoOpen(): boolean {
@@ -49,10 +49,10 @@ export class InfoPanelComponent extends HTMLElement {
     }
 
     public disconnectedCallback(): void {
-        EventObservable.instance.unsubscribeAll('selected-poi');
+        EventObservable.instance.unsubscribe('selected-poi', this.handleSelectedPoi);
     }
 
-    private handleSelectedPoi(poi: PointOfInterest): void {
+    private handleSelectedPoi = (poi: PointOfInterest): void => {
         this.poi = poi;
     }
 
@@ -60,8 +60,8 @@ export class InfoPanelComponent extends HTMLElement {
         this.shadowRoot.innerHTML = '<p class="empty-msg">Nessun punto selezionato</p>';
     }
 
-    private setup(): void {
-        this.handleSelectedPoi = this.handleSelectedPoi.bind(this);
+    private setup(): void {        
+        // this.handleSelectedPoi = this.handleSelectedPoi.bind(this);
         EventObservable.instance.subscribe('selected-poi', this.handleSelectedPoi);
     }
 
@@ -69,7 +69,7 @@ export class InfoPanelComponent extends HTMLElement {
         if (!this.poi) {
             this.render();
             return;
-        }
+        }       
 
         this.shadowRoot.innerHTML =
             `
