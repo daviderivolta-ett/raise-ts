@@ -3,8 +3,8 @@
   "layers": [
     {
       "name": "Impianti sportivi comunali",
-      "layer": "SITGEO:V_IMPIANTI_SPORTIVI",
-      "layer_url_wfs": "./GeoJson/impianti-sportivi.geojson",
+      "id": "SITGEO:V_IMPIANTI_SPORTIVI",
+      "layer_url_wfs": "./geojson/impianti-sportivi.geojson",
       "style": {
         "color": "#aeafd9",
         "opacity": 0.5
@@ -70,15 +70,12 @@
           "display_name": "Pericolo incendio",
           "type": "string"
         }
-      ],
-      "components": [
-        "app-opacity-slider"
       ]
     },
     {
       "name": "Aree ad uso sportivo",
-      "layer": "URBANISTICA:V_VAS_SPORT",
-      "layer_url_wfs": "./GeoJson/aree-uso-sportivo.geojson",
+      "id": "URBANISTICA:V_VAS_SPORT",
+      "layer_url_wfs": "./geojson/aree-uso-sportivo.geojson",
       "style": {
         "color": "#79f7fd",
         "opacity": 0.5
@@ -109,14 +106,11 @@
           "display_name": "Categoria",
           "type": "string"
         }
-      ],
-      "components": [
-        "app-opacity-slider"
       ]
     },
     {
       "name": "Comprensori sportivi",
-      "layer": "L8814",
+      "id": "L8814",
       "layer_url_wfs": "https://geoservizi.regione.liguria.it/geoserver/M2364/wfs",
       "style": {
         "color": "#79f7ed",
@@ -141,9 +135,6 @@
           "display_name": "Codice comprensorio",
           "type": "string"
         }
-      ],
-      "components": [
-        "app-opacity-slider"
       ]
     }
   ]

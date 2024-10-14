@@ -1,6 +1,6 @@
-import { LayerSpecification, LngLat, MapGeoJSONFeature, Marker } from 'maplibre-gl';
+import { LayerSpecification, LngLat, Marker } from 'maplibre-gl';
 import { SplashComponent } from '../../../components/splash/splash.component';
-import { Layer, LayerComponent, PropertyType } from '../../../models/layer.model';
+import { Layer, PropertyType } from '../../../models/layer.model';
 import { Path } from '../../../models/path.model';
 import { PointOfInterest, PoiProperty, PoiType } from '../../../models/poi.model';
 import { SidenavStatus } from '../../../models/sidenav.model';
