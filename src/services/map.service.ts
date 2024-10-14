@@ -355,7 +355,7 @@ export class MapService {
         const poisLatLng: [number, number][] = pois.map((poi: PointOfInterest) => [poi.position.lat, poi.position.lng]);
         try {
             // const res: Response = await fetch('./GeoJson/optimal-path.geojson');
-            const res: Response = await fetch('https://labopt.iasi.cnr.it:4206/multiple-shortest-path/', {
+            const res: Response = await fetch('http://labopt.iasi.cnr.it:4206/multiple-shortest-path/', {
                 method: 'POST',
                 headers: {
                     'content-type': 'application/json'
