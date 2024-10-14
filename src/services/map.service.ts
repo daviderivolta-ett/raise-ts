@@ -2,6 +2,7 @@ import { Layer, LayerProperty, LayerStyle } from '../models/layer.model';
 import { Feature, FeatureGeometryType } from '../models/feature.model';
 import { PointOfInterest } from '../models/poi.model';
 import { CircleLayerSpecification, FillLayerSpecification, LineLayerSpecification, LngLat, MapGeoJSONFeature } from 'maplibre-gl';
+import { log } from 'deck.gl';
 
 export class MapService {
     private static _instance: MapService;
@@ -354,7 +355,15 @@ export class MapService {
     public async getOptimalPath(pois: PointOfInterest[]): Promise<any> {
         const poisLatLng: [number, number][] = pois.map((poi: PointOfInterest) => [poi.position.lat, poi.position.lng]);
         try {
-            const res: Response = await fetch('./GeoJson/optimal-path.geojson');
+            // const res: Response = await fetch('./GeoJson/optimal-path.geojson');
+            const res: Response = await fetch('http://labopt.iasi.cnr.it:4206/multiple-shortest-path/', {
+                method: 'POST',
+                headers: {
+                    'content-type': 'application/json'
+                },
+                body: JSON.stringify(poisLatLng)
+            })
+            console.log(res);            
             // const geoJSON: any = await res.json();
             const geoJSON: any = this.createGeoJsonLineStringFromCoordinates(poisLatLng);
             return geoJSON;
